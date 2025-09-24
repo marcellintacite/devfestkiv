@@ -1,1 +1,185 @@
 /* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+
+/* 
+What are theme variables?
+Theme variables are special CSS variables defined using the @theme directive that influence which utility classes exist in your project.
+
+For example, you can add a new color to your project by defining a theme variable like --color-mint-500
+
+to use them : 
+
+<div class="bg-primary text-background p-md rounded-lg shadow-card">
+  <h1 class="text-2xl font-bold text-text">Hello DevFest Kivu</h1>
+  <button class="bg-accent text-white px-md py-sm rounded-md hover:bg-accent-halftone">
+    Register Now
+  </button>
+</div>
+
+*/
+
+
+/* global variable */
+@theme {
+  /* Primary brand colors */
+  --color-primary: #f9ab00;   /* Blue 500 */
+  --color-secondary: #34a853; /* Green 500 */
+  --color-accent: #f9ab00;    /* Yellow 600 */
+  --color-danger: #ea4335;    /* Red 500 */
+
+  --background:#faf5e8;
+
+  /* Halftones */
+  --color-primary-halftone: #ffd427;
+  --color-secondary-halftone: #5cdb6d;
+  --color-accent-halftone: #ffd427;
+  --color-danger-halftone: #ff7daf;
+
+  /* Pastels */
+  --color-primary-pastel: #ffe7a5;
+  --color-secondary-pastel: #ccf6c5;
+  --color-accent-pastel: #ffe7a5;
+  --color-danger-pastel: #f8d8d8;
+
+  /* Grayscale */
+  --color-background: #f0f0f0; /* Off White */
+  --color-text: #1e1e1e;       /* Black 02 */
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 40px;
+
+  /* Radius & Shadows */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background-color: var(--background);
+}
+
+/* Button Utility Classes */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
+  outline: none;
+}
+
+.btn:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-halftone);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-secondary-halftone);
+}
+
+.btn-outline {
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  background-color: transparent;
+}
+
+.btn-outline:hover {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-ghost {
+  color: var(--color-primary);
+  background-color: transparent;
+}
+
+.btn-ghost:hover {
+  background-color: var(--color-primary-pastel);
+}
+
+.btn-danger {
+  background-color: var(--color-danger);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: var(--color-danger-halftone);
+}
+
+.btn-sm {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: 0.875rem;
+  border-radius: var(--radius-sm);
+}
+
+.btn-md {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 1rem;
+  border-radius: var(--radius-md);
+}
+
+.btn-lg {
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: 1.125rem;
+  border-radius: var(--radius-md);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-card);
+}
+
+
+
+/* view transition setup */
+
+
+/* Define keyframe animations */
+@keyframes rotate-out {
+  to {
+    transform: rotate(90deg);
+  }
+}
+@keyframes rotate-in {
+  from {
+    transform: rotate(-90deg);
+  }
+}
+/* Target view transition pseudo-elements */
+::view-transition-old(count),
+::view-transition-new(count) {
+  animation-duration: 200ms;
+  animation-name: -ua-view-transition-fade-in, rotate-in;
+}
+::view-transition-old(count) {
+  animation-name: -ua-view-transition-fade-out, rotate-out;
+}
