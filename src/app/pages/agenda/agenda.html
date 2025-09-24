@@ -1,0 +1,121 @@
+<!-- Agenda Section -->
+<section class="agenda-section py-12 md:py-16 lg:py-20">
+  <div class="max-w-7xl mx-auto px-md sm:px-lg lg:px-xl">
+    <!-- Header -->
+    <div class="text-center mb-lg">
+      <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-text mb-md">Agenda</h1>
+      <p class="text-lg md:text-xl text-text/80 mb-sm">23 Octobre 2025</p>
+      <div class="w-20 h-1 bg-primary mx-auto rounded-full"></div>
+    </div>
+
+    <!-- Agenda Table -->
+    <div class="overflow-x-auto bg-white rounded-lg shadow-card">
+      <table class="w-full border-collapse">
+        <!-- En-têtes -->
+        <thead>
+          <tr class="bg-primary/5">
+            <th class="border border-gray-200 px-md py-md text-left font-semibold text-text w-32">
+              Heure
+            </th>
+            <th
+              *ngFor="let hall of halls"
+              class="border border-gray-200 px-md py-md text-center font-semibold text-primary"
+            >
+              {{ hall }}
+            </th>
+          </tr>
+        </thead>
+
+        <!-- Corps du tableau -->
+        <tbody>
+          <tr *ngFor="let slot of timeSlots" class="hover:bg-primary/5">
+            <!-- Colonne heure -->
+            <td
+              class="border border-gray-200 px-md py-lg bg-primary/5 font-medium text-text text-center align-top"
+            >
+              {{ slot.display }}
+            </td>
+
+            <!-- Cas où il n'y a qu'un seul événement dans le créneau : étendre sur toutes les colonnes -->
+            <td
+              *ngIf="
+                hasSingleEventInTimeSlot(slot.time) && getFirstEventInTimeSlot(slot.time) as event
+              "
+              [attr.colspan]="halls.length"
+              class="border border-gray-200 px-md py-md align-top"
+            >
+              <div
+                class="event-card bg-background rounded-lg shadow-card p-lg border border-primary/10 hover:shadow-xl hover:border-primary/30 hover:scale-[1.02] transition-all duration-300 group"
+              >
+                <div class="flex justify-between items-start mb-md">
+                  <div class="flex items-center gap-2">
+                    <span class="text-sm font-medium text-text/50 bg-text/5 px-sm py-1 rounded">{{
+                      event.timeSlot
+                    }}</span>
+                    <span class="text-xs text-text/40">• {{ event.hall }}</span>
+                  </div>
+                  <span
+                    class="px-md py-sm rounded-full text-sm font-bold"
+                    [ngClass]="{
+                      'bg-secondary-pastel text-secondary': event.category === 'Cloud',
+                      'bg-primary-pastel text-primary': event.category === 'AI/ML',
+                      'bg-accent-pastel text-accent': event.category === 'Mobile',
+                      'bg-primary-halftone/20 text-primary': event.category === 'Beyond IT',
+                      'bg-danger-pastel text-danger': event.category === 'Cybersecurity'
+                    }"
+                  >
+                    {{ event.category }}
+                  </span>
+                </div>
+                <h4
+                  class="font-bold text-text text-lg mb-sm leading-tight group-hover:text-primary transition-colors duration-300"
+                >
+                  {{ event.title }}
+                </h4>
+                <p *ngIf="event.speaker" class="text-sm text-text/70 font-medium">
+                  {{ event.speaker }}
+                </p>
+              </div>
+            </td>
+
+            <!-- Cas où il y a plusieurs événements : affichage normal par colonne -->
+            <ng-container *ngIf="!hasSingleEventInTimeSlot(slot.time)">
+              <td *ngFor="let hall of halls" class="border border-gray-200 px-md py-md align-top">
+                <div
+                  *ngIf="getEventByTimeSlotAndHall(slot.time, hall) as event"
+                  class="event-card bg-background rounded-lg shadow-card p-md border border-primary/10 hover:shadow-xl hover:border-primary/30 hover:scale-105 transition-all duration-300 group"
+                >
+                  <div class="flex justify-between items-start mb-sm">
+                    <span class="text-xs font-medium text-text/50 bg-text/5 px-xs py-0.5 rounded">
+                      {{ event.timeSlot }}
+                    </span>
+                    <span
+                      class="px-sm py-xs rounded-full text-xs font-bold"
+                      [ngClass]="{
+                        'bg-secondary-pastel text-secondary': event.category === 'Cloud',
+                        'bg-primary-pastel text-primary': event.category === 'AI/ML',
+                        'bg-accent-pastel text-accent': event.category === 'Mobile',
+                        'bg-primary-halftone/20 text-primary': event.category === 'Beyond IT',
+                        'bg-danger-pastel text-danger': event.category === 'Cybersecurity'
+                      }"
+                    >
+                      {{ event.category }}
+                    </span>
+                  </div>
+                  <h4
+                    class="font-bold text-text text-sm mb-xs leading-tight group-hover:text-primary transition-colors duration-300"
+                  >
+                    {{ event.title }}
+                  </h4>
+                  <p *ngIf="event.speaker" class="text-xs text-text/70 font-medium">
+                    {{ event.speaker }}
+                  </p>
+                </div>
+              </td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
