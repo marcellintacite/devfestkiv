@@ -11,20 +11,24 @@ export default class AgendaComponent {
   // Jour actuellement sélectionné
   currentDayIndex = 0;
 
-  // Configuration des jours
+  // Configuration des jours avec tracks spécifiques
   days = [
     {
       id: 'thursday',
-      name: 'Thursday',
+      name: 'Jeudi - Track Web',
       date: '23',
-      fullDate: 'Thursday, October 23, 2025',
+      fullDate: 'Jeudi 23 Octobre 2025 - Track Web Development',
+      track: 'web',
+      description: 'Focus sur les technologies Web, Cloud et Cybersécurité',
       isActive: true,
     },
     {
       id: 'friday',
-      name: 'Friday',
+      name: 'Vendredi - Track Mobile',
       date: '24',
-      fullDate: 'Friday, October 24, 2025',
+      fullDate: 'Vendredi 24 Octobre 2025 - Track Mobile Development',
+      track: 'mobile',
+      description: 'Focus sur le développement Mobile, AI/ML et DevOps',
       isActive: false,
     },
   ];
@@ -81,10 +85,10 @@ export default class AgendaComponent {
       },
       {
         hall: 'Networking',
-        title: 'Hype Driven Development: How I learned to stop worrying and love the failures',
+        title: 'Modern Web Frameworks: React vs Angular vs Vue',
         speaker: 'Ashley Davies, Independent',
         timeSlot: '11:00 - 11:40',
-        category: 'Mobile',
+        category: 'Web',
       },
       {
         hall: 'Conférences',
@@ -104,10 +108,10 @@ export default class AgendaComponent {
       },
       {
         hall: 'Conférences',
-        title: 'Future of Web Development',
+        title: 'Future of Mobile Development',
         speaker: 'Tech Speaker 2',
         timeSlot: '09:30 - 10:20',
-        category: 'Web',
+        category: 'Mobile',
       },
       {
         hall: 'Networking',

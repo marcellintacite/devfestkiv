@@ -1,10 +1,30 @@
 <!-- Agenda Section -->
 <section class="agenda-section py-12 md:py-16 lg:py-20">
   <div class="max-w-7xl mx-auto px-md sm:px-lg lg:px-xl">
+    <!-- Hero Header -->
+    <div class="text-center mb-16">
+      <div
+        class="relative rounded-2xl p-8 md:p-12 mb-8 overflow-hidden bg-cover bg-center bg-no-repeat"
+        style="background-image: url('/assets/sddefault.jpg')"
+      >
+        <!-- Overlay pour améliorer la lisibilité du texte -->
+        <div class="absolute inset-0 bg-black/50 rounded-2xl"></div>
+
+        <!-- Contenu par-dessus l'overlay -->
+        <div class="relative z-10">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
+            Programme DevFest
+          </h1>
+          <p class="text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
+            Découvrez notre programme complet avec des conférences inspirantes, des ateliers
+            pratiques et des opportunités de networking exceptionnelles.
+          </p>
+        </div>
+      </div>
+    </div>
+
     <!-- Header -->
     <div class="text-center mb-lg">
-      <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-text mb-md">Agenda</h1>
-
       <!-- Navigation des jours -->
       <div class="flex justify-center items-center gap-4 mb-lg">
         <!-- Bouton précédent -->
@@ -23,19 +43,20 @@
           </svg>
         </button>
 
-        <!-- Onglets des jours -->
-        <div class="flex bg-gray-100 rounded-lg p-1">
+        <!-- Onglets des jours avec tracks -->
+        <div class="flex bg-gray-100 rounded-lg p-1 max-w-4xl">
           <button
             *ngFor="let day of days; let i = index"
             (click)="selectDay(i)"
-            class="px-lg py-sm rounded-md font-semibold transition-all duration-200"
+            class="px-lg py-md rounded-md font-semibold transition-all duration-200 flex-1"
             [ngClass]="{
               'bg-primary text-white shadow-sm': day.isActive,
               'text-text/70 hover:text-text hover:bg-white/50': !day.isActive
             }"
           >
-            <div class="text-sm">{{ day.name }}</div>
-            <div class="text-lg font-bold">{{ day.date }}</div>
+            <div class="text-sm font-medium">{{ day.name }}</div>
+            <div class="text-lg font-bold mb-1">{{ day.date }}</div>
+            <div class="text-xs opacity-90">{{ day.description }}</div>
           </button>
         </div>
 
@@ -64,21 +85,6 @@
     <!-- Agenda Table -->
     <div class="overflow-x-auto bg-white rounded-lg shadow-card">
       <table class="w-full border-collapse">
-        <!-- En-têtes -->
-        <thead>
-          <tr class="bg-primary/5">
-            <th class="border border-gray-200 px-md py-md text-left font-semibold text-text w-32">
-              Heure
-            </th>
-            <th
-              *ngFor="let hall of halls"
-              class="border border-gray-200 px-md py-md text-center font-semibold text-primary"
-            >
-              {{ hall }}
-            </th>
-          </tr>
-        </thead>
-
         <!-- Corps du tableau -->
         <tbody>
           <tr *ngFor="let slot of timeSlots" class="hover:bg-primary/5">
@@ -110,11 +116,11 @@
                   <span
                     class="px-md py-sm rounded-full text-sm font-bold"
                     [ngClass]="{
-                      'bg-secondary-pastel text-secondary': event.category === 'Cloud',
-                      'bg-primary-pastel text-primary': event.category === 'AI/ML',
-                      'bg-accent-pastel text-accent': event.category === 'Mobile',
-                      'bg-primary-halftone/20 text-primary': event.category === 'Beyond IT',
-                      'bg-danger-pastel text-danger': event.category === 'Cybersecurity'
+                      'bg-blue-500 text-white': event.category === 'Cloud',
+                      'bg-red-500 text-white': event.category === 'AI/ML',
+                      'bg-green-500 text-white': event.category === 'Mobile',
+                      'bg-yellow-500 text-black': event.category === 'Beyond IT',
+                      'bg-red-600 text-white': event.category === 'Cybersecurity'
                     }"
                   >
                     {{ event.category }}
@@ -145,11 +151,11 @@
                     <span
                       class="px-sm py-xs rounded-full text-xs font-bold"
                       [ngClass]="{
-                        'bg-secondary-pastel text-secondary': event.category === 'Cloud',
-                        'bg-primary-pastel text-primary': event.category === 'AI/ML',
-                        'bg-accent-pastel text-accent': event.category === 'Mobile',
-                        'bg-primary-halftone/20 text-primary': event.category === 'Beyond IT',
-                        'bg-danger-pastel text-danger': event.category === 'Cybersecurity'
+                        'bg-blue-500 text-white': event.category === 'Cloud',
+                        'bg-red-500 text-white': event.category === 'AI/ML',
+                        'bg-green-500 text-white': event.category === 'Mobile',
+                        'bg-yellow-500 text-black': event.category === 'Beyond IT',
+                        'bg-red-600 text-white': event.category === 'Cybersecurity'
                       }"
                     >
                       {{ event.category }}
