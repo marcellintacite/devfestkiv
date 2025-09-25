@@ -224,4 +224,16 @@ export default class AgendaComponent {
     if (events.length !== 1) return false;
     return events[0].hall === hall;
   }
+
+  // Vérifie s'il y a des événements dans un créneau (pour mobile)
+  hasEventsInTimeSlot(timeSlot: string): boolean {
+    return this.getEventsByTimeSlot(timeSlot).length > 0;
+  }
+
+  // Récupère les événements non-vides pour mobile
+  getEventsForMobileTimeSlot(timeSlot: string) {
+    return this.halls
+      .map((hall) => this.getEventByTimeSlotAndHall(timeSlot, hall))
+      .filter((event) => event !== undefined);
+  }
 }

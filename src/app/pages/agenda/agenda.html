@@ -3,10 +3,13 @@
   <div class="max-w-7xl mx-auto px-md sm:px-lg lg:px-xl">
     <!-- Hero Header -->
     <div class="text-center mb-16">
-      <div
-        class="relative rounded-2xl p-8 md:p-12 mb-8 overflow-hidden bg-cover bg-center bg-no-repeat"
-        style="background-image: url('/assets/sddefault.jpg')"
-      >
+      <div class="relative rounded-2xl p-8 md:p-12 mb-8 overflow-hidden">
+        <!-- Image de fond avec flou -->
+        <div
+          class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-2xl"
+          style="background-image: url('/assets/sddefault.jpg'); filter: blur(2px)"
+        ></div>
+
         <!-- Overlay pour améliorer la lisibilité du texte -->
         <div class="absolute inset-0 bg-black/50 rounded-2xl"></div>
 
@@ -81,73 +84,38 @@
       <div class="w-20 h-1 bg-primary mx-auto rounded-full"></div>
     </div>
 
-    <!-- Agenda Table -->
-    <div class="overflow-x-auto bg-white rounded-lg shadow-card">
-      <table class="w-full border-collapse">
-        <!-- Corps du tableau -->
-        <tbody>
-          <tr *ngFor="let slot of timeSlots" class="hover:bg-primary/5">
-            <!-- Colonne heure -->
-            <td
-              class="border border-gray-200 px-md py-lg bg-primary/5 font-medium text-text text-center align-top"
-            >
-              {{ slot.display }}
-            </td>
-
-            <!-- Cas où il n'y a qu'un seul événement dans le créneau : étendre sur toutes les colonnes -->
-            <td
-              *ngIf="
-                hasSingleEventInTimeSlot(slot.time) && getFirstEventInTimeSlot(slot.time) as event
-              "
-              [attr.colspan]="halls.length"
-              class="border border-gray-200 px-md py-md align-top"
-            >
-              <div
-                class="event-card bg-background rounded-lg shadow-card p-md border border-primary/10 hover:shadow-xl hover:border-primary/30 hover:scale-[1.02] transition-all duration-300 group h-32 flex flex-col justify-between"
+    <!-- Agenda Responsive -->
+    <div class="bg-white rounded-lg shadow-card">
+      <!-- Version Desktop (tableau) -->
+      <div class="hidden lg:block overflow-x-auto">
+        <table class="w-full border-collapse">
+          <tbody>
+            <tr *ngFor="let slot of timeSlots" class="hover:bg-primary/5">
+              <!-- Colonne heure -->
+              <td
+                class="border border-gray-200 px-md py-lg bg-primary/5 font-medium text-text text-center align-top w-20"
               >
-                <div class="flex justify-between items-start mb-2">
-                  <div class="flex items-center gap-2">
-                    <span class="text-sm font-medium text-text/50 bg-text/5 px-sm py-1 rounded">{{
-                      event.timeSlot
-                    }}</span>
-                    <span class="text-xs text-text/40">• {{ event.hall }}</span>
-                  </div>
-                  <span
-                    class="px-2 py-0.5 rounded-full text-xs font-semibold tracking-wide uppercase flex-shrink-0"
-                    [ngClass]="{
-                      'bg-blue-500 text-white': event.category === 'Talk',
-                      'bg-green-500 text-white': event.category === 'Workshop',
-                      'bg-red-500 text-white': event.category === 'Conference',
-                      'bg-yellow-500 text-black': event.category === 'Networking'
-                    }"
-                  >
-                    {{ event.category }}
-                  </span>
-                </div>
-                <div class="flex-1">
-                  <h4
-                    class="font-bold text-text text-sm mb-1 leading-tight group-hover:text-primary transition-colors duration-300"
-                  >
-                    {{ event.title }}
-                  </h4>
-                  <p *ngIf="event.speaker" class="text-xs text-text/70 font-medium">
-                    {{ event.speaker }}
-                  </p>
-                </div>
-              </div>
-            </td>
+                {{ slot.display }}
+              </td>
 
-            <!-- Cas où il y a plusieurs événements : affichage normal par colonne -->
-            <ng-container *ngIf="!hasSingleEventInTimeSlot(slot.time)">
-              <td *ngFor="let hall of halls" class="border border-gray-200 px-md py-md align-top">
+              <!-- Cas où il n'y a qu'un seul événement dans le créneau -->
+              <td
+                *ngIf="
+                  hasSingleEventInTimeSlot(slot.time) && getFirstEventInTimeSlot(slot.time) as event
+                "
+                [attr.colspan]="halls.length"
+                class="border border-gray-200 px-md py-md align-top"
+              >
                 <div
-                  *ngIf="getEventByTimeSlotAndHall(slot.time, hall) as event"
                   class="event-card bg-background rounded-lg shadow-card p-md border border-primary/10 hover:shadow-xl hover:border-primary/30 hover:scale-[1.02] transition-all duration-300 group h-32 flex flex-col justify-between"
                 >
                   <div class="flex justify-between items-start mb-2">
-                    <span class="text-xs font-medium text-text/50 bg-text/5 px-xs py-0.5 rounded">
-                      {{ event.timeSlot }}
-                    </span>
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm font-medium text-text/50 bg-text/5 px-sm py-1 rounded">{{
+                        event.timeSlot
+                      }}</span>
+                      <span class="text-xs text-text/40">• {{ event.hall }}</span>
+                    </div>
                     <span
                       class="px-2 py-0.5 rounded-full text-xs font-semibold tracking-wide uppercase flex-shrink-0"
                       [ngClass]="{
@@ -172,10 +140,95 @@
                   </div>
                 </div>
               </td>
-            </ng-container>
-          </tr>
-        </tbody>
-      </table>
+
+              <!-- Cas où il y a plusieurs événements -->
+              <ng-container *ngIf="!hasSingleEventInTimeSlot(slot.time)">
+                <td *ngFor="let hall of halls" class="border border-gray-200 px-md py-md align-top">
+                  <div
+                    *ngIf="getEventByTimeSlotAndHall(slot.time, hall) as event"
+                    class="event-card bg-background rounded-lg shadow-card p-md border border-primary/10 hover:shadow-xl hover:border-primary/30 hover:scale-[1.02] transition-all duration-300 group h-32 flex flex-col justify-between"
+                  >
+                    <div class="flex justify-between items-start mb-2">
+                      <span class="text-xs font-medium text-text/50 bg-text/5 px-xs py-0.5 rounded">
+                        {{ event.timeSlot }}
+                      </span>
+                      <span
+                        class="px-2 py-0.5 rounded-full text-xs font-semibold tracking-wide uppercase flex-shrink-0"
+                        [ngClass]="{
+                          'bg-blue-500 text-white': event.category === 'Talk',
+                          'bg-green-500 text-white': event.category === 'Workshop',
+                          'bg-red-500 text-white': event.category === 'Conference',
+                          'bg-yellow-500 text-black': event.category === 'Networking'
+                        }"
+                      >
+                        {{ event.category }}
+                      </span>
+                    </div>
+                    <div class="flex-1">
+                      <h4
+                        class="font-bold text-text text-sm mb-1 leading-tight group-hover:text-primary transition-colors duration-300"
+                      >
+                        {{ event.title }}
+                      </h4>
+                      <p *ngIf="event.speaker" class="text-xs text-text/70 font-medium">
+                        {{ event.speaker }}
+                      </p>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Version Mobile/Tablet (liste verticale) -->
+      <div class="lg:hidden p-md">
+        <div *ngFor="let slot of timeSlots" class="mb-lg last:mb-0">
+          <!-- Afficher seulement s'il y a des événements -->
+          <ng-container *ngIf="hasEventsInTimeSlot(slot.time)">
+            <!-- En-tête du créneau horaire -->
+            <div class="flex items-center gap-3 mb-md">
+              <div class="bg-primary/10 px-sm py-xs rounded-lg">
+                <span class="font-bold text-primary text-sm">{{ slot.display }}</span>
+              </div>
+              <div class="flex-1 h-px bg-gray-200"></div>
+            </div>
+
+            <!-- Événements du créneau -->
+            <div class="space-y-sm">
+              <!-- Afficher tous les événements existants du créneau -->
+              <div
+                *ngFor="let event of getEventsForMobileTimeSlot(slot.time)"
+                class="event-card bg-background rounded-lg shadow-card p-md border border-primary/10 hover:shadow-lg transition-all duration-300"
+              >
+                <div class="flex justify-between items-start mb-sm">
+                  <span class="text-xs font-medium text-text/50 bg-text/5 px-xs py-1 rounded">
+                    {{ event.hall }}
+                  </span>
+                  <span
+                    class="px-2 py-0.5 rounded-full text-xs font-semibold tracking-wide uppercase flex-shrink-0"
+                    [ngClass]="{
+                      'bg-blue-500 text-white': event.category === 'Talk',
+                      'bg-green-500 text-white': event.category === 'Workshop',
+                      'bg-red-500 text-white': event.category === 'Conference',
+                      'bg-yellow-500 text-black': event.category === 'Networking'
+                    }"
+                  >
+                    {{ event.category }}
+                  </span>
+                </div>
+                <h4 class="font-bold text-text text-sm mb-xs leading-tight">
+                  {{ event.title }}
+                </h4>
+                <p *ngIf="event.speaker" class="text-xs text-text/70 font-medium">
+                  {{ event.speaker }}
+                </p>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
     </div>
   </div>
 </section>
