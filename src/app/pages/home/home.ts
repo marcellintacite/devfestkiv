@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import PastEventsGallery from '../../components/past-events-gallery/past-events-gallery';
 import { RouterLink } from '@angular/router';
-import { start } from 'repl';
 
 @Component({
   selector: 'app-home',
