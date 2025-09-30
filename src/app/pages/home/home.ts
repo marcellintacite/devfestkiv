@@ -223,19 +223,19 @@ import { start } from 'repl';
         <div class="grid grid-cols-4 gap-4 md:gap-8">
           <div class="bg-primary/10 rounded-lg p-4 md:p-6">
             <div class="text-2xl md:text-4xl font-bold text-primary">{{ countdown.days }}</div>
-            <div class="text-sm md:text-base text-text/70">Jours</div>
+            <div class="text-sm md:text-base text-text/70 truncate">Jours</div>
           </div>
           <div class="bg-secondary/10 rounded-lg p-4 md:p-6">
             <div class="text-2xl md:text-4xl font-bold text-secondary">{{ countdown.hours }}</div>
-            <div class="text-sm md:text-base text-text/70">Heures</div>
+            <div class="text-sm md:text-base text-text/70 truncate">Heures</div>
           </div>
           <div class="bg-accent/10 rounded-lg p-4 md:p-6">
             <div class="text-2xl md:text-4xl font-bold text-accent">{{ countdown.minutes }}</div>
-            <div class="text-sm md:text-base text-text/70">Minutes</div>
+            <div class="text-sm md:text-base text-text/70 truncate">Minutes</div>
           </div>
           <div class="bg-danger/10 rounded-lg p-4 md:p-6">
             <div class="text-2xl md:text-4xl font-bold text-danger">{{ countdown.seconds }}</div>
-            <div class="text-sm md:text-base text-text/70">Secondes</div>
+            <div class="text-sm md:text-base text-text/70 truncate">Secondes</div>
           </div>
         </div>
         <br />
@@ -290,7 +290,7 @@ import { start } from 'repl';
 
       <div class="max-w-7xl mx-auto px-md sm:px-lg lg:px-xl relative z-10">
         <!-- Section Header -->
-        <div class="text-center mb-12 md:mb-16">
+        <div class="text-center mb-8 md:mb-12">
           <div
             class="inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6"
           >
@@ -310,19 +310,20 @@ import { start } from 'repl';
             <span class="text-white/90 text-sm font-medium">Impact & Croissance</span>
           </div>
           <h2
-            class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 md:mb-6"
+            class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 md:mb-4"
           >
             Notre Impact
           </h2>
           <p
             class="text-base sm:text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed"
           >
-            Plus de 5 années d'engagement pour l'écosystème technologique de la région
+            Plus de {{ engagementYear }} années d'engagement pour l'écosystème technologique de la
+            région
           </p>
         </div>
 
         <!-- Stats Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-12">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
           @for (stat of impactStats; track $index) {
           <!-- Main card -->
           <div
@@ -364,6 +365,12 @@ import { start } from 'repl';
                 ></path>
               </svg>
             </a>
+          </div>
+          <!-- Additional Info -->
+          <div class="text-center mt-6 md:mt-8">
+            <p class="text-xs sm:text-sm md:text-base text-white/80 max-w-3xl mx-auto">
+              Formation en ligne et en présentiel • Partenariats locaux • Innovation continue
+            </p>
           </div>
         </div>
       </div>
@@ -446,6 +453,7 @@ export default class Home {
   countdown = { days: 45, hours: 12, minutes: 30, seconds: 15 };
   NowDate = new Date();
   eventDay = { start: 5, end: 6, month: 'Décembre', year: 2025 };
+  engagementYear = 5;
 
   stats = [
     { number: '30+', label: 'Événements Organisés' },
