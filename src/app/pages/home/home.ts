@@ -13,15 +13,9 @@ import { start } from 'repl';
     >
       <!-- Animated Background Elements -->
       <div class="absolute inset-0 opacity-30">
-        <div class="absolute top-10 left-10 w-20 h-20 bg-primary rounded-full animate-pulse"></div>
+        <div class="absolute top-10 left-15 w-20 h-20 bg-primary rounded-full animate-pulse"></div>
         <div
-          class="absolute top-32 right-20 w-12 h-12 bg-secondary rounded-full animate-bounce"
-        ></div>
-        <div
-          class="absolute bottom-40 left-1/4 w-16 h-16 bg-accent/50 rounded-full animate-ping"
-        ></div>
-        <div
-          class="absolute bottom-20 right-1/3 w-8 h-8 bg-primary/60 rounded-full animate-pulse"
+          class="absolute top-32 right-10 w-12 h-12 bg-secondary rounded-full animate-bounce"
         ></div>
       </div>
 
@@ -33,24 +27,24 @@ import { start } from 'repl';
             <img
               src="/assets/illustrations/bracket.png"
               alt=""
-              class="absolute top-1/4 -left-16 w-12 opacity-60 animate-pulse"
+              class="absolute top-1/4 left-16 w-12 opacity-60 animate-pulse"
             />
             <img
               src="/assets/illustrations/superior.png"
               alt=""
-              class="absolute top-3/4 -left-20 w-14 opacity-60 animate-bounce"
+              class="absolute top-3/4 left-10 w-14 opacity-60 animate-bounce"
             />
 
             <!-- Right side illustrations -->
             <img
               src="/assets/illustrations/dot.png"
               alt=""
-              class="absolute top-1/3 -right-14 w-10 opacity-60 animate-pulse"
+              class="absolute top-1/3 right-30 w-10 opacity-60 animate-pulse"
             />
             <img
               src="/assets/illustrations/threedot.png"
               alt=""
-              class="absolute top-2/3 -right-18 w-12 opacity-60 animate-bounce"
+              class="absolute top-2/3 right-15 w-12 opacity-60 animate-bounce"
             />
           </div>
 
@@ -188,14 +182,14 @@ import { start } from 'repl';
             <img
               src="/assets/illustrations/inferior.png"
               alt=""
-              class="absolute top-1/2 -left-24 w-16 -translate-y-1/2 opacity-50 animate-pulse"
+              class="absolute top-1/2 left-5 w-16 -translate-y-1/2 opacity-50 animate-pulse"
             />
 
             <!-- Right of video -->
             <img
               src="/assets/illustrations/bar.png"
               alt=""
-              class="absolute top-1/2 -right-20 w-14 -translate-y-1/2 opacity-50 animate-bounce"
+              class="absolute top-1/2 right-10 w-14 -translate-y-1/2 opacity-50 animate-bounce"
             />
           </div>
           <div
@@ -258,21 +252,18 @@ import { start } from 'repl';
       </div>
     </section>
     <!-- Impact Section -->
-    <section
-      class="bg-gradient-to-br from-primary via-primary to-accent py-12 md:py-16 lg:py-20 relative overflow-hidden"
-      id="impact"
-    >
+    <section class="bg-primary-pastel py-12 md:py-16 lg:py-20 relative overflow-hidden" id="impact">
       <div class="absolute inset-0">
         <!-- Floating geometric shapes -->
-        <div class="absolute top-10 left-10 w-32 h-32 bg-white/5 rounded-full animate-float"></div>
+        <div class="absolute top-10 left-10 w-32 h-32 bg-primary rounded-full animate-pulse"></div>
         <div
-          class="absolute top-32 right-20 w-24 h-24 bg-white/10 rounded-lg rotate-45 animate-float-delayed"
+          class="absolute top-32 right-20 w-24 h-24 bg-accent rounded-lg rotate-45 animate-float-delayed"
         ></div>
         <div
-          class="absolute bottom-20 left-1/4 w-20 h-20 bg-white/5 rounded-full animate-pulse"
+          class="absolute bottom-20 left-1/4 w-20 h-20 bg-secondary rounded-full animate-bounce"
         ></div>
         <div
-          class="absolute bottom-32 right-1/3 w-16 h-16 bg-white/10 rounded-lg rotate-12 animate-bounce"
+          class="absolute bottom-32 right-1/3 w-16 h-16 bg-white rounded-lg rotate-12 animate-bounce"
         ></div>
 
         <!-- Grid pattern -->
@@ -287,36 +278,13 @@ import { start } from 'repl';
           </svg>
         </div>
       </div>
-
       <div class="max-w-7xl mx-auto px-md sm:px-lg lg:px-xl relative z-10">
         <!-- Section Header -->
         <div class="text-center mb-8 md:mb-12">
-          <div
-            class="inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6"
-          >
-            <svg
-              class="w-5 h-5 text-white mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              ></path>
-            </svg>
-            <span class="text-white/90 text-sm font-medium">Impact & Croissance</span>
-          </div>
-          <h2
-            class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 md:mb-4"
-          >
+          <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text mb-3 md:mb-4">
             Notre Impact
           </h2>
-          <p
-            class="text-base sm:text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed"
-          >
+          <p class="text-base sm:text-lg md:text-xl text-text/80 max-w-3xl mx-auto leading-relaxed">
             Plus de {{ engagementYear }} années d'engagement pour l'écosystème technologique de la
             région
           </p>
@@ -325,53 +293,38 @@ import { start } from 'repl';
         <!-- Stats Grid -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
           @for (stat of impactStats; track $index) {
-          <!-- Main card -->
           <div
-            class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 hover:bg-white/15 transition-all duration-500 hover:scale-105 hover:-translate-y-2 border border-white/20 group-hover:border-white/40"
+            class="bg-white rounded-xl p-6 md:p-8 shadow-md hover:shadow-lg transition-all duration-300 text-center"
           >
-            <!-- Number with animation -->
-            <div
-              class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300"
-            >
-              <span class="counter" [attr.data-target]="stat.rawNumber">{{ stat.number }}</span>
+            <div class="text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-2">
+              {{ stat.number }}
             </div>
-            <!-- Label -->
-            <div class="text-sm md:text-base text-white/90 font-medium mb-2">
+            <div class="text-sm md:text-base text-text/80 font-medium mb-2">
               {{ stat.label }}
             </div>
-
-            <!-- Description -->
-            <div class="text-xs md:text-sm text-white/70">
+            <div class="text-xs md:text-sm text-text/60">
               {{ stat.description }}
             </div>
           </div>
           }
         </div>
 
-        <div class="text-center">
-          <!-- Call to action -->
-          <div class="pt-6 border-t border-white/20">
-            <a
-              href="#"
-              class="inline-flex items-center bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-white/90 transition-all duration-300 hover:scale-105"
-            >
-              Rejoignez notre communauté
-              <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                ></path>
-              </svg>
-            </a>
-          </div>
-          <!-- Additional Info -->
-          <div class="text-center mt-6 md:mt-8">
-            <p class="text-xs sm:text-sm md:text-base text-white/80 max-w-3xl mx-auto">
-              Formation en ligne et en présentiel • Partenariats locaux • Innovation continue
-            </p>
-          </div>
+        <!-- Call to Action -->
+        <div class="text-center mt-10">
+          <a href="#" class="btn btn-primary btn-lg">
+            Rejoignez notre communauté
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              ></path>
+            </svg>
+          </a>
+          <p class="text-xs sm:text-sm md:text-base text-text/70 mt-4 max-w-3xl mx-auto">
+            Formation en ligne et en présentiel • Partenariats locaux • Innovation continue
+          </p>
         </div>
       </div>
     </section>
