@@ -5,10 +5,13 @@ interface Session<T>
   speaker: string;
   theme: string;
   time: string;
-  track: string;
+    track: string;
+    slides: string;
   messages:{contenu:string,time:string}[]
   description: string;
-  isActive: boolean;
+    isActive: boolean;
+    
+
   createAt: T,
  updateAt:T,
 }

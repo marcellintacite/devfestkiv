@@ -48,7 +48,7 @@ import { FormsModule } from '@angular/forms';
         <!-- Liste des questions -->
         <h3 class="text-lg font-semibold text-gray-700 mb-2">Questions déjà posées :</h3>
         <div
-          *ngIf="questions.length > 0; else noQuestions"
+          *ngIf="questions.length > 0; "
           class="space-y-3 max-h-48 overflow-y-auto pr-2"
         >
           <div
@@ -59,7 +59,7 @@ import { FormsModule } from '@angular/forms';
             {{ q }}
           </div>
         </div>
-        <ng-template #noQuestions>
+        <ng-template >
           <p class="text-gray-500 italic">Aucune question posée pour l’instant.</p>
         </ng-template>
 
@@ -101,7 +101,7 @@ import { FormsModule } from '@angular/forms';
 
       /* Cadre avec les 4 couleurs Google */
       .question-card {
-        border: 0.5px solid transparent;
+        border: px solid transparent;
         border-radius: 5px;
         border-top: 2px solid #4285f4; /* bleu */
         border-right: 2px solid #ea4335; /* rouge */

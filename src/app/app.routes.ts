@@ -50,6 +50,10 @@ export const routes: Routes = [
         path: '',
         loadComponent: () => import('./live-question/components/home/home'),
       },
+      {
+        path: 'admin',
+        loadComponent: () => import('./live-question/components/admin/admin'),
+      },
     ],
   },
   { path: '**', redirectTo: '/' },

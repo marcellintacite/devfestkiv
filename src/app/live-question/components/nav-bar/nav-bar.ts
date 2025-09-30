@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { CodePin } from '../code-pin/code-pin';
 
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, CodePin],
   template: `
     <header class=" backdrop-blur-sm sticky top-0 z-50 shadow-xs transition-all duration-300">
       <div class="container mx-auto px-4 py-4 max-w-7xl">
@@ -68,8 +69,31 @@ import { RouterLink } from '@angular/router';
                 <span>Bukavu, RDC</span>
               </div>
             </div>
+            <a routerLink="/live_q">
+              <button
+                class="flex items-center gap-2 border border-[#4285F4]/30 
+                       hover:bg-[#34A853]/10 bg-transparent rounded-sm px-3 py-1.5 text-sm"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+                  />
+                </svg>
+                <span class="hidden sm:inline">Accueil</span>
+              </button>
+            </a>
 
             <!-- Bouton Présentateur -->
+            @if(isLoged ){
             <a routerLink="/presenter">
               <button
                 class="flex items-center gap-2 border border-[#4285F4]/30 
@@ -94,14 +118,17 @@ import { RouterLink } from '@angular/router';
                 <span class="hidden sm:inline">Présentateur</span>
               </button>
             </a>
+            }
 
             <!-- Bouton Admin -->
-            <a routerLink="/admin">
+            <a>
               <button
                 class="flex items-center gap-2 border border-[#EA4335]/30 
                        hover:bg-[#EA4335]/10 bg-transparent rounded-sm px-3 py-1.5 text-sm"
+                (click)="openCodePin()"
               >
                 <!-- Settings Icon -->
+
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -129,9 +156,23 @@ import { RouterLink } from '@angular/router';
         </div>
       </div>
     </header>
-    
-    
+    @if(showCodePin){ <app-code-pin (close)="closeCodePin()"></app-code-pin>}
   `,
   styles: ``,
 })
-export class NavBar {}
+export class NavBar {
+  showCodePin = false;
+  isLoged = sessionStorage.getItem('adminAccess');
+  private router = inject(Router);
+  openCodePin() {
+    if (!this.isLoged) {
+      this.showCodePin = true;
+    } else {
+      this.router.navigate(['/live_q/admin']);
+    }
+  }
+
+  closeCodePin() {
+    this.showCodePin = false;
+  }
+}
