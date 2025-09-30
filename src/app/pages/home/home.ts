@@ -182,6 +182,22 @@ import { start } from 'repl';
 
         <!-- YouTube Video Container -->
         <div class="video-container relative mb-16 md:mb-20">
+          <!-- Video Side Illustrations - Hidden on mobile -->
+          <div class="absolute inset-0 pointer-events-none hidden lg:block">
+            <!-- Left of video -->
+            <img
+              src="/assets/illustrations/inferior.png"
+              alt=""
+              class="absolute top-1/2 -left-24 w-16 -translate-y-1/2 opacity-50 animate-pulse"
+            />
+
+            <!-- Right of video -->
+            <img
+              src="/assets/illustrations/bar.png"
+              alt=""
+              class="absolute top-1/2 -right-20 w-14 -translate-y-1/2 opacity-50 animate-bounce"
+            />
+          </div>
           <div
             class="video-wrapper relative z-10 rounded-xl md:rounded-2xl overflow-hidden shadow-xl md:shadow-2xl hover:shadow-2xl md:hover:shadow-3xl hover:-translate-y-1 md:hover:-translate-y-2 transition-all duration-300 w-full max-w-4xl mx-auto"
           >
