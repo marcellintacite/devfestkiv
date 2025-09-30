@@ -94,7 +94,7 @@ export default class AgendaComponent {
         hall: 'Workshops',
         title: 'Web Security Fundamentals',
         speaker: 'Security Expert',
-        speakerAvatar: '/assets/speakers/security-expert.jpg',
+        speakerAvatar: '/assets/speakers/logo.png',
         timeSlot: '08:30 - 09:20',
         category: 'Workshop',
       },
