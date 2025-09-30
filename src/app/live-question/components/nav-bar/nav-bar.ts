@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, PLATFORM_ID } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CodePin } from '../code-pin/code-pin';
-
+import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
@@ -115,7 +115,7 @@ import { CodePin } from '../code-pin/code-pin';
                   />
                 </svg>
 
-                <span class="hidden sm:inline">Présentateur</span>
+                <span class="hidden sm:inline">Présenter</span>
               </button>
             </a>
             }
@@ -162,8 +162,16 @@ import { CodePin } from '../code-pin/code-pin';
 })
 export class NavBar {
   showCodePin = false;
-  isLoged = sessionStorage.getItem('adminAccess');
+  isLoged:string | null ='';
+  private platformId = inject(PLATFORM_ID);
+
   private router = inject(Router);
+
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isLoged = sessionStorage.getItem('adminAccess');
+    }
+  }
   openCodePin() {
     if (!this.isLoged) {
       this.showCodePin = true;

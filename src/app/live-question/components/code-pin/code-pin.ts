@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Inject, Output, PLATFORM_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-code-pin',
   standalone: true,
@@ -76,15 +76,21 @@ export class CodePin {
   /** Valeur par défaut du code PIN */
   private readonly defaultPin = 'dev2025';
 
+
   /** Événement pour fermer le dialog */
   @Output() close = new EventEmitter<void>();
 
-  constructor(private router: Router) {}
+  // inject
+  private platformId = inject(PLATFORM_ID);
+  private router = inject(Router);
 
   validatePin() {
     if (this.pin === this.defaultPin) {
       // Stocker l'état de connexion dans sessionStorage
-      sessionStorage.setItem('adminAccess', 'true');
+        if (isPlatformBrowser(this.platformId)) {
+          sessionStorage.setItem('adminAccess', 'true');
+        }
+   
 
       // Redirection vers la route admin
       this.router.navigate(['/live_q/admin']);

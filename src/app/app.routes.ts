@@ -56,5 +56,9 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    path: 'presenter',
+    loadComponent: () => import('./live-question/components/presentation/presentation'),
+  },
   { path: '**', redirectTo: '/' },
 ];
