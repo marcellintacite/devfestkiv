@@ -44,14 +44,14 @@ export default class AgendaComponent {
   thursdayTracks = [
     {
       id: 'web',
-      name: 'Web Development',
+      name: 'Track Web',
       icon: 'M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z',
       color: 'blue',
       active: true,
     },
     {
       id: 'mobile',
-      name: 'Mobile Development',
+      name: 'Track Mobile',
       icon: 'M17,19H7V5H17M17,1H7C5.89,1 5,1.89 5,3V21A2,2 0 0,0 7,23H17A2,2 0 0,0 19,21V3C19,1.89 18.1,1 17,1Z',
       color: 'green',
       active: false,
@@ -75,6 +75,7 @@ export default class AgendaComponent {
     { time: '10:30 - 11:20', display: '10:30' },
     { time: '11:00 - 11:40', display: '11:00' },
     { time: '12:00 - 12:50', display: '12:00' },
+    { time: '13:00 - 14:00', display: '14:00' },
   ];
 
   // Salles/Colonnes
@@ -102,7 +103,7 @@ export default class AgendaComponent {
         hall: 'Conférences',
         title: 'Modern Web Development - Keynote',
         speaker: 'Web Expert',
-        speakerAvatar: '/assets/speakers/web-expert.jpg',
+        speakerAvatar: '/assets/speakers/logo.png',
         timeSlot: '09:30 - 10:20',
         category: 'Conference',
       },
@@ -422,7 +423,7 @@ export default class AgendaComponent {
     });
   }
 
-  // Vérifie si le jeudi est sélectionné
+  // Vérifie si le jeudi est sélectionné pour rendre le programme
   get isThursdaySelected(): boolean {
     return this.currentDay.id === 'thursday';
   }
