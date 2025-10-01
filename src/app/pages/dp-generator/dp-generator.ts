@@ -7,8 +7,8 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="bg-gray-50 min-h-screen">
-      <main class="geometric-bg min-h-screen py-12 md:py-16">
+    <div class=" min-h-screen">
+      <main class="min-h-screen py-12 md:py-16">
         <!-- Hero -->
         <section class="container mx-auto px-4 mb-12 md:mb-16 text-center">
           <h2 class="text-xs md:text-sm text-gray-600 mb-3 tracking-wide">
@@ -26,7 +26,9 @@ import { FormsModule } from '@angular/forms';
             <!-- Form -->
             <div class="lg:col-span-2">
               <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
-                <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">Saisissez vos coordonnées</h3>
+                <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">
+                  Saisissez vos coordonnées
+                </h3>
                 <div class="w-14 md:w-16 h-1 bg-amber-600 mb-6 md:mb-8"></div>
 
                 <form class="space-y-5 md:space-y-6">
@@ -108,20 +110,20 @@ import { FormsModule } from '@angular/forms';
                   >
                     <!-- Si image uploadée -->
                     @if(previewImage){
-                      <img
-                        [src]="previewImage"
-                        alt="Preview"
-                        class="w-full h-full object-cover rounded-xl md:rounded-2xl"
-                      />
+                    <img
+                      [src]="previewImage"
+                      alt="Preview"
+                      class="w-full h-full object-cover rounded-xl md:rounded-2xl"
+                    />
                     }
 
                     <!-- Sinon placeholder -->
                     @if(!previewImage){
-                      <p
-                        class="absolute inset-0 flex items-center justify-center text-gray-700 font-medium text-center px-4"
-                      >
-                        Votre Design apparaîtra ici
-                      </p>
+                    <p
+                      class="absolute inset-0 flex items-center justify-center text-gray-700 font-medium text-center px-4"
+                    >
+                      Votre Design apparaîtra ici
+                    </p>
                     }
                   </div>
                 </div>
@@ -137,16 +139,6 @@ import { FormsModule } from '@angular/forms';
   `,
   styles: [
     `
-      .geometric-bg {
-        background-image: radial-gradient(
-            circle at 20% 80%,
-            rgba(255, 140, 0, 0.15) 0%,
-            transparent 50%
-          ),
-          radial-gradient(circle at 80% 20%, rgba(139, 0, 0, 0.15) 0%, transparent 50%),
-          radial-gradient(circle at 40% 40%, rgba(101, 67, 33, 0.15) 0%, transparent 50%),
-          linear-gradient(135deg, rgba(47, 47, 47, 0.05) 0%, transparent 50%);
-      }
       .upload-zone {
         border: 2px dashed #cbd5e1;
         transition: all 0.3s ease;
@@ -154,9 +146,6 @@ import { FormsModule } from '@angular/forms';
       .upload-zone:hover {
         border-color: #d97706; /* amber */
         background-color: rgba(217, 119, 6, 0.05);
-      }
-      .dp-preview {
-        background: linear-gradient(135deg, #fef3c7, #fde68a, #fbbf24);
       }
     `,
   ],
