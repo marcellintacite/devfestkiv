@@ -1,30 +1,64 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { 
-    path: '', 
-    pathMatch: 'full',
-    loadComponent: () => import('./pages/home/home')
+  {
+    path: '',
+    loadComponent: () => import('./site/site'),
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./pages/home/home'),
+      },
+      {
+        path: 'agenda',
+        loadComponent: () => import('./pages/agenda/agenda'),
+      },
+      {
+        path: 'speakers',
+        loadComponent: () => import('./pages/speakers/speakers'),
+      },
+      {
+        path: 'sponsor',
+        loadComponent: () => import('./pages/sponsor/sponsor'),
+      },
+      {
+        path: 'qa',
+        loadComponent: () => import('./pages/qa/qa'),
+      },
+      {
+        path: 'dp-generator',
+        loadComponent: () => import('./pages/dp-generator/dp-generator'),
+      },
+    ],
   },
-  { 
-    path: 'agenda', 
-    loadComponent: () => import('./pages/agenda/agenda')
+  {
+    path: 'live_q',
+    loadComponent: () => import('./live-question/live-question'),
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./live-question/components/home/home'),
+      },
+    ],
   },
-  { 
-    path: 'speakers', 
-    loadComponent: () => import('./pages/speakers/speakers')
+  {
+    path: 'live_q',
+    loadComponent: () => import('./live-question/live-question'),
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./live-question/components/home/home'),
+      },
+      {
+        path: 'admin',
+        loadComponent: () => import('./live-question/components/admin/admin'),
+      },
+    ],
   },
-  { 
-    path: 'sponsor', 
-    loadComponent: () => import('./pages/sponsor/sponsor')
+  {
+    path: 'presenter',
+    loadComponent: () => import('./live-question/components/presentation/presentation'),
   },
-  { 
-    path: 'qa', 
-    loadComponent: () => import('./pages/qa/qa')
-  },
-  { 
-    path: 'dp-generator', 
-    loadComponent: () => import('./pages/dp-generator/dp-generator')
-  },
-  { path: '**', redirectTo: '/' }
+  { path: '**', redirectTo: '/' },
 ];
