@@ -2,24 +2,28 @@
 <section class="relative overflow-hidden mb-lg">
   <div class="max-w-7xl mx-auto px-md sm:px-lg lg:px-xl relative z-10">
     <div class="relative text-center py-8 md:py-12">
+      <!-- Left illustration -->
       <img
         src="/assets/illustrations/inferior.png"
         alt=""
         aria-hidden="true"
-        class="hidden lg:block absolute top-1/2 -left-14 w-14 -translate-y-1/2 opacity-60 transform-gpu animate-bounce"
+        loading="lazy"
+        class="hidden lg:block absolute top-1/2 -left-14 w-14 -translate-y-1/2 opacity-50 transform-gpu animate-float"
         style="filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.06))"
       />
+      <!-- Right illustration -->
       <img
         src="/assets/illustrations/superior.png"
         alt=""
         aria-hidden="true"
-        class="hidden lg:block absolute top-1/2 -right-14 w-14 -translate-y-1/2 opacity-60 transform-gpu animate-bounce"
+        loading="lazy"
+        class="hidden lg:block absolute top-1/2 -right-14 w-14 -translate-y-1/2 opacity-50 transform-gpu animate-float-delay"
         style="filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.06))"
       />
-      <h1 class="text-3xl md:text-4xl font-bold text-text mb-2">Q&A</h1>
+
+      <h1 class="text-3xl md:text-4xl font-bold text-text mb-2">Questions & Réponses</h1>
       <p class="text-text/70 max-w-2xl mx-auto">
-        Les réponses officielles à vos questions. Recherche rapide, filtres par catégorie — contenu
-        pour la V1.
+        Retrouvez ici les réponses claires et précises aux questions les plus fréquentes.
       </p>
     </div>
   </div>
@@ -27,137 +31,182 @@
 
 <!-- Main content -->
 <section class="max-w-7xl mx-auto px-md pb-lg">
-  <!-- Controls -->
-  <div class="flex flex-col md:flex-row items-start md:items-center gap-4 mb-md">
-    <div class="flex-1 w-full">
-      <label class="sr-only" for="qa-search">Rechercher</label>
-      <input
-        id="qa-search"
-        type="search"
-        [(ngModel)]="search"
-        placeholder="Rechercher — ex : inscription, speakers, workshop..."
-        class="w-full rounded-md border px-sm py-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
-        aria-label="Recherche Q&A"
-      />
-    </div>
-
-    <div class="flex gap-2 flex-wrap">
-      @for (c of categories; track c) {
-      <button
-        (click)="selectCategory(c)"
-        [attr.aria-pressed]="
-          (activeCategory === '' && c === 'Tout') || activeCategory === c ? 'true' : 'false'
-        "
-        [ngClass]="{
-          'bg-primary text-white shadow-sm':
-            (activeCategory === '' && c === 'Tout') || activeCategory === c,
-          'bg-white text-text/80 border': !(
-            (activeCategory === '' && c === 'Tout') ||
-            activeCategory === c
-          )
-        }"
-        class="px-md py-sm rounded-md text-sm font-medium transition"
-      >
-        {{ c }}
-      </button>
-      }
-    </div>
-  </div>
-
-  <!-- Results -->
-  @if (filtered.length) {
-  <div class="space-y-3">
+  <div class="qa-list mx-auto" role="list">
     @for (item of filtered; track item.id) {
     <article
-      class="bg-white rounded-lg p-md shadow-card cursor-pointer"
+      class="qa-item clickable"
       role="group"
       tabindex="0"
       (click)="onArticleClick($event, item.id)"
       (keydown)="onArticleKeydown($event, item.id)"
       [attr.aria-labelledby]="'q-' + item.id"
+      id="{{ 'article-' + item.id }}"
     >
-      <header class="flex items-start justify-between gap-3">
-        <div class="flex-1">
-          <h3 id="{{ 'q-' + item.id }}" class="font-semibold text-text text-base mb-1">
-            <!-- we keep a real button for aria + keyboard, but stop propagation to avoid double toggle -->
-            <button
-              class="question-btn"
-              type="button"
-              (click)="$event.stopPropagation(); toggle(item.id)"
-              [attr.aria-expanded]="isOpen(item.id) ? 'true' : 'false'"
-              [attr.aria-controls]="'qa-' + item.id"
-            >
-              {{ item.question }}
-            </button>
+      <header class="qa-header" role="button" aria-hidden="false">
+        <div class="qa-left">
+          <h3 id="{{ 'q-' + item.id }}" class="qa-question">
+            {{ item.question }}
           </h3>
-          <div class="text-xs text-text/60">
-            @if (item.category) {
-            <span class="mr-2">{{ item.category }}</span>
-            }
-          </div>
         </div>
 
-        <div class="flex-shrink-0 pl-3">
+        <div class="qa-right" aria-hidden="true">
           <span class="chev" [class.open]="isOpen(item.id)" aria-hidden="true">▾</span>
         </div>
       </header>
 
-      <!-- animated answer block -->
       <div
         id="{{ 'qa-' + item.id }}"
-        class="mt-3 text-text/80 answer"
+        class="qa-answer"
         [class.open]="isOpen(item.id)"
         [attr.aria-hidden]="(!isOpen(item.id)).toString()"
       >
         <p [innerHTML]="item.answer"></p>
-        @if (item.tags?.length) {
-        <div class="mt-3 flex gap-2 flex-wrap">
-          @for (t of item.tags; track t) {
-          <span class="px-2 py-0.5 text-xs rounded bg-text/5 text-text/70">
-            {{ t }}
-          </span>
-          }
-        </div>
-        }
       </div>
     </article>
     }
   </div>
-  } @else {
-  <div class="text-center py-lg text-text/70">
-    Aucune question correspondante. Essaie un autre mot-clé ou réinitialise le filtre.
-  </div>
-  }
 
-  <!-- Future feature: user can propose a question (UI only for now) -->
+  <!-- CTA inspired by reference: logo above title, centered, clear CTA -->
   <section class="mt-lg">
-    <div class="bg-background rounded-lg p-md border border-dashed border-gray-200">
-      <label class="block text-sm font-medium mb-2"
-        >Poser votre question (fonctionnalité à venir)</label
-      >
+    <div class="faq-cta" role="region" aria-labelledby="faq-cta-title">
+      <div class="faq-cta-visual" aria-hidden="true">
+        <div class="faq-logo-wrap">
+          <img src="/assets/logo.png" alt="GDG Kivu" class="faq-logo" loading="lazy" />
+        </div>
 
-      <div class="flex gap-2">
-        <input
-          type="text"
-          placeholder="Écrivez votre question..."
-          class="flex-1 rounded-md border px-sm py-sm"
-          disabled
-          aria-disabled="true"
-        />
-        <button class="btn btn-primary btn-md" disabled aria-disabled="true">
-          Proposer (bientôt)
-        </button>
+        <svg
+          class="faq-illustration"
+          viewBox="0 0 48 48"
+          width="56"
+          height="56"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <g
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M6 30c0 3.314 3.582 6 8 6h2v6l6-6h6c4.418 0 8-2.686 8-6V18C36 14.686 32.418 12 28 12H14C9.582 12 6 14.686 6 18v12z"
+            />
+            <path
+              d="M19 20c0-1.657 1.567-3 3.5-3S26 18.343 26 20c0 1.657-1.567 3-3.5 3S19 21.657 19 20z"
+            />
+            <path d="M22 26.5v1" stroke-linecap="round" />
+          </g>
+        </svg>
       </div>
 
-      <p class="text-xs text-text/60 mt-2">
-        Proposition via IA — fonctionnalité non activée. Cette UI sert à montrer l'usage futur.
-      </p>
+      <div class="faq-cta-content">
+        <h3 id="faq-cta-title" class="faq-cta-title">Vous n’avez pas trouvé la réponse ?</h3>
+        <p class="faq-cta-sub">
+          Contactez-nous par e-mail — nous vous répondrons rapidement. Pour les demandes presse ou
+          partenariats, précisez l'objet dans votre message.
+        </p>
+
+        <div class="faq-cta-actions">
+          <a
+            class="btn-primary"
+            href="mailto:aksantibahiga3@gmail.com"
+            aria-label="Contacter GDG Kivu"
+          >
+            Contacter GDG Kivu
+          </a>
+          <a class="btn-ghost" href="/speakers" aria-label="Voir la page Speakers">Voir speakers</a>
+        </div>
+      </div>
     </div>
   </section>
 </section>
 
-<!-- Local styles: smooth animation, cursor, polish -->
+<!-- Local styles (scoped visual rules) -->
 <style>
+  :root {
+    --muted: rgba(15, 23, 42, 0.66);
+  }
+
+  /* QA list container */
+  .qa-list {
+    width: 100%;
+    max-width: 840px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(12, 12, 12, 0.04);
+    border: 1px solid rgba(15, 23, 42, 0.03);
+  }
+
+  /* each item: spacing and rhythm */
+  .qa-item {
+    display: block;
+    padding: 18px 22px;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.04);
+    background: transparent;
+    transition: background-color 180ms ease, transform 150ms ease, box-shadow 150ms ease;
+    line-height: 1.35;
+  }
+  .qa-list > .qa-item:first-child {
+    padding-top: 22px;
+  }
+  .qa-list > .qa-item:last-child {
+    border-bottom: none;
+  }
+
+  /* round only top/bottom */
+  .qa-list > .qa-item:first-child {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+  .qa-list > .qa-item:last-child {
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+  }
+
+  /* clickable & hover */
+  .qa-item.clickable {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .qa-item.clickable:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(12, 12, 12, 0.04);
+  }
+
+  /* accessible focus */
+  .qa-item.clickable:focus {
+    outline: 3px solid rgba(249, 171, 0, 0.18);
+    outline-offset: 6px;
+    box-shadow: 0 12px 28px rgba(12, 12, 12, 0.06);
+  }
+
+  /* header */
+  .qa-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .qa-left {
+    flex: 1;
+  }
+  .qa-right {
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+  }
+
+  /* question */
+  .qa-question {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+  }
   .question-btn {
     cursor: pointer;
     background: transparent;
@@ -165,59 +214,213 @@
     padding: 0;
     font: inherit;
     text-align: left;
+    pointer-events: auto;
   }
   .question-btn:focus {
-    outline: 2px solid rgba(59, 130, 246, 0.35);
+    outline: 2px solid rgba(59, 130, 246, 0.18);
     outline-offset: 4px;
     border-radius: 6px;
   }
 
-  .answer {
+  .qa-meta {
+    margin-top: 6px;
+    font-size: 12px;
+    color: rgba(15, 23, 42, 0.6);
+  }
+  .qa-category {
+    padding: 4px 8px;
+    background: rgba(15, 23, 42, 0.03);
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+  /* answer sliding */
+  .qa-answer {
     max-height: 0;
     overflow: hidden;
     opacity: 0;
     transform: translateY(-6px);
-    transition: max-height 360ms cubic-bezier(0.2, 0.9, 0.2, 1), opacity 260ms ease,
-      transform 260ms ease;
+    transition: max-height 420ms cubic-bezier(0.2, 0.9, 0.2, 1), opacity 320ms ease,
+      transform 320ms ease;
+    margin-top: 10px;
+    color: rgba(15, 23, 42, 0.76);
+    font-size: 15px;
   }
-  .answer.open {
-    max-height: 880px;
+  .qa-answer.open {
+    max-height: 1000px;
     opacity: 1;
     transform: translateY(0);
   }
 
+  .qa-tags {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .qa-tag {
+    background: rgba(15, 23, 42, 0.04);
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: rgba(15, 23, 42, 0.65);
+  }
+
+  /* chevron */
   .chev {
-    transition: transform 200ms ease;
+    transition: transform 320ms cubic-bezier(0.2, 0.9, 0.2, 1), color 200ms ease;
     display: inline-block;
-    font-size: 1rem;
-    color: rgba(30, 30, 30, 0.7);
+    font-size: 20px;
+    color: rgba(15, 23, 42, 0.75);
     transform-origin: 50% 40%;
   }
   .chev.open {
     transform: rotate(180deg);
+    color: rgba(15, 23, 42, 0.9);
   }
 
-  .shadow-card {
-    box-shadow: 0 6px 18px rgba(22, 22, 22, 0.04);
+  /* CTA block inspired */
+  .faq-cta {
+    max-width: 680px;
+    margin: 36px auto 0;
+    padding: 28px;
+    background: linear-gradient(180deg, #ffffff 0%, rgba(250, 250, 252, 1) 100%);
+    border-radius: 14px;
+    display: flex;
+    gap: 22px;
+    align-items: center;
+    box-shadow: 0 10px 30px rgba(12, 12, 12, 0.04);
+    border: 1px solid rgba(15, 23, 42, 0.03);
+  }
+  .faq-cta-visual {
+    flex: 0 0 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
   }
 
-  article.bg-white:hover {
-    transform: translateY(-4px);
-    transition: transform 200ms ease, box-shadow 200ms ease;
-    box-shadow: 0 10px 28px rgba(22, 22, 22, 0.06);
+  .faq-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    display: block;
+  }
+  .faq-illustration {
+    position: absolute;
+    top: -14px;
+    right: -8px;
+    opacity: 0.95;
+    filter: drop-shadow(0 8px 18px rgba(124, 58, 237, 0.08));
+    transform-origin: center;
+    transition: transform 420ms cubic-bezier(0.2, 0.9, 0.2, 1);
+  }
+  .faq-logo-wrap:hover + .faq-illustration,
+  .faq-logo-wrap:hover ~ .faq-illustration {
+    transform: translateY(-6px) rotate(-6deg);
   }
 
-  /* focus for keyboard users */
-  article:focus {
-    box-shadow: 0 8px 20px rgba(22, 22, 22, 0.06);
-    outline: none;
+  .faq-cta-content {
+    flex: 1;
+    min-width: 0;
+  }
+  .faq-cta-title {
+    margin: 0 0 6px 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+    text-align: left;
+  }
+  .faq-cta-sub {
+    margin: 0 0 14px 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
   }
 
+  .faq-cta-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .btn-primary {
+    display: inline-block;
+    padding: 10px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 160ms ease, box-shadow 160ms ease;
+  }
+
+  .btn-ghost {
+    display: inline-block;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  /* float animations for decorative imagery */
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  .animate-float {
+    animation: float 5s ease-in-out infinite;
+  }
+  .animate-float-delay {
+    animation: float 5s ease-in-out infinite;
+    animation-delay: 2s;
+  }
+
+  /* responsive */
+  @media (max-width: 720px) {
+    .faq-cta {
+      flex-direction: column;
+      text-align: center;
+      padding: 20px;
+      gap: 14px;
+    }
+    .faq-cta-visual {
+      order: -1;
+      width: auto;
+    }
+    .faq-cta-title {
+      font-size: 18px;
+    }
+    .faq-cta-sub {
+      font-size: 13px;
+    }
+    .faq-cta-actions {
+      justify-content: center;
+    }
+    .qa-item {
+      padding: 14px;
+    }
+  }
+
+  /* reduced motion respect */
   @media (prefers-reduced-motion: reduce) {
-    .answer,
+    .qa-item.clickable:hover,
+    .qa-answer,
     .chev,
-    article.bg-white:hover {
+    .animate-float,
+    .animate-float-delay,
+    .faq-illustration,
+    .btn-cta {
       transition: none !important;
+      animation: none !important;
+      transform: none !important;
     }
   }
 </style>
