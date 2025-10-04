@@ -3,6 +3,7 @@ import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, injec
 import { FormsModule } from '@angular/forms';
 import { FirestoreService } from '../../../../services/firestore';
 import { FieldValue } from '@angular/fire/firestore';
+import {Session} from '../../../../models/session-model';
 
 @Component({
   selector: 'app-session-form',
@@ -137,8 +138,8 @@ export class SessionForm<T>  {
     if (this.sessionToEdit) {
     this.session=this.sessionToEdit
   }
- 
-  
+
+
 }
 
 
@@ -163,10 +164,10 @@ export class SessionForm<T>  {
 
   submitForm() {
     this.session.id= this.session.id != '' ? this.session.id : this.fs.createDocId(`sessions`);
-    this.session.createAt = this.session.id != '' ?this.session.createAt: new Date() as any;
+    this.session.createAt = this.session.createAt != '' ?this.session.createAt: new Date() as any;
     this.session.updateAt = new Date() as any;
     this.fs.setSession(this.session as Session<FieldValue>);
-  
+
     this.closeForm();
   }
 

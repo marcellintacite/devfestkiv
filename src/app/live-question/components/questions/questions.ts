@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
+import {questionInterface} from '../../../models/session-model';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-questions',
@@ -18,10 +20,10 @@ import { FormsModule } from '@angular/forms';
           >
           ✕
         </button>
-    
+
         <!-- Titre -->
         <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">Posez votre question</h2>
-    
+
         <!-- Ligne décorative -->
         <div class="flex justify-center my-6">
           <svg width="200" height="20" viewBox="0 0 200 20" fill="none" class="animate-pulse-slow">
@@ -37,7 +39,7 @@ import { FormsModule } from '@angular/forms';
               <circle cx="150" cy="10" r="2" fill="#FBBC04" />
             </svg>
           </div>
-    
+
           <!-- Infos de session -->
           @if (sessionTitle) {
             <div class="text-center mb-4">
@@ -46,35 +48,35 @@ import { FormsModule } from '@angular/forms';
               </p>
             </div>
           }
-    
+
           <!-- Liste des questions -->
+        @if (questions.length > 0) {
           <h3 class="text-lg font-semibold text-gray-700 mb-2">Questions déjà posées :</h3>
-          @if (questions.length > 0; ) {
-            <div
-              class="space-y-3 max-h-48 overflow-y-auto pr-2"
+
+          <div
+            class="space-y-3 max-h-48 overflow-y-auto pr-2"
+          >
+            @for (q of questions; track q) {
+              <div
+                class="question-card p-3 rounded-lg text-gray-800 shadow-sm bg-white"
               >
-              @for (q of questions; track q) {
-                <div
-                  class="question-card p-3 rounded-lg text-gray-800 shadow-sm bg-white"
-                  >
-                  <p class="text-sm text-gray-600 mb-1">[10:45]</p>
-                  {{ q }}
-                </div>
-              }
-            </div>
-          }
-          <ng-template >
+                <p class="text-sm text-gray-600 mb-1">[10:45]</p>
+                {{ q.contenu }}
+              </div>
+            }
+          </div>
+        } @else {
             <p class="text-gray-500 italic">Aucune question posée pour l’instant.</p>
-          </ng-template>
-    
+        }
+
           <!-- Champ question -->
           <textarea
-            [(ngModel)]="newQuestion"
+            [(ngModel)]="QuestionFormValue"
             rows="3"
             placeholder="Écrivez votre question ici..."
             class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none my-6 resize-none"
           ></textarea>
-    
+
           <!-- Bouton envoyer -->
           <div class="flex justify-end">
             <button
@@ -105,7 +107,7 @@ import { FormsModule } from '@angular/forms';
 
       /* Cadre avec les 4 couleurs Google */
       .question-card {
-        border: px solid transparent;
+        border: 1px solid transparent;
         border-radius: 5px;
         border-top: 2px solid #4285f4; /* bleu */
         border-right: 2px solid #ea4335; /* rouge */
@@ -118,23 +120,28 @@ import { FormsModule } from '@angular/forms';
 export default class QuestionsDialog {
   /** ✅ Données passées lors de l’ouverture */
   @Input() sessionTitle: string = '';
-  @Input() initialQuestions: string[] = [];
+  @Input() initialQuestions: questionInterface[] = [];
 
   @Output() close = new EventEmitter<void>();
-  @Output() questionSubmitted = new EventEmitter<string>();
+  @Output() questionSubmitted = new EventEmitter<questionInterface>();
 
-  newQuestion: string = '';
-  questions: string[] = [];
+  QuestionFormValue:string="" ;
+  newQuestion!: questionInterface;
+  questions: questionInterface[] = [];
 
   ngOnInit() {
     this.questions = [...this.initialQuestions];
   }
 
   addQuestion() {
-    if (this.newQuestion.trim()) {
-      this.questions.unshift(this.newQuestion.trim());
-      this.questionSubmitted.emit(this.newQuestion.trim());
-      this.newQuestion = '';
+    this.newQuestion = {
+      contenu: this.QuestionFormValue,
+      time: new Date().getTime().toString(),
+    }
+    if (this.newQuestion) {
+      this.questions.unshift(this.newQuestion);
+      this.questionSubmitted.emit(this.newQuestion);
+
     }
   }
 

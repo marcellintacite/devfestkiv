@@ -6,6 +6,7 @@ import { FirestoreService } from '../../../services/firestore';
 import { Subscription } from 'rxjs';
 import { Timestamp } from '@angular/fire/firestore';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import {Session} from '../../../models/session-model';
 @Component({
   selector: 'app-presentation',
   imports: [CommonModule, FormsModule, RouterLink],

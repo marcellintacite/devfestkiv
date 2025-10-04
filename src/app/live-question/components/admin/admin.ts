@@ -4,6 +4,7 @@ import { SessionForm } from './session-form/session-form';
 import { FirestoreService } from '../../../services/firestore';
 import { Subscription } from 'rxjs';
 import { Timestamp } from '@angular/fire/firestore';
+import {Session} from '../../../models/session-model';
 
 
 @Component({
