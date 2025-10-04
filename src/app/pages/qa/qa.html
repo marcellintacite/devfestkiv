@@ -42,8 +42,8 @@
     </div>
 
     <div class="flex gap-2 flex-wrap">
-      @for (c of categories; track c) {
       <button
+        *ngFor="let c of categories"
         (click)="selectCategory(c)"
         [attr.aria-pressed]="
           (activeCategory === '' && c === 'Tout') || activeCategory === c ? 'true' : 'false'
@@ -60,15 +60,13 @@
       >
         {{ c }}
       </button>
-      }
     </div>
   </div>
 
   <!-- Results -->
-  @if (filtered.length) {
-  <div class="space-y-3">
-    @for (item of filtered; track item.id) {
+  <div *ngIf="filtered.length; else empty" class="space-y-3">
     <article
+      *ngFor="let item of filtered"
       class="bg-white rounded-lg p-md shadow-card cursor-pointer"
       role="group"
       tabindex="0"
@@ -91,9 +89,7 @@
             </button>
           </h3>
           <div class="text-xs text-text/60">
-            @if (item.category) {
-            <span class="mr-2">{{ item.category }}</span>
-            }
+            <span *ngIf="item.category" class="mr-2">{{ item.category }}</span>
           </div>
         </div>
 
@@ -110,24 +106,22 @@
         [attr.aria-hidden]="(!isOpen(item.id)).toString()"
       >
         <p [innerHTML]="item.answer"></p>
-        @if (item.tags?.length) {
-        <div class="mt-3 flex gap-2 flex-wrap">
-          @for (t of item.tags; track t) {
-          <span class="px-2 py-0.5 text-xs rounded bg-text/5 text-text/70">
-            {{ t }}
-          </span>
-          }
+        <div *ngIf="item.tags?.length" class="mt-3 flex gap-2 flex-wrap">
+          <span
+            *ngFor="let t of item.tags"
+            class="px-2 py-0.5 text-xs rounded bg-text/5 text-text/70"
+            >{{ t }}</span
+          >
         </div>
-        }
       </div>
     </article>
-    }
   </div>
-  } @else {
-  <div class="text-center py-lg text-text/70">
-    Aucune question correspondante. Essaie un autre mot-clé ou réinitialise le filtre.
-  </div>
-  }
+
+  <ng-template #empty>
+    <div class="text-center py-lg text-text/70">
+      Aucune question correspondante. Essaie un autre mot-clé ou réinitialise le filtre.
+    </div>
+  </ng-template>
 
   <!-- Future feature: user can propose a question (UI only for now) -->
   <section class="mt-lg">
