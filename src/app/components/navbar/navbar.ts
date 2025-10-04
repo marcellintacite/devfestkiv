@@ -1,10 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, RouterLinkActive, CommonModule],
+  imports: [RouterLink, RouterLinkActive],
   template: `
     <nav class=" backdrop-blur-sm sticky top-0 z-50 shadow-xs transition-all duration-300">
       <div class="max-w-7xl mx-auto px-md sm:px-lg lg:px-xl">
