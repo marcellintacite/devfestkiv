@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule,NgForm } from '@angular/forms';
 import {questionInterface} from '../../../models/session-model';
-import {JsonPipe} from '@angular/common';
-
 @Component({
   selector: 'app-questions',
   standalone: true,
@@ -17,7 +15,7 @@ import {JsonPipe} from '@angular/common';
         <button
           (click)="onClose()"
           class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 transition"
-          >
+        >
           ✕
         </button>
 
@@ -32,24 +30,24 @@ import {JsonPipe} from '@angular/common';
               stroke="#FBBC04"
               strokeWidth="2"
               fill="none"
-              />
-              <circle cx="30" cy="10" r="2" fill="#4285F4" />
-              <circle cx="70" cy="10" r="2" fill="#EA4335" />
-              <circle cx="110" cy="10" r="2" fill="#34A853" />
-              <circle cx="150" cy="10" r="2" fill="#FBBC04" />
-            </svg>
+            />
+            <circle cx="30" cy="10" r="2" fill="#4285F4"/>
+            <circle cx="70" cy="10" r="2" fill="#EA4335"/>
+            <circle cx="110" cy="10" r="2" fill="#34A853"/>
+            <circle cx="150" cy="10" r="2" fill="#FBBC04"/>
+          </svg>
+        </div>
+
+        <!-- Infos de session -->
+        @if (sessionTitle) {
+          <div class="text-center mb-4">
+            <p class="text-sm text-gray-500">
+              Session : <span class="font-medium text-gray-700">{{ sessionTitle }}</span>
+            </p>
           </div>
+        }
 
-          <!-- Infos de session -->
-          @if (sessionTitle) {
-            <div class="text-center mb-4">
-              <p class="text-sm text-gray-500">
-                Session : <span class="font-medium text-gray-700">{{ sessionTitle }}</span>
-              </p>
-            </div>
-          }
-
-          <!-- Liste des questions -->
+        <!-- Liste des questions -->
         @if (questions.length > 0) {
           <h3 class="text-lg font-semibold text-gray-700 mb-2">Questions déjà posées :</h3>
 
@@ -66,29 +64,35 @@ import {JsonPipe} from '@angular/common';
             }
           </div>
         } @else {
-            <p class="text-gray-500 italic">Aucune question posée pour l’instant.</p>
+          <p class="text-gray-500 italic">Aucune question posée pour l’instant.</p>
         }
 
+        <form #QuestionForm= "ngForm" (ngSubmit)="addQuestion(QuestionForm)">
           <!-- Champ question -->
           <textarea
             [(ngModel)]="QuestionFormValue"
+            #questionField = "ngModel"
+            required
             rows="3"
+            name="question"
             placeholder="Écrivez votre question ici..."
-            class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none my-6 resize-none"
+            class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 mt-6 focus:outline-none  resize-none"
           ></textarea>
-
+          @if(errorMsg){<span class="text-red-600">{{errorMsg}}</span>}
           <!-- Bouton envoyer -->
           <div class="flex justify-end">
             <button
-              (click)="addQuestion()"
+              type="submit"
               class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
-              >
+            >
               Envoyer
             </button>
           </div>
-        </div>
+        </form>
+
       </div>
-    `,
+    </div>
+  `,
   styles: [
     `
       .animate-fade-in {
@@ -125,6 +129,7 @@ export default class QuestionsDialog {
   @Output() close = new EventEmitter<void>();
   @Output() questionSubmitted = new EventEmitter<questionInterface>();
 
+  errorMsg:string = "";
   QuestionFormValue:string="" ;
   newQuestion!: questionInterface;
   questions: questionInterface[] = [];
@@ -133,15 +138,20 @@ export default class QuestionsDialog {
     this.questions = [...this.initialQuestions];
   }
 
-  addQuestion() {
-    this.newQuestion = {
-      contenu: this.QuestionFormValue,
-      time: new Date().getTime().toString(),
-    }
-    if (this.newQuestion) {
-      this.questions.unshift(this.newQuestion);
-      this.questionSubmitted.emit(this.newQuestion);
-
+  addQuestion(form: NgForm) {
+    if(form.valid){
+      this.errorMsg = ""
+      this.newQuestion = {
+        contenu: this.QuestionFormValue,
+        time: new Date().getTime().toString(),
+      }
+      if (this.newQuestion) {
+        this.questions.unshift(this.newQuestion);
+        this.questionSubmitted.emit(this.newQuestion);
+        this.QuestionFormValue = '';
+      }
+    }else{
+      this.errorMsg="veuillez remplir le champ avant d'envoyer la question"
     }
   }
 
