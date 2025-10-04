@@ -8,6 +8,7 @@ type QaItem = {
   answer: string;
   category?: 'Logistique' | 'Inscription' | 'Speakers' | 'Technique' | 'Autre';
   tags?: string[];
+  updatedAt?: string;
 };
 
 @Component({
@@ -19,8 +20,7 @@ type QaItem = {
 export default class QaComponent {
   search = '';
   activeCategory: string = '';
-
-  openId: number | null = null;
+  openIds = new Set<number>();
 
   qaItems: QaItem[] = [
     {
@@ -30,6 +30,7 @@ export default class QaComponent {
         'DevFest Kivu rassemble la communauté tech locale autour de conférences, ateliers et networking. Objectif : partager savoirs et opportunités.',
       category: 'Autre',
       tags: ['festival', 'communauté'],
+      updatedAt: '2025-08-01',
     },
     {
       id: 2,
@@ -38,6 +39,7 @@ export default class QaComponent {
         "Clique sur « S'inscrire maintenant » depuis la page d'accueil et suis la procédure. Tu recevras une confirmation par e-mail.",
       category: 'Inscription',
       tags: ['ticket', 'paiement'],
+      updatedAt: '2025-08-10',
     },
     {
       id: 3,
@@ -46,6 +48,7 @@ export default class QaComponent {
         'Oui. Soumets ta proposition via le formulaire « Call for Proposals » sur la page Speakers. Respecte les deadlines indiquées.',
       category: 'Speakers',
       tags: ['cfp'],
+      updatedAt: '2025-08-15',
     },
     {
       id: 4,
@@ -54,56 +57,24 @@ export default class QaComponent {
         "L'équipe fournit des templates et guides. Contacte l'organisation via le formulaire Speakers/Sponsors pour obtenir les ressources.",
       category: 'Technique',
       tags: ['workshop', 'guide'],
+      updatedAt: '2025-08-20',
     },
   ];
 
   categories = ['Tout', 'Inscription', 'Speakers', 'Technique', 'Logistique', 'Autre'];
 
-  // toggler unique : ouvre la card et ferme les autres (si déjà ouvert, ferme)
   toggle(id: number) {
-    this.openId = this.openId === id ? null : id;
+    if (this.openIds.has(id)) this.openIds.delete(id);
+    else this.openIds.add(id);
   }
 
   isOpen(id: number) {
-    return this.openId === id;
+    return this.openIds.has(id);
   }
 
   selectCategory(cat: string) {
     this.activeCategory = cat === 'Tout' ? '' : cat;
-    this.openId = null; // fermer tout quand on change le filtre
-  }
-
-  // article click handler: ignore clicks on interactive elements
-  onArticleClick(event: MouseEvent, id: number) {
-    const target = event.target as HTMLElement;
-    // ignore if user clicked a link, button, input, or other interactive control
-    if (this.isInteractiveElement(target)) return;
-    this.toggle(id);
-  }
-
-  // keyboard handler: Enter/Space on focused article should toggle
-  onArticleKeydown(event: KeyboardEvent, id: number) {
-    const code = event.key;
-    if (code === 'Enter' || code === ' ') {
-      event.preventDefault();
-      this.toggle(id);
-    }
-  }
-
-  private isInteractiveElement(el: HTMLElement | null): boolean {
-    if (!el) return false;
-    const tag = el.tagName.toLowerCase();
-    if (['button', 'a', 'input', 'textarea', 'select', 'label'].includes(tag)) return true;
-    // if clicked inside an interactive child (icon svg inside a button), walk up
-    let node: HTMLElement | null = el;
-    for (let depth = 0; depth < 6 && node; depth++) {
-      if (
-        ['button', 'a', 'input', 'textarea', 'select', 'label'].includes(node.tagName.toLowerCase())
-      )
-        return true;
-      node = node.parentElement;
-    }
-    return false;
+    this.openIds.clear();
   }
 
   get filtered() {
@@ -116,6 +87,17 @@ export default class QaComponent {
         (item.answer && item.answer.toLowerCase().includes(q)) ||
         (item.tags && item.tags.join(' ').toLowerCase().includes(q));
       return matchesCategory && matchesSearch;
+    });
+  }
+
+  addPlaceholderQuestion() {
+    const id = Math.max(0, ...this.qaItems.map((i) => i.id)) + 1;
+    this.qaItems.unshift({
+      id,
+      question: `Question placeholder #${id}`,
+      answer: `Réponse placeholder pour la question ${id}.`,
+      category: 'Autre',
+      updatedAt: new Date().toISOString().slice(0, 10),
     });
   }
 }

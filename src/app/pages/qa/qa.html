@@ -1,25 +1,28 @@
-<!-- Hero -->
+<!-- Hero (minimal : only left/right bracket illustrations) -->
 <section class="relative overflow-hidden mb-lg">
   <div class="max-w-7xl mx-auto px-md sm:px-lg lg:px-xl relative z-10">
-    <div class="relative text-center py-8 md:py-12">
+    <div class="relative text-center py-10 md:py-14">
+      <!-- Left bracket (desktop only) -->
       <img
-        src="/assets/illustrations/inferior.png"
+        src="/assets/illustrations/bracket.png"
         alt=""
         aria-hidden="true"
-        class="hidden lg:block absolute top-1/2 -left-14 w-14 -translate-y-1/2 opacity-60 transform-gpu animate-bounce"
+        class="hidden lg:block absolute top-1/2 -left-14 w-14 -translate-y-1/2 opacity-60 transform-gpu"
         style="filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.06))"
       />
+      <!-- Right bracket (mirrored, desktop only) -->
       <img
-        src="/assets/illustrations/superior.png"
+        src="/assets/illustrations/bracket.png"
         alt=""
         aria-hidden="true"
-        class="hidden lg:block absolute top-1/2 -right-14 w-14 -translate-y-1/2 opacity-60 transform-gpu animate-bounce"
+        class="hidden lg:block absolute top-1/2 -right-14 w-14 -translate-y-1/2 opacity-60 transform-gpu scale-x-[-1]"
         style="filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.06))"
       />
+
       <h1 class="text-3xl md:text-4xl font-bold text-text mb-2">Q&A</h1>
       <p class="text-text/70 max-w-2xl mx-auto">
         Les réponses officielles à vos questions. Recherche rapide, filtres par catégorie — contenu
-        pour la V1.
+        en place pour la V1.
       </p>
     </div>
   </div>
@@ -67,22 +70,17 @@
   <div *ngIf="filtered.length; else empty" class="space-y-3">
     <article
       *ngFor="let item of filtered"
-      class="bg-white rounded-lg p-md shadow-card cursor-pointer"
-      role="group"
-      tabindex="0"
-      (click)="onArticleClick($event, item.id)"
-      (keydown)="onArticleKeydown($event, item.id)"
+      class="bg-white rounded-lg p-md shadow-card"
+      role="region"
       [attr.aria-labelledby]="'q-' + item.id"
     >
       <header class="flex items-start justify-between gap-3">
         <div class="flex-1">
           <h3 id="{{ 'q-' + item.id }}" class="font-semibold text-text text-base mb-1">
-            <!-- we keep a real button for aria + keyboard, but stop propagation to avoid double toggle -->
             <button
-              class="question-btn"
-              type="button"
-              (click)="$event.stopPropagation(); toggle(item.id)"
-              [attr.aria-expanded]="isOpen(item.id) ? 'true' : 'false'"
+              class="w-full text-left"
+              (click)="toggle(item.id)"
+              [attr.aria-expanded]="isOpen(item.id)"
               [attr.aria-controls]="'qa-' + item.id"
             >
               {{ item.question }}
@@ -90,6 +88,7 @@
           </h3>
           <div class="text-xs text-text/60">
             <span *ngIf="item.category" class="mr-2">{{ item.category }}</span>
+            <span *ngIf="item.updatedAt">• mis à jour {{ item.updatedAt }}</span>
           </div>
         </div>
 
@@ -98,14 +97,9 @@
         </div>
       </header>
 
-      <!-- animated answer block -->
-      <div
-        id="{{ 'qa-' + item.id }}"
-        class="mt-3 text-text/80 answer"
-        [class.open]="isOpen(item.id)"
-        [attr.aria-hidden]="(!isOpen(item.id)).toString()"
-      >
+      <div id="{{ 'qa-' + item.id }}" class="mt-3 text-text/80" [hidden]="!isOpen(item.id)">
         <p [innerHTML]="item.answer"></p>
+
         <div *ngIf="item.tags?.length" class="mt-3 flex gap-2 flex-wrap">
           <span
             *ngFor="let t of item.tags"
@@ -122,96 +116,25 @@
       Aucune question correspondante. Essaie un autre mot-clé ou réinitialise le filtre.
     </div>
   </ng-template>
-
-  <!-- Future feature: user can propose a question (UI only for now) -->
-  <section class="mt-lg">
-    <div class="bg-background rounded-lg p-md border border-dashed border-gray-200">
-      <label class="block text-sm font-medium mb-2"
-        >Poser votre question (fonctionnalité à venir)</label
-      >
-
-      <div class="flex gap-2">
-        <input
-          type="text"
-          placeholder="Écrivez votre question..."
-          class="flex-1 rounded-md border px-sm py-sm"
-          disabled
-          aria-disabled="true"
-        />
-        <button class="btn btn-primary btn-md" disabled aria-disabled="true">
-          Proposer (bientôt)
-        </button>
-      </div>
-
-      <p class="text-xs text-text/60 mt-2">
-        Proposition via IA — fonctionnalité non activée. Cette UI sert à montrer l'usage futur.
-      </p>
-    </div>
-  </section>
 </section>
 
-<!-- Local styles: smooth animation, cursor, polish -->
+<!-- Local styles: subtle, professional -->
 <style>
-  .question-btn {
-    cursor: pointer;
-    background: transparent;
-    border: none;
-    padding: 0;
-    font: inherit;
-    text-align: left;
-  }
-  .question-btn:focus {
-    outline: 2px solid rgba(59, 130, 246, 0.35);
-    outline-offset: 4px;
-    border-radius: 6px;
-  }
-
-  .answer {
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(-6px);
-    transition: max-height 360ms cubic-bezier(0.2, 0.9, 0.2, 1), opacity 260ms ease,
-      transform 260ms ease;
-  }
-  .answer.open {
-    max-height: 880px;
-    opacity: 1;
-    transform: translateY(0);
-  }
-
   .chev {
-    transition: transform 200ms ease;
+    transition: transform 0.18s ease;
     display: inline-block;
     font-size: 1rem;
     color: rgba(30, 30, 30, 0.7);
-    transform-origin: 50% 40%;
   }
   .chev.open {
     transform: rotate(180deg);
   }
-
   .shadow-card {
     box-shadow: 0 6px 18px rgba(22, 22, 22, 0.04);
   }
-
-  article.bg-white:hover {
-    transform: translateY(-4px);
-    transition: transform 200ms ease, box-shadow 200ms ease;
-    box-shadow: 0 10px 28px rgba(22, 22, 22, 0.06);
-  }
-
-  /* focus for keyboard users */
-  article:focus {
-    box-shadow: 0 8px 20px rgba(22, 22, 22, 0.06);
-    outline: none;
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .answer,
-    .chev,
-    article.bg-white:hover {
-      transition: none !important;
+    .chev {
+      transition: none;
     }
   }
 </style>
