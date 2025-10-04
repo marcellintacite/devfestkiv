@@ -1,24 +1,19 @@
-<!-- Hero -->
 <section class="relative overflow-hidden mb-lg">
   <div class="max-w-7xl mx-auto px-md sm:px-lg lg:px-xl relative z-10">
     <div class="relative text-center py-8 md:py-12">
-      <!-- Left illustration -->
       <img
         src="/assets/illustrations/inferior.png"
         alt=""
         aria-hidden="true"
         loading="lazy"
         class="hidden lg:block absolute top-1/2 -left-14 w-14 -translate-y-1/2 opacity-50 transform-gpu animate-float"
-        style="filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.06))"
       />
-      <!-- Right illustration -->
       <img
         src="/assets/illustrations/superior.png"
         alt=""
         aria-hidden="true"
         loading="lazy"
         class="hidden lg:block absolute top-1/2 -right-14 w-14 -translate-y-1/2 opacity-50 transform-gpu animate-float-delay"
-        style="filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.06))"
       />
 
       <h1 class="text-3xl md:text-4xl font-bold text-text mb-2">Questions & Réponses</h1>
@@ -29,12 +24,14 @@
   </div>
 </section>
 
-<!-- Main content -->
 <section class="max-w-7xl mx-auto px-md pb-lg">
-  <div class="qa-list mx-auto" role="list">
+  <div
+    class="max-w-4xl mx-auto bg-white rounded-lg shadow-card overflow-hidden border border-slate-200/50"
+    role="list"
+  >
     @for (item of filtered; track item.id) {
     <article
-      class="qa-item clickable"
+      class="block border-b border-slate-200/50 last:border-b-0 cursor-pointer transition-all duration-200 ease-out group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
       role="group"
       tabindex="0"
       (click)="onArticleClick($event, item.id)"
@@ -42,327 +39,86 @@
       [attr.aria-labelledby]="'q-' + item.id"
       id="{{ 'article-' + item.id }}"
     >
-      <header class="qa-header" role="button" aria-hidden="false">
-        <div class="qa-left">
-          <h3 id="{{ 'q-' + item.id }}" class="qa-question">
-            {{ item.question }}
-          </h3>
-        </div>
+      <header
+        class="flex justify-between items-start gap-md p-md md:p-lg transition-colors group-hover:bg-primary-pastel/40"
+        role="button"
+        aria-expanded="{{ isOpen(item.id) }}"
+        [attr.aria-controls]="'qa-' + item.id"
+      >
+        <h3 id="{{ 'q-' + item.id }}" class="text-lg font-bold text-text">
+          {{ item.question }}
+        </h3>
 
-        <div class="qa-right" aria-hidden="true">
-          <span class="chev" [class.open]="isOpen(item.id)" aria-hidden="true">▾</span>
+        <div class="flex-shrink-0 pt-1" aria-hidden="true">
+          <span
+            class="chev text-slate-500 transition-transform duration-300 ease-in-out"
+            [class.rotate-180]="isOpen(item.id)"
+            [class.text-primary]="isOpen(item.id)"
+            >▾</span
+          >
         </div>
       </header>
 
       <div
         id="{{ 'qa-' + item.id }}"
-        class="qa-answer"
-        [class.open]="isOpen(item.id)"
-        [attr.aria-hidden]="(!isOpen(item.id)).toString()"
+        class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-400 ease-out"
+        [class.grid-rows-[1fr]]="isOpen(item.id)"
+        [attr.aria-hidden]="!isOpen(item.id)"
       >
-        <p [innerHTML]="item.answer"></p>
+        <div class="overflow-hidden">
+          <div class="px-md md:px-lg pb-lg text-text/80">
+            <p [innerHTML]="item.answer"></p>
+          </div>
+        </div>
       </div>
     </article>
     }
   </div>
 
-  <!-- CTA inspired by reference: logo above title, centered, clear CTA -->
-  <section class="mt-lg">
-    <div class="faq-cta" role="region" aria-labelledby="faq-cta-title">
-      <div class="faq-cta-visual" aria-hidden="true">
-        <div class="faq-logo-wrap">
-          <img src="/assets/logo.png" alt="GDG Kivu" class="faq-logo" loading="lazy" />
-        </div>
-
-        <svg
-          class="faq-illustration"
-          viewBox="0 0 48 48"
-          width="56"
-          height="56"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <g
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path
-              d="M6 30c0 3.314 3.582 6 8 6h2v6l6-6h6c4.418 0 8-2.686 8-6V18C36 14.686 32.418 12 28 12H14C9.582 12 6 14.686 6 18v12z"
-            />
-            <path
-              d="M19 20c0-1.657 1.567-3 3.5-3S26 18.343 26 20c0 1.657-1.567 3-3.5 3S19 21.657 19 20z"
-            />
-            <path d="M22 26.5v1" stroke-linecap="round" />
-          </g>
-        </svg>
+  <section class="mt-lg max-w-3xl mx-auto" role="region" aria-labelledby="faq-cta-title">
+    <div
+      class="bg-white rounded-lg shadow-card p-lg flex flex-col md:flex-row items-center gap-lg text-center md:text-left"
+    >
+      <div class="flex-shrink-0 relative">
+        <img src="/assets/logo.png" alt="GDG Kivu" class="h-20 w-20" loading="lazy" />
       </div>
 
-      <div class="faq-cta-content">
-        <h3 id="faq-cta-title" class="faq-cta-title">Vous n’avez pas trouvé la réponse ?</h3>
-        <p class="faq-cta-sub">
+      <div class="flex-grow">
+        <h3 id="faq-cta-title" class="text-xl font-bold text-text mb-sm">
+          Vous n’avez pas trouvé la réponse ?
+        </h3>
+        <p class="text-text/70 mb-md text-sm">
           Contactez-nous par e-mail — nous vous répondrons rapidement. Pour les demandes presse ou
           partenariats, précisez l'objet dans votre message.
         </p>
 
-        <div class="faq-cta-actions">
+        <div class="flex gap-md justify-center md:justify-start">
           <a
-            class="btn-primary"
+            class="btn btn-primary btn-md"
             href="mailto:aksantibahiga3@gmail.com"
             aria-label="Contacter GDG Kivu"
           >
             Contacter GDG Kivu
           </a>
-          <a class="btn-ghost" href="/speakers" aria-label="Voir la page Speakers">Voir speakers</a>
+          <a class="btn btn-ghost btn-md" href="/speakers" aria-label="Voir la page Speakers">
+            Voir speakers
+          </a>
         </div>
       </div>
     </div>
   </section>
 </section>
 
-<!-- Local styles (scoped visual rules) -->
 <style>
-  :root {
-    --muted: rgba(15, 23, 42, 0.66);
-  }
+  /* On ne garde que les animations et le style du chevron, 
+     tout le reste est maintenant géré par les classes Tailwind et les variables globales. */
 
-  /* QA list container */
-  .qa-list {
-    width: 100%;
-    max-width: 840px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 6px 20px rgba(12, 12, 12, 0.04);
-    border: 1px solid rgba(15, 23, 42, 0.03);
-  }
-
-  /* each item: spacing and rhythm */
-  .qa-item {
-    display: block;
-    padding: 18px 22px;
-    border-bottom: 1px solid rgba(15, 23, 42, 0.04);
-    background: transparent;
-    transition: background-color 180ms ease, transform 150ms ease, box-shadow 150ms ease;
-    line-height: 1.35;
-  }
-  .qa-list > .qa-item:first-child {
-    padding-top: 22px;
-  }
-  .qa-list > .qa-item:last-child {
-    border-bottom: none;
-  }
-
-  /* round only top/bottom */
-  .qa-list > .qa-item:first-child {
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-  }
-  .qa-list > .qa-item:last-child {
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-  }
-
-  /* clickable & hover */
-  .qa-item.clickable {
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .qa-item.clickable:hover {
-    background-color: rgba(0, 0, 0, 0.03);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 22px rgba(12, 12, 12, 0.04);
-  }
-
-  /* accessible focus */
-  .qa-item.clickable:focus {
-    outline: 3px solid rgba(249, 171, 0, 0.18);
-    outline-offset: 6px;
-    box-shadow: 0 12px 28px rgba(12, 12, 12, 0.06);
-  }
-
-  /* header */
-  .qa-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-  }
-  .qa-left {
-    flex: 1;
-  }
-  .qa-right {
-    display: flex;
-    align-items: center;
-    padding-left: 8px;
-  }
-
-  /* question */
-  .qa-question {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 700;
-    color: #0f172a;
-  }
-  .question-btn {
-    cursor: pointer;
-    background: transparent;
-    border: none;
-    padding: 0;
-    font: inherit;
-    text-align: left;
-    pointer-events: auto;
-  }
-  .question-btn:focus {
-    outline: 2px solid rgba(59, 130, 246, 0.18);
-    outline-offset: 4px;
-    border-radius: 6px;
-  }
-
-  .qa-meta {
-    margin-top: 6px;
-    font-size: 12px;
-    color: rgba(15, 23, 42, 0.6);
-  }
-  .qa-category {
-    padding: 4px 8px;
-    background: rgba(15, 23, 42, 0.03);
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 12px;
-  }
-
-  /* answer sliding */
-  .qa-answer {
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(-6px);
-    transition: max-height 420ms cubic-bezier(0.2, 0.9, 0.2, 1), opacity 320ms ease,
-      transform 320ms ease;
-    margin-top: 10px;
-    color: rgba(15, 23, 42, 0.76);
-    font-size: 15px;
-  }
-  .qa-answer.open {
-    max-height: 1000px;
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .qa-tags {
-    margin-top: 10px;
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .qa-tag {
-    background: rgba(15, 23, 42, 0.04);
-    padding: 6px 8px;
-    border-radius: 6px;
-    font-size: 12px;
-    color: rgba(15, 23, 42, 0.65);
-  }
-
-  /* chevron */
+  /* chevron icon style */
   .chev {
-    transition: transform 320ms cubic-bezier(0.2, 0.9, 0.2, 1), color 200ms ease;
     display: inline-block;
     font-size: 20px;
-    color: rgba(15, 23, 42, 0.75);
-    transform-origin: 50% 40%;
-  }
-  .chev.open {
-    transform: rotate(180deg);
-    color: rgba(15, 23, 42, 0.9);
-  }
-
-  /* CTA block inspired */
-  .faq-cta {
-    max-width: 680px;
-    margin: 36px auto 0;
-    padding: 28px;
-    background: linear-gradient(180deg, #ffffff 0%, rgba(250, 250, 252, 1) 100%);
-    border-radius: 14px;
-    display: flex;
-    gap: 22px;
-    align-items: center;
-    box-shadow: 0 10px 30px rgba(12, 12, 12, 0.04);
-    border: 1px solid rgba(15, 23, 42, 0.03);
-  }
-  .faq-cta-visual {
-    flex: 0 0 120px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    position: relative;
-  }
-
-  .faq-logo {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    display: block;
-  }
-  .faq-illustration {
-    position: absolute;
-    top: -14px;
-    right: -8px;
-    opacity: 0.95;
-    filter: drop-shadow(0 8px 18px rgba(124, 58, 237, 0.08));
-    transform-origin: center;
-    transition: transform 420ms cubic-bezier(0.2, 0.9, 0.2, 1);
-  }
-  .faq-logo-wrap:hover + .faq-illustration,
-  .faq-logo-wrap:hover ~ .faq-illustration {
-    transform: translateY(-6px) rotate(-6deg);
-  }
-
-  .faq-cta-content {
-    flex: 1;
-    min-width: 0;
-  }
-  .faq-cta-title {
-    margin: 0 0 6px 0;
-    font-size: 20px;
-    font-weight: 700;
-    color: #0f172a;
-    text-align: left;
-  }
-  .faq-cta-sub {
-    margin: 0 0 14px 0;
-    color: var(--muted);
-    font-size: 14px;
-    line-height: 1.5;
-  }
-
-  .faq-cta-actions {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .btn-primary {
-    display: inline-block;
-    padding: 10px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: transform 160ms ease, box-shadow 160ms ease;
-  }
-
-  .btn-ghost {
-    display: inline-block;
-    padding: 10px 14px;
-    border-radius: 999px;
-    border: 1px solid rgba(15, 23, 42, 0.06);
-    text-decoration: none;
-    font-weight: 600;
+    font-weight: bold; /* pour un meilleur rendu */
+    transform-origin: 50% 50%;
   }
 
   /* float animations for decorative imagery */
@@ -383,44 +139,16 @@
     animation-delay: 2s;
   }
 
-  /* responsive */
-  @media (max-width: 720px) {
-    .faq-cta {
-      flex-direction: column;
-      text-align: center;
-      padding: 20px;
-      gap: 14px;
-    }
-    .faq-cta-visual {
-      order: -1;
-      width: auto;
-    }
-    .faq-cta-title {
-      font-size: 18px;
-    }
-    .faq-cta-sub {
-      font-size: 13px;
-    }
-    .faq-cta-actions {
-      justify-content: center;
-    }
-    .qa-item {
-      padding: 14px;
-    }
-  }
-
   /* reduced motion respect */
   @media (prefers-reduced-motion: reduce) {
-    .qa-item.clickable:hover,
-    .qa-answer,
-    .chev,
     .animate-float,
     .animate-float-delay,
-    .faq-illustration,
-    .btn-cta {
+    .transition-all,
+    .transition-transform,
+    .transition-colors,
+    .transition-\[grid-template-rows\] {
       transition: none !important;
       animation: none !important;
-      transform: none !important;
     }
   }
 </style>
