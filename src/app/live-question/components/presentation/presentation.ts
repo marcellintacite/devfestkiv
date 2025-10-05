@@ -1,38 +1,61 @@
-import { Component, OnInit, OnDestroy, HostListener, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, HostListener, inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FirestoreService } from '../../../services/firestore';
 import { Subscription } from 'rxjs';
 import { Timestamp } from '@angular/fire/firestore';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import {Session} from '../../../models/session-model';
+import { Session } from '../../../models/session-model';
+import { QuestionsSlides } from './quetsions-slides/quetsions-slides';
 @Component({
   selector: 'app-presentation',
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, QuestionsSlides],
   template: `
-    <div class="relative min-h-screen" id="slidesContainer">
+    <div class="relative min-h-screen " id="slidesContainer">
       <!-- Slides -->
+      @if(isActive){
       <div class="absolute inset-0 z-0">
         <iframe [src]="safeSlideUrl" frameborder="0" class="w-full h-full"></iframe>
       </div>
+      }@else {
+
+      <app-questions-slides [session]="selectedSession" />
+      }
 
       <!-- Bulle quand minimisé -->
       @if(isMinimized && isVisible){
       <div
-        class="fixed z-10 cursor-move select-none"
+        class="fixed z-50 cursor-move select-none animate-fade-in"
         [ngStyle]="{ left: position.x + 'px', top: position.y + 'px' }"
         (mousedown)="startDrag($event)"
       >
         <div
-          class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 via-orange-500 to-green-500 shadow-2xl flex items-center justify-center cursor-pointer hover:scale-110 transition-all duration-300 border-4 border-white/20"
+          class="relative w-20 h-20 rounded-full bg-white shadow-2xl flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-125 hover:rotate-6 border-[4px] border-gray-200"
           (click)="isMinimized = false"
         >
-          <span class="text-white font-bold">
+          <!-- Halo coloré -->
+          <div
+            class="absolute inset-0 rounded-full blur-md opacity-70 animate-pulse"
+            [ngStyle]="{
+              'box-shadow':
+                '0 0 20px 4px rgba(66,133,244,0.7), 0 0 30px 6px rgba(219,68,55,0.5), 0 0 40px 8px rgba(244,180,0,0.5), 0 0 50px 10px rgba(15,157,88,0.5)'
+            }"
+          ></div>
+
+          <!-- Nombre de questions -->
+          <span class="relative z-10 font-extrabold text-4xl drop-shadow text-gray-900 select-none">
             {{ selectedSession?.questions?.length || 0 }}
           </span>
+
+          <!-- Petites barres colorées autour pour rappeler les couleurs Google -->
+          <div class="absolute -top-1 left-1 w-3 h-3 bg-[#4285F4] rounded-full"></div>
+          <div class="absolute -top-1 right-1 w-3 h-3 bg-[#DB4437] rounded-full"></div>
+          <div class="absolute -bottom-1 left-1 w-3 h-3 bg-[#F4B400] rounded-full"></div>
+          <div class="absolute -bottom-1 right-1 w-3 h-3 bg-[#0F9D58] rounded-full"></div>
         </div>
       </div>
+
       }
 
       <!-- Card Q&A -->
@@ -131,6 +154,26 @@ import {Session} from '../../../models/session-model';
                 <option [ngValue]="s">{{ s.title }} - {{ s.speaker }}</option>
                 }
               </select>
+              <br />
+              <br />
+              <div class="flex items-center gap-2 cursor-pointer" (click)="statusChange()">
+                <!-- Switch -->
+                <div
+                  class="relative w-12 h-6 rounded-full transition-all duration-300"
+                  [ngClass]="isActive ? 'bg-green-500' : 'bg-gray-300'"
+                >
+                  <div
+                    class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transform transition-all duration-300"
+                    [ngClass]="isActive ? 'translate-x-6' : 'translate-x-0'"
+                  ></div>
+                </div>
+                <span
+                  class="text-xs font-semibold transition-colors duration-300"
+                  [ngClass]="isActive ? 'text-green-600' : 'text-gray-500'"
+                >
+                  {{ isActive ? 'Slides' : 'Questions' }}
+                </span>
+              </div>
             </div>
 
             @if(selectedSession){
@@ -147,15 +190,18 @@ import {Session} from '../../../models/session-model';
                 </h4>
                 @if(selectedSession.questions.length === 0){
                 <div class="text-center py-4 text-gray-400">Aucune question reçue</div>
-                } @for(q of selectedSession.questions;track $index){
-                <div class="p-2 border rounded mb-2">
-                  <div class="flex justify-between text-xs text-gray-500">
-                    <span>Q{{ $index + 1 }}</span>
-                    <span>{{ q.time }}</span>
-                  </div>
-                  <p class="text-sm mt-1">{{ q.contenu }}</p>
-                </div>
                 }
+                <div class=" max-h-100 overflow-y-auto">
+                  @for(q of selectedSession.questions;track $index){
+                  <div class="p-2 border rounded mb-2 question-card">
+                    <div class="flex justify-between text-xs text-gray-500">
+                      <span>Q{{ $index + 1 }}</span>
+                      <span>{{ q.time | date : 'medium' }} </span>
+                    </div>
+                    <p class="text-sm mt-1">{{ q.contenu }}</p>
+                  </div>
+                  }
+                </div>
               </div>
             </div>
             } @if(!selectedSession){
@@ -165,6 +211,95 @@ import {Session} from '../../../models/session-model';
         </div>
       </div>
       }
+      <svg
+        viewBox="0 0 800 400"
+        xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="xMidYMid meet"
+        style="width:100%; height:100%; position:absolute; top:0; left:0; z-index:-3;"
+      >
+        <!-- Formes Google animées -->
+        <polygon class="move1" points="100,50 200,150 50,150" fill="#EA4335" fill-opacity="0.2" />
+        <circle class="pulse" cx="600" cy="120" r="60" fill="#34A853" fill-opacity="0.3" />
+
+        <!-- Icônes codeur -->
+        <text
+          class="float"
+          x="350"
+          y="300"
+          font-family="monospace"
+          font-size="50"
+          fill="#F4B400"
+          opacity="0.9"
+        >
+          &lt;/&gt;
+        </text>
+        <text
+          class="float"
+          x="100"
+          y="350"
+          font-family="monospace"
+          font-size="30"
+          fill="#EA4335"
+          opacity="0.7"
+        >
+          &#123;DevFest&#125;
+        </text>
+        <text
+          class="float"
+          x="200"
+          y="70"
+          font-family="monospace"
+          font-size="25"
+          fill="#4285F4"
+          opacity="0.7"
+        >
+          &#40;&#41;
+        </text>
+        <text
+          class="float"
+          x="650"
+          y="250"
+          font-family="monospace"
+          font-size="35"
+          fill="#34A853"
+          opacity="0.7"
+        >
+          &lt;Kivu/&gt;
+        </text>
+        <text
+          class="float"
+          x="500"
+          y="350"
+          font-family="monospace"
+          font-size="20"
+          fill="#FBBC05"
+          opacity="0.6"
+        >
+          ;
+        </text>
+        <text
+          class="float"
+          x="750"
+          y="70"
+          font-family="monospace"
+          font-size="25"
+          fill="#EA4335"
+          opacity="0.6"
+        >
+          #
+        </text>
+        <text
+          class="float"
+          x="600"
+          y="100"
+          font-family="monospace"
+          font-size="25"
+          fill="#EA4335"
+          opacity="0.6"
+        >
+          ?
+        </text>
+      </svg>
     </div>
     <svg
       viewBox="0 0 800 400"
@@ -284,6 +419,29 @@ import {Session} from '../../../models/session-model';
   50% { transform: rotate(15deg); }
   100% { transform: rotate(0deg); }
 }
+      .animate-fade-in {
+        animation: fadeIn 0.25s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* Cadre avec les 4 couleurs Google */
+      .question-card {
+        border: 1px solid transparent;
+        border-radius: 5px;
+        border-top: 2px solid #4285f4; /* bleu */
+        border-right: 2px solid #ea4335; /* rouge */
+        border-bottom: 2px solid #fbbc04; /* jaune */
+        border-left: 2px solid #34a853; /* vert */
+      }
   `,
 })
 export default class Presentation {
@@ -303,25 +461,35 @@ export default class Presentation {
   dragOffset = { x: 0, y: 0 };
   private sanitizer = inject(DomSanitizer);
   safeSlideUrl: SafeResourceUrl | null = null;
+  private platformId = inject(PLATFORM_ID);
 
   ngOnInit(): void {
     const active = this.sessions.find((s) => s.isActive);
+
     if (active) this.selectedSession = active;
 
     this.speakersSub = this.fs.getSessions().subscribe((sessions: any) => {
-      this.sessions = sessions;
+     this.sessions = sessions.filter((session:any) => session.isActive === true);
+
+
+      if (isPlatformBrowser(this.platformId)) {
+        const selectedId = sessionStorage.getItem('selectedSession');
+        if (selectedId) {
+          this.selectedSession = this.sessions.find((s) => s.id.toString() === selectedId);
+            this.selectedSlide = this.getUrl(this.selectedSession?.slides!)!;
+            this.safeSlideUrl = this.selectedSlide
+              ? this.sanitizer.bypassSecurityTrustResourceUrl(this.selectedSlide)
+              : null;
+        }
+      }
     });
   }
 
   getSafeUrl(url: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
-
-  ngOnDestroy(): void {
-    if (this.popupWindow && !this.popupWindow.closed) {
-      this.popupWindow.close();
-    }
-    if (this.speakersSub) this.speakersSub.unsubscribe();
+  statusChange() {
+    this.isActive = !this.isActive;
   }
 
   // Drag events
@@ -336,7 +504,11 @@ export default class Presentation {
   }
   onSessionChange(session: Session<Timestamp> | null) {
     this.selectedSlide = this.getUrl(session?.slides!)!;
-    console.log('url', this.selectedSession);
+     this.isVisible = true;
+    if (isPlatformBrowser(this.platformId)) {
+      sessionStorage.setItem('selectedSession', this.selectedSession?.id ?? '');
+     
+    }
     this.safeSlideUrl = this.selectedSlide
       ? this.sanitizer.bypassSecurityTrustResourceUrl(this.selectedSlide)
       : null;
@@ -356,6 +528,7 @@ export default class Presentation {
   onMouseUp() {
     this.dragging = false;
   }
+  isActive = true;
 
   getUrl(url: string) {
     const srcMatch = url.match(/src="([^"]+)"/);
@@ -393,5 +566,12 @@ export default class Presentation {
       // IE/Edge
       (elem as any).msRequestFullscreen();
     }
+  }
+
+  ngOnDestroy(): void {
+    if (this.popupWindow && !this.popupWindow.closed) {
+      this.popupWindow.close();
+    }
+    if (this.speakersSub) this.speakersSub.unsubscribe();
   }
 }
