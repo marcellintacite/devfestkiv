@@ -5,6 +5,7 @@ import { SessionForm } from '../session-form/session-form';
 import Questions from '../../questions/questions';
 import { FirestoreService } from '../../../../services/firestore';
 import { Timestamp } from '@angular/fire/firestore';
+import {Session,questionInterface} from '../../../../models/session-model';
 
 
 @Component({
@@ -13,111 +14,117 @@ import { Timestamp } from '@angular/fire/firestore';
   imports: [CommonModule, FormsModule, SessionForm, Questions],
   template: `
     <div
-      class="cursor-pointer hover:shadow-lg transition-all duration-300 border rounded-lg p-4 shadow"
+      class="relative cursor-pointer rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl group"
       [ngClass]="getBorderColor('Dev Track')"
     >
-      <!-- Header -->
-      <div class="pb-3">
-        <div class="flex items-start justify-between gap-2 mb-2">
-          <span
-            class="text-xs font-bold px-2 py-1 rounded"
-            [ngClass]="getBadgeColor(session.track)"
-          >
-            {{ session.track }}
-          </span>
-          <span class="text-xs text-gray-500 font-mono">{{ session.time }}</span>
-        </div>
+      <!-- Image de fond -->
+      <div
+        class="absolute inset-0 bg-cover bg-center opacity-100 transition-all duration-300 group-hover:opacity-100"
+        [ngStyle]="{
+          'background-image': 'url(' + 'assets/back.png' + ')'
+        }"
+      ></div>
 
-        <h3 class="text-lg font-semibold leading-tight mb-1">{{ session.theme }}</h3>
+      <!-- Couche blanche translucide pour lisibilité -->
+      <div class="absolute inset-0 bg-white/70 backdrop-blur-[1px]"></div>
 
-        <div class="text-sm text-gray-600 mb-2">
-          <div class="flex items-center gap-1 mb-1">
-            <span class="material-icons text-[16px]">person</span>
-            <span class="font-medium">{{ session.speaker }}</span>
+      <!-- Contenu principal -->
+      <div class="relative z-10 p-6 flex flex-col justify-between min-h-[300px] text-gray-800">
+        <!-- Header -->
+        <div>
+          <div class="flex items-start justify-between mb-3">
+            <span
+              class="text-xs font-bold px-2 py-1 rounded-full bg-gray-100 border border-gray-300"
+              [ngClass]="getBadgeColor(session.track)"
+            >
+              {{ session.track }}
+            </span>
+            <span class="text-xs text-gray-600 font-mono">{{ session.time }}</span>
           </div>
-          <span class="text-xs text-gray-500">{{ session.title }}</span>
+
+          <!-- Thème (agrandi) -->
+          <h3 class="text-2xl font-extrabold leading-snug mb-2 text-gray-900 tracking-tight">
+            {{ session.theme }}
+          </h3>
+
+          <!-- Speaker -->
+          <div class="text-sm text-gray-700 mb-3">
+            <div class="flex items-center gap-2">
+              <span class="material-icons text-[18px] text-gray-500">person</span>
+              <span class="font-medium">{{ session.speaker }}</span>
+            </div>
+            <p class="text-xs italic text-gray-500">{{ session.title }}</p>
+          </div>
         </div>
-      </div>
 
-      <!-- Description -->
-      <div class="pt-0">
-        <p class="text-sm text-gray-600 mb-4">{{ session.description }}</p>
+        <!-- Description -->
+        <p class="text-sm text-gray-700 mb-4 line-clamp-3">
+          {{ session.description }}
+        </p>
 
-        <!-- Session Controls -->
-        <div class="space-y-3">
-          <!-- Status Toggle -->
-          <div class="flex items-center justify-between">
-            <span class="text-sm font-medium">Statut de la session</span>
-            <div class="flex items-center gap-2 cursor-pointer" (click)="statusChange(session)">
+        <!-- Statut de la session -->
+        <div class="flex items-center justify-between border-t border-gray-200 pt-3 pb-2">
+          <span class="text-sm font-medium text-gray-700">Statut de la session</span>
+          <div class="flex items-center gap-2 cursor-pointer" (click)="statusChange(session)">
+            <!-- Switch -->
+            <div
+              class="relative w-12 h-6 rounded-full transition-all duration-300"
+              [ngClass]="session.isActive ? 'bg-green-500' : 'bg-gray-300'"
+            >
               <div
-                class="w-12 h-6 rounded-full transition-colors"
-                [ngClass]="session.isActive ? 'bg-green-500' : 'bg-gray-300'"
+                class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transform transition-all duration-300"
+                [ngClass]="session.isActive ? 'translate-x-6' : 'translate-x-0'"
               ></div>
-              <span
-                class="text-xs font-medium"
-                [ngClass]="session.isActive ? 'text-green-600' : 'text-gray-500'"
-              >
-                {{ session.isActive ? 'Active' : 'Terminée' }}
-              </span>
             </div>
+            <span
+              class="text-xs font-semibold transition-colors duration-300"
+              [ngClass]="session.isActive ? 'text-green-600' : 'text-gray-500'"
+            >
+              {{ session.isActive ? 'Encours' : 'Terminée' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Footer / Actions -->
+        <div
+          class="flex flex-wrap items-center justify-between gap-3 border-t border-gray-200 pt-3"
+        >
+          <!-- Questions -->
+          <div class="flex items-center gap-2 text-sm text-gray-600">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-5 h-5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 0 1 1.037-.443 48.282 48.282 0 0 0 5.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
+              />
+            </svg>
+            <span>{{ session.questions?.length || 0 }} question(s)</span>
           </div>
 
-          <!-- Questions & Voir Button -->
-          <div class="flex items-center justify-between pt-2 border-t">
-            <div class="flex items-center gap-2 text-sm">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="size-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 0 1 1.037-.443 48.282 48.282 0 0 0 5.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
-                />
-              </svg>
-
-              <span>{{ session.questions ? session.questions.length : 0 }} question(s)</span>
-            </div>
-
+          <!-- Boutons -->
+          <div class="flex items-center gap-2">
             <button
               (click)="vieuwDialog(session)"
-              class="text-sm text-blue-600 hover:underline flex items-center gap-1"
+              class="px-3 py-1.5 text-xs font-semibold bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="size-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
-                />
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                />
-              </svg>
-
               Voir
             </button>
             <button
-              class="px-3 py-1 text-sm bg-yellow-400 text-white rounded hover:bg-yellow-500"
               (click)="editSession(session)"
+              class="px-3 py-1.5 text-xs font-semibold bg-yellow-400 hover:bg-yellow-500 text-black rounded-lg transition"
             >
               Modifier
             </button>
             <button
-              class="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
               (click)="deleteSession(session)"
+              class="px-3 py-1.5 text-xs font-semibold bg-red-500 hover:bg-red-600 text-white rounded-lg transition"
             >
               Supprimer
             </button>
@@ -125,6 +132,7 @@ import { Timestamp } from '@angular/fire/firestore';
         </div>
       </div>
     </div>
+
     @if(showForm){
     <app-session-form
       [sessionToEdit]="selectedSession"
@@ -135,6 +143,7 @@ import { Timestamp } from '@angular/fire/firestore';
       [sessionTitle]="sessionSelectionnee.title"
       [initialQuestions]="sessionSelectionnee.questions ? sessionSelectionnee.questions : []"
       (close)="dialogOuvert = false"
+      (questionSubmitted)="onQuestionSubmit($event)"
     ></app-questions>
     }
   `,
@@ -149,6 +158,7 @@ export class Card {
   selectedSession?: any;
   dialogOuvert = false;
   sessionSelectionnee: any;
+  
 
   getBadgeColor(track: string) {
     const colors: Record<string, string> = {
@@ -192,9 +202,14 @@ export class Card {
     return colors[track] || 'border-gray-200';
   }
 
+  
+    onQuestionSubmit(question: questionInterface) {
+      this.session.questions.push(question);
+      this.fs.setSession(this.session);
+    }
+
   vieuwDialog(session: any) {
     this.sessionSelectionnee = session;
-
     this.dialogOuvert = true;
   }
 }

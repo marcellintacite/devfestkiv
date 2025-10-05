@@ -1,4 +1,9 @@
-interface Session<T> {
+export interface questionInterface{
+  contenu: string;
+  time: string
+}
+
+export interface Session<T> {
   id: string;
   title: string;
   speaker: string;
@@ -6,7 +11,7 @@ interface Session<T> {
   time: string;
   track: string;
   slides: string;
-  questions: { contenu: string; time: string }[];
+  questions: questionInterface[];
   description: string;
   isActive: boolean;
   createAt: T;

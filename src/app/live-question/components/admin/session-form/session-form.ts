@@ -1,13 +1,14 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { FirestoreService } from '../../../../services/firestore';
 import { FieldValue } from '@angular/fire/firestore';
+import {Session} from '../../../../models/session-model';
 
 @Component({
   selector: 'app-session-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   template: `
     <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg shadow-lg w-200 p-6 relative">
@@ -30,7 +31,7 @@ import { FieldValue } from '@angular/fire/firestore';
           </div>
 
           <div>
-            <label class="block text-sm font-medium mb-1">Speaker</label>
+            <label class="block text-sm font-medium mb-1">Nom du Speaker</label>
             <input
               type="text"
               [(ngModel)]="session.speaker"
@@ -42,7 +43,7 @@ import { FieldValue } from '@angular/fire/firestore';
           </div>
 
           <div>
-            <label class="block text-sm font-medium mb-1">Titre</label>
+            <label class="block text-sm font-medium mb-1">Titre du Speaker</label>
             <input
               type="text"
               [(ngModel)]="session.title"
@@ -101,12 +102,7 @@ import { FieldValue } from '@angular/fire/firestore';
           </div>
         </form>
 
-        <button
-          (click)="closeForm()"
-          class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl font-bold"
-        >
-          &times;
-        </button>
+       
 
         <div class="flex justify-end gap-2 mt-4">
           <button (click)="closeForm()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
@@ -124,7 +120,7 @@ import { FieldValue } from '@angular/fire/firestore';
   `,
   styles: [``],
 })
-export class SessionForm<T>  {
+export class SessionForm<T> {
   @Input() sessionToEdit?: Session<T>;
   @Output() closed = new EventEmitter<boolean>();
 
@@ -132,15 +128,11 @@ export class SessionForm<T>  {
   editingSession: boolean = false;
   private fs = inject(FirestoreService);
 
-
   ngOnInit(): void {
     if (this.sessionToEdit) {
-    this.session=this.sessionToEdit
+      this.session = this.sessionToEdit;
+    }
   }
- 
-  
-}
-
 
   private getEmptySession(): Session<T> {
     const now = new Date() as any;
@@ -162,11 +154,12 @@ export class SessionForm<T>  {
   }
 
   submitForm() {
-    this.session.id= this.session.id != '' ? this.session.id : this.fs.createDocId(`sessions`);
-    this.session.createAt = this.session.id != '' ?this.session.createAt: new Date() as any;
+    this.session.id = this.session.id != '' ? this.session.id : this.fs.createDocId(`sessions`);
+    this.session.createAt =
+      this.session.createAt != '' ? this.session.createAt : (new Date() as any);
     this.session.updateAt = new Date() as any;
     this.fs.setSession(this.session as Session<FieldValue>);
-  
+
     this.closeForm();
   }
 
