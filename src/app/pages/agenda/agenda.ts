@@ -20,23 +20,15 @@ export default class AgendaComponent {
   days = [
     {
       id: 'day1',
-      name: 'Day 1',
+      name: 'DevFest Kivu',
       date: '23 Oct',
       fullDate: 'Jeudi 23 Octobre 2025',
       location: 'Centre de Conférences DevFest',
       isActive: true,
     },
-    {
-      id: 'day2',
-      name: 'Day 2',
-      date: '24 Oct',
-      fullDate: 'Vendredi 24 Octobre 2025',
-      location: 'Centre de Conférences DevFest',
-      isActive: false,
-    },
   ];
 
-  // Données structurées avec colonnes Web/Mobile pour Day 1
+  // Données avec colonnes Web/Mobile
   eventsData = {
     day1: {
       Web: [
@@ -116,59 +108,6 @@ export default class AgendaComponent {
         { time: '03:30 - 03:45', title: 'Mobile Wrap-up', speaker: '', category: 'Closing' },
       ],
     },
-    day2: [
-      {
-        time: '07:00 - 08:00',
-        title: 'Breakfast & Sessions with Exhibitors',
-        speaker: '',
-        category: 'Break',
-      },
-      {
-        time: '08:00 - 09:00',
-        title: 'Day 2 Opening Keynote',
-        speaker: 'Tech Leader',
-        category: 'Keynote',
-      },
-      {
-        time: '09:30 - 10:00',
-        title: 'Cloud Technologies & Future',
-        speaker: 'Cloud Expert',
-        category: 'Conference',
-      },
-      { time: '10:00 - 10:15', title: 'Coffee Break', speaker: '', category: 'Break' },
-      {
-        time: '10:15 - 11:30',
-        title: 'AI & Machine Learning',
-        speaker: 'AI Specialist',
-        category: 'Workshop',
-      },
-      {
-        time: '11:30 - 12:15',
-        title: 'DevOps Best Practices',
-        speaker: 'DevOps Engineer',
-        category: 'Talk',
-      },
-      { time: '12:15 - 01:00', title: 'Lunch & Networking', speaker: '', category: 'Break' },
-      {
-        time: '01:00 - 02:00',
-        title: 'Open Source Contributions',
-        speaker: 'OSS Maintainer',
-        category: 'Workshop',
-      },
-      {
-        time: '02:45 - 03:15',
-        title: 'Panel Discussion',
-        speaker: 'Industry Experts',
-        category: 'Talk',
-      },
-      { time: '03:15 - 03:30', title: 'Final Networking', speaker: '', category: 'Break' },
-      {
-        time: '03:30 - 03:45',
-        title: 'Closing Ceremony',
-        speaker: 'Organizers',
-        category: 'Talk',
-      },
-    ],
   };
 
   get currentDay() {
@@ -176,14 +115,13 @@ export default class AgendaComponent {
   }
 
   selectDay(index: number) {
-    this.currentDayIndex = Math.max(0, Math.min(index, this.days.length - 1));
-    this.days.forEach((day, i) => {
-      day.isActive = i === this.currentDayIndex;
-    });
+    // Un seul jour disponible, pas besoin de logique complexe
+    this.currentDayIndex = 0;
+    this.days[0].isActive = true;
   }
 
-  // Couleurs Google pour les badges
-  //
+  // Couleurs Google pour les badges à modifier si besoin
+
   getBadgeColor(category: string): string {
     const colors: { [key: string]: string } = {
       Break: 'bg-gray-100 text-gray-700 border border-gray-300',
@@ -197,7 +135,7 @@ export default class AgendaComponent {
     return colors[category] || 'bg-gray-100 text-gray-700 border border-gray-300';
   }
 
-  // Méthodes pour récupérer les événements
+  // Méthodes pour récupérer les événements depuis json
   getWebEvents(): Event[] {
     if (this.currentDay.id === 'day1') {
       const day1Data = this.eventsData['day1'] as Record<string, Event[]>;
@@ -210,13 +148,6 @@ export default class AgendaComponent {
     if (this.currentDay.id === 'day1') {
       const day1Data = this.eventsData['day1'] as Record<string, Event[]>;
       return day1Data['Mobile'] || [];
-    }
-    return [];
-  }
-
-  getDayTwoEvents(): Event[] {
-    if (this.currentDay.id === 'day2') {
-      return this.eventsData['day2'] as Event[];
     }
     return [];
   }

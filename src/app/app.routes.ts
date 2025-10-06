@@ -26,5 +26,5 @@ export const routes: Routes = [
     path: 'dp-generator',
     loadComponent: () => import('./pages/dp-generator/dp-generator').then((m) => m.default),
   },
-  { path: '**', redirectTo: '/' },
+  
 ];
