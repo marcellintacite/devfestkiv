@@ -130,23 +130,6 @@
     </div>
 
     <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
-        @if (personnalizer()) {
-        <div class="flex flex-col items-center mb-10">
-            <label for="eventDate" class="text-lg font-semibold text-text mb-3">
-                Choisissez la date et l'heure du Jour J :
-            </label>
-            <input id="eventDate" type="datetime-local"
-                class="border-2 border-primary rounded-lg px-4 py-2 text-lg text-text focus:outline-none focus:ring-2 focus:ring-primary"
-                [ngModel]="targetDateTimeString()" (ngModelChange)="targetDateTimeString.set($event)" />
-        </div>
-
-        <div class="flex justify-center">
-            <button class="btn btn-primary btn-lg w-full sm:w-auto" (click)="startCountdown()">
-                Démarrer le compte à rebours
-            </button>
-        </div>
-        }
-        @else {
         <h2 class="text-xl md:text-2xl text-text/80 mb-10">
             Jour J <strong class="text-primary font-bold">- {{ daysLeft() }}</strong>
         </h2>
@@ -156,7 +139,7 @@
             <!-- Days -->
             <div class="flex flex-col items-center">
                 <div class="rounded-2xl shadow-xl w-32 h-32 flex items-center justify-center transform hover:scale-105 transition-all"
-                    [class]="daysLeft()==0&&hours()==0&&minutes()==0&&seconde()==0 ? 'bg-red-800 text-white' : 'bg-gradient-to-b from-gray-600 to-gray-800 text-white'">
+                    [class]="!countdownRunning() ? 'bg-red-800 text-white' : 'bg-gradient-to-b from-gray-600 to-gray-800 text-white'">
                     <span class="text-5xl font-mono font-black text-white">{{ formatTime(daysLeft()) }}</span>
                 </div>
                 <div class="mt-3 text-sm md:text-base text-primary font-semibold uppercase">Jours</div>
@@ -165,7 +148,7 @@
             <!-- Hours -->
             <div class="flex flex-col items-center">
                 <div class="rounded-2xl shadow-xl w-32 h-32 flex items-center justify-center transform hover:scale-105 transition-all"
-                    [class]="daysLeft()==0&&hours()==0&&minutes()==0&&seconde()==0 ? 'bg-red-800 text-white' : 'bg-gradient-to-b from-gray-600 to-gray-800 text-white'">
+                    [class]="!countdownRunning() ? 'bg-red-800 text-white' : 'bg-gradient-to-b from-gray-600 to-gray-800 text-white'">
                     <span class="text-5xl font-mono font-black text-white">{{ formatTime(hours()) }}</span>
                 </div>
                 <div class="mt-3 text-sm md:text-base text-primary font-semibold uppercase">Heures</div>
@@ -174,7 +157,7 @@
             <!-- Minutes -->
             <div class="flex flex-col items-center">
                 <div class="rounded-2xl shadow-xl w-32 h-32 flex items-center justify-center transform hover:scale-105 transition-all"
-                    [class]="daysLeft()==0&&hours()==0&&minutes()==0&&seconde()==0 ? 'bg-red-800 text-white' : 'bg-gradient-to-b from-gray-600 to-gray-800 text-white'">
+                    [class]="!countdownRunning() ? 'bg-red-800 text-white' : 'bg-gradient-to-b from-gray-600 to-gray-800 text-white'">
                     <span class="text-5xl font-mono font-black text-white">{{ formatTime(minutes()) }}</span>
                 </div>
                 <div class="mt-3 text-sm md:text-base text-primary font-semibold uppercase">Minutes</div>
@@ -183,7 +166,7 @@
             <!-- Secondes -->
             <div class="flex flex-col items-center">
                 <div class="rounded-2xl shadow-xl w-32 h-32 flex items-center justify-center transform hover:scale-105 transition-all"
-                    [class]="daysLeft()==0&&hours()==0&&minutes()==0&&seconde()==0 ? 'bg-red-800 text-white' : 'bg-gradient-to-b from-gray-600 to-gray-800 text-white'">
+                    [class]="!countdownRunning() ? 'bg-red-800 text-white' : 'bg-gradient-to-b from-gray-600 to-gray-800 text-white'">
                     <span class="text-5xl font-mono font-black text-white">{{ formatTime(seconde()) }}</span>
                 </div>
                 <div class="mt-3 text-sm md:text-base text-primary font-semibold uppercase">Secondes</div>
@@ -192,7 +175,6 @@
 
         <!-- Bouton -->
         <div class="flex justify-center">
-            @if (countdownRunning()) {
             <a [routerLink]="'/agenda'" class="btn btn-primary btn-lg group">
                 <span>Voir le programme</span>
                 <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none"
@@ -201,14 +183,7 @@
                     </path>
                 </svg>
             </a>
-            }
-            @else {
-            <button class="btn btn-primary btn-lg w-full sm:w-auto" (click)="openPersonnaliser()">
-                Choisissez un nouveau jour J
-            </button>
-            }
         </div>
-        }
     </div>
 </section>
 <!-- Impact Section -->

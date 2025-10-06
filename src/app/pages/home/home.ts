@@ -1,10 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import PastEventsGallery from '../../components/past-events-gallery/past-events-gallery';
 import { RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-home',
-  imports: [PastEventsGallery, RouterLink, FormsModule],
+  imports: [PastEventsGallery, RouterLink],
   templateUrl: 'home.html',
   styles: `
     .video-wrapper {
@@ -27,24 +26,22 @@ import { FormsModule } from '@angular/forms';
     }
   `,
 })
-export default class HomeComponent {
+export default class HomeComponent implements OnInit, OnDestroy {
   seconde = signal(0);
   minutes = signal(0);
   hours = signal(0);
   daysLeft = signal(0);
 
-  targetDateTimeString = signal('');
-  targetTimestamp = signal<number | null>(null);
-
-  personnalizer = signal(false);
+  targetDateTimeString = signal('2025-10-06T13:47:00');
   countdownRunning = signal(false);
 
   private countdownInterval: any;
   private endTime = 0;
   private readonly STORAGE_KEY = 'countdown_end_time';
 
-  constructor() {
+  ngOnInit(): void {
     this.initializeCountdown();
+    this.startCountdown();
   }
 
   private initializeCountdown(): void {
@@ -77,14 +74,11 @@ export default class HomeComponent {
       alert('La date du jour J doit être dans le futur !');
       return;
     }
-
-    this.targetTimestamp.set(target);
     this.endTime = target;
     localStorage.setItem(this.STORAGE_KEY, this.endTime.toString());
 
     this.updateEventDayFromTarget();
 
-    this.personnalizer.set(false);
     this.countdownRunning.set(true);
 
     this.updateTimeDisplay();
@@ -127,7 +121,6 @@ export default class HomeComponent {
   private finishCountdown(): void {
     this.stopInterval();
     this.countdownRunning.set(false);
-    this.personnalizer.set(false);
 
     this.daysLeft.set(0);
     this.hours.set(0);
@@ -137,12 +130,12 @@ export default class HomeComponent {
     localStorage.removeItem(this.STORAGE_KEY);
   }
 
-  openPersonnaliser(): void {
-    this.personnalizer.set(true);
-  }
-
   formatTime(value: number): string {
     return String(value).padStart(2, '0');
+  }
+
+  ngOnDestroy(): void {
+    this.stopInterval();
   }
 
   NowDate = new Date();
