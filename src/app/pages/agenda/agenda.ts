@@ -41,43 +41,133 @@ export default class AgendaComponent {
     day1: {
       Web: [
         { time: '07:00 - 08:00', title: 'Breakfast (Petit)', speaker: '', category: 'Break' },
-        { time: '08:00 - 09:00', title: 'Introduction and Overview', speaker: 'John Doe, Google Developer', category: 'Conference' },
-        { time: '09:30 - 10:00', title: 'Breaking the Barriers: Building the Future People', speaker: 'Sarah Johnson', category: 'Keynote' },
+        {
+          time: '08:00 - 09:00',
+          title: 'Introduction and Overview',
+          speaker: 'John Doe, Google Developer',
+          category: 'Conference',
+        },
+        {
+          time: '09:30 - 10:00',
+          title: 'Breaking the Barriers: Building the Future People',
+          speaker: 'Sarah Johnson',
+          category: 'Keynote',
+        },
         { time: '10:00 - 10:15', title: 'Coffee Break', speaker: '', category: 'Break' },
-        { time: '10:15 - 11:30', title: 'Modern Web Frameworks', speaker: 'Alex Wilson', category: 'Workshop' },
-        { time: '11:30 - 12:15', title: 'Progressive Web Apps', speaker: 'Maria Rodriguez', category: 'Talk' },
+        {
+          time: '10:15 - 11:30',
+          title: 'Modern Web Frameworks',
+          speaker: 'Alex Wilson',
+          category: 'Workshop',
+        },
+        {
+          time: '11:30 - 12:15',
+          title: 'Progressive Web Apps',
+          speaker: 'Maria Rodriguez',
+          category: 'Talk',
+        },
         { time: '12:15 - 01:00', title: 'Lunch', speaker: '', category: 'Break' },
-        { time: '01:00 - 02:00', title: 'Web Performance Optimization', speaker: 'David Kim', category: 'Workshop' },
+        {
+          time: '01:00 - 02:00',
+          title: 'Web Performance Optimization',
+          speaker: 'David Kim',
+          category: 'Workshop',
+        },
         { time: '02:45 - 03:15', title: 'Q&A Session', speaker: '', category: 'Discussion' },
         { time: '03:15 - 03:30', title: 'Networking Break', speaker: '', category: 'Break' },
         { time: '03:30 - 03:45', title: 'Day 1 Wrap-up', speaker: '', category: 'Closing' },
       ],
       Mobile: [
         { time: '07:00 - 08:00', title: 'Breakfast (Mobile)', speaker: '', category: 'Break' },
-        { time: '08:00 - 09:00', title: 'Mobile Development Overview', speaker: 'Emma Thompson', category: 'Conference' },
-        { time: '09:30 - 10:00', title: 'Flutter vs React Native', speaker: 'Michael Chen', category: 'Keynote' },
+        {
+          time: '08:00 - 09:00',
+          title: 'Mobile Development Overview',
+          speaker: 'Emma Thompson',
+          category: 'Conference',
+        },
+        {
+          time: '09:30 - 10:00',
+          title: 'Flutter vs React Native',
+          speaker: 'Michael Chen',
+          category: 'Keynote',
+        },
         { time: '10:00 - 10:15', title: 'Coffee Break', speaker: '', category: 'Break' },
-        { time: '10:15 - 11:30', title: 'Native iOS Development', speaker: 'Lisa Park', category: 'Workshop' },
-        { time: '11:30 - 12:15', title: 'Android Jetpack Compose', speaker: 'Robert Taylor', category: 'Talk' },
+        {
+          time: '10:15 - 11:30',
+          title: 'Native iOS Development',
+          speaker: 'Lisa Park',
+          category: 'Workshop',
+        },
+        {
+          time: '11:30 - 12:15',
+          title: 'Android Jetpack Compose',
+          speaker: 'Robert Taylor',
+          category: 'Talk',
+        },
         { time: '12:15 - 01:00', title: 'Lunch Break', speaker: '', category: 'Break' },
-        { time: '01:00 - 02:00', title: 'Mobile App Security', speaker: 'Jennifer White', category: 'Workshop' },
+        {
+          time: '01:00 - 02:00',
+          title: 'Mobile App Security',
+          speaker: 'Jennifer White',
+          category: 'Workshop',
+        },
         { time: '02:45 - 03:15', title: 'Mobile Q&A', speaker: '', category: 'Discussion' },
         { time: '03:15 - 03:30', title: 'Networking', speaker: '', category: 'Break' },
         { time: '03:30 - 03:45', title: 'Mobile Wrap-up', speaker: '', category: 'Closing' },
       ],
     },
     day2: [
-      { time: '07:00 - 08:00', title: 'Breakfast & Sessions with Exhibitors', speaker: '', category: 'Break' },
-      { time: '08:00 - 09:00', title: 'Day 2 Opening Keynote', speaker: 'Tech Leader', category: 'Keynote' },
-      { time: '09:30 - 10:00', title: 'Cloud Technologies & Future', speaker: 'Cloud Expert', category: 'Conference' },
+      {
+        time: '07:00 - 08:00',
+        title: 'Breakfast & Sessions with Exhibitors',
+        speaker: '',
+        category: 'Break',
+      },
+      {
+        time: '08:00 - 09:00',
+        title: 'Day 2 Opening Keynote',
+        speaker: 'Tech Leader',
+        category: 'Keynote',
+      },
+      {
+        time: '09:30 - 10:00',
+        title: 'Cloud Technologies & Future',
+        speaker: 'Cloud Expert',
+        category: 'Conference',
+      },
       { time: '10:00 - 10:15', title: 'Coffee Break', speaker: '', category: 'Break' },
-      { time: '10:15 - 11:30', title: 'AI & Machine Learning', speaker: 'AI Specialist', category: 'Workshop' },
-      { time: '11:30 - 12:15', title: 'DevOps Best Practices', speaker: 'DevOps Engineer', category: 'Talk' },
+      {
+        time: '10:15 - 11:30',
+        title: 'AI & Machine Learning',
+        speaker: 'AI Specialist',
+        category: 'Workshop',
+      },
+      {
+        time: '11:30 - 12:15',
+        title: 'DevOps Best Practices',
+        speaker: 'DevOps Engineer',
+        category: 'Talk',
+      },
       { time: '12:15 - 01:00', title: 'Lunch & Networking', speaker: '', category: 'Break' },
-      { time: '01:00 - 02:00', title: 'Open Source Contributions', speaker: 'OSS Maintainer', category: 'Workshop' },
-      { time: '02:45 - 03:15', title: 'Panel Discussion', speaker: 'Industry Experts', category: 'Discussion' },
+      {
+        time: '01:00 - 02:00',
+        title: 'Open Source Contributions',
+        speaker: 'OSS Maintainer',
+        category: 'Workshop',
+      },
+      {
+        time: '02:45 - 03:15',
+        title: 'Panel Discussion',
+        speaker: 'Industry Experts',
+        category: 'Talk',
+      },
       { time: '03:15 - 03:30', title: 'Final Networking', speaker: '', category: 'Break' },
-      { time: '03:30 - 03:45', title: 'Closing Ceremony', speaker: 'Organizers', category: 'Closing' },
+      {
+        time: '03:30 - 03:45',
+        title: 'Closing Ceremony',
+        speaker: 'Organizers',
+        category: 'Talk',
+      },
     ],
   };
 
@@ -93,6 +183,7 @@ export default class AgendaComponent {
   }
 
   // Couleurs Google pour les badges
+  //
   getBadgeColor(category: string): string {
     const colors: { [key: string]: string } = {
       Break: 'bg-gray-100 text-gray-700 border border-gray-300',
@@ -100,8 +191,8 @@ export default class AgendaComponent {
       Keynote: 'bg-green-100 text-green-700 border border-green-300',
       Workshop: 'bg-yellow-100 text-yellow-700 border border-yellow-300',
       Talk: 'bg-red-100 text-red-700 border border-red-300',
-      Discussion: 'bg-purple-100 text-purple-700 border border-purple-300',
-      Closing: 'bg-orange-100 text-orange-700 border border-orange-300',
+      // Discussion: 'bg-red-100 text-red-700 border border-red-300',
+      // Closing: 'bg-orange-100 text-orange-700 border border-orange-300',
     };
     return colors[category] || 'bg-gray-100 text-gray-700 border border-gray-300';
   }
