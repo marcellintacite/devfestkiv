@@ -4,6 +4,7 @@ import { SessionForm } from './session-form/session-form';
 import { FirestoreService } from '../../../services/firestore';
 import { Subscription } from 'rxjs';
 import { Timestamp } from '@angular/fire/firestore';
+import {Session} from '../../../models/session-model';
 
 
 @Component({
@@ -73,5 +74,10 @@ export default class AdminComponent {
   onFormClosed() {
     this.showForm = false;
     this.selectedSession = undefined;
+  }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.speakersSub.unsubscribe()
   }
 }

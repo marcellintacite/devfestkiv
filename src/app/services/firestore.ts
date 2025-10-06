@@ -1,5 +1,6 @@
 import { EnvironmentInjector, inject, Injectable, runInInjectionContext } from '@angular/core';
 import { collection, collectionData, deleteDoc, doc, FieldValue, Firestore, setDoc } from '@angular/fire/firestore';
+import {Session} from '../models/session-model';
 
 @Injectable({
   providedIn: 'root',
@@ -7,7 +8,7 @@ import { collection, collectionData, deleteDoc, doc, FieldValue, Firestore, setD
 export class FirestoreService {
   private readonly fs = inject(Firestore);
   private readonly _injector: EnvironmentInjector = inject(EnvironmentInjector);
-  private sessionsCol = collection(this.fs, `sessions`);
+  private readonly sessionsCol = collection(this.fs, `sessions`);
   createDocId = (colName: string) => doc(collection(this.fs, colName)).id;
 
   getSessions() {

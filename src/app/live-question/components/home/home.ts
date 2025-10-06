@@ -1,16 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import Questions from '../questions/questions';
+import {questionInterface, Session} from '../../../models/session-model';
+import {Timestamp} from '@angular/fire/firestore';
+import {FirestoreService} from '../../../services/firestore';
 
-interface Session {
-  id: number;
-  title: string;
-  speaker: string;
-  time: string;
-  theme: string;
-  track: string;
-  description: string;
-}
 @Component({
   selector: 'app-home',
   imports: [CommonModule, Questions],
@@ -38,7 +32,7 @@ interface Session {
                 <path
                   d="M20,10 L40,5 L60,10 L80,5 L100,10 L120,5 L140,10 L160,5 L180,10"
                   stroke="#FBBC04"
-                  strokeWidth="2"
+                  stroke-width="2"
                   fill="none"
                 />
                 <circle cx="30" cy="10" r="2" fill="#4285F4" />
@@ -78,8 +72,8 @@ interface Session {
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 
-               9.77 0 01-4-.8l-4 1 1-3.6A7.7 7.7 0 013 12c0-4.418 4.03-8 9-8s9 
+                    d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77
+               9.77 0 01-4-.8l-4 1 1-3.6A7.7 7.7 0 013 12c0-4.418 4.03-8 9-8s9
                3.582 9 8z"
                   />
                 </svg>
@@ -203,42 +197,56 @@ interface Session {
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-        @for(session of activeSessions;track $index){
+        @for (session of activeSessions; track $index) {
         <div
-          class="card-session p-6 rounded-xl shadow-lg flex flex-col items-center relative overflow-hidden"
+          (click)="openDialog(session)"
+          class="card-session p-6 rounded-xl shadow-lg flex flex-col items-center relative overflow-hidden cursor-pointer hover:shadow-2xl transition duration-300"
         >
           <!-- Fond léger -->
           <div class="absolute inset-0 bg-gray-50 opacity-20 z-0"></div>
 
           <!-- Contenu -->
           <div class="relative z-10 flex flex-col items-center">
+            <!-- Image du speaker -->
+            <img
+              [src]="'assets/devfest.png'"
+              alt="{{ session.speaker }}"
+              class="w-50 h-50 rounded-xl object-cover mb-4 border-none shadow-md"
+            />
+
             <!-- Nom du speaker -->
-            <h3 class="text-xl font-bold mb-1 text-center">{{ session.speaker }}</h3>
+            <h3 class="text-xl font-bold mb-1 text-center text-gray-900">
+              {{ session.speaker }}
+            </h3>
 
             <!-- Titre de la session -->
-            <p class="text-sm text-gray-700 mb-4 text-center">{{ session.title }}</p>
+            <p class="text-sm text-gray-700 mb-4 text-center">
+              {{ session.title }}
+            </p>
 
             <!-- Bouton Question -->
             <button
               class="px-4 py-2 rounded-md text-white font-semibold transition transform hover:scale-105"
               [ngStyle]="{ 'background-color': getTrackColor('Infrastructure') }"
-              (click)="openDialog()"
+              (click)="openDialog(session)"
             >
               Question
             </button>
           </div>
         </div>
+
         }
       </div>
     </main>
 
+    @if (dialogOuvert) {
     <app-questions
-      *ngIf="dialogOuvert"
-      [sessionTitle]="sessionSelectionnee.title"
-      [initialQuestions]="sessionSelectionnee.questions"
+      [sessionTitle]="SelectedSession.title"
+      [initialQuestions]="SelectedSession.questions"
       (close)="dialogOuvert = false"
       (questionSubmitted)="onQuestionSubmit($event)"
     ></app-questions>
+    }
   `,
   styles: `
   @keyframes moveX {
@@ -295,38 +303,17 @@ interface Session {
 
   `,
 })
-export default class Home {
+export default class Home implements OnInit {
+  ngOnInit(): void {
+    let sessionListRef = this.FireStore.getSessions();
+    let sessionList: Session<Timestamp>[] = [];
+    sessionListRef.forEach((e: Session<Timestamp>[]) => (this.activeSessions = e));
+  }
+  private readonly FireStore = inject(FirestoreService);
   // Fake data pour tester
   dialogOuvert = false;
-  activeSessions: Session[] = [
-    {
-      id: 1,
-      title: "L'IA générative au service de l’éducation",
-      speaker: 'Jean Kabila',
-      time: '10h00 - 11h00',
-      theme: 'Intelligence Artificielle',
-      track: 'Tech',
-      description: '',
-    },
-    {
-      id: 2,
-      title: 'Construire des apps mobiles modernes avec Flutter',
-      speaker: 'Marie Mbayo',
-      time: '11h30 - 12h30',
-      theme: 'Mobile',
-      track: 'Développement',
-      description: '',
-    },
-    {
-      id: 3,
-      title: 'Sécurité et bonnes pratiques dans le cloud',
-      speaker: 'David Muteba',
-      time: '14h00 - 15h00',
-      theme: 'Cloud',
-      track: 'Infrastructure',
-      description: '',
-    },
-  ];
+
+  activeSessions: Session<Timestamp>[] = [];
 
   getTrackColor(track: string): string {
     switch (track.toLowerCase()) {
@@ -353,19 +340,16 @@ export default class Home {
     };
   }
 
-  sessionSelectionnee = {
-    title: 'Atelier Angular avancé',
-    questions: [
-      'Quelle est la différence entre standalone et NgModule ?',
-      'Est-ce que Angular 20 supporte Signals ?',
-    ],
-  };
+  SelectedSession!: Session<Timestamp>;
 
-  openDialog() {
+  openDialog(session: Session<Timestamp>) {
+    this.SelectedSession = session;
     this.dialogOuvert = true;
   }
 
-  onQuestionSubmit(question: string) {
-    console.log('Nouvelle question soumise :', question);
+  onQuestionSubmit(question: questionInterface) {
+    this.SelectedSession.questions.push(question);
+    //console.log(this.SelectedSession.questions);
+    this.FireStore.setSession(this.SelectedSession);
   }
 }
