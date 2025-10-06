@@ -44,6 +44,30 @@ export default class QaComponent {
       answer:
         "L'équipe fournit des templates et guides. Contacte l'organisation via le formulaire Speakers/Sponsors pour obtenir les ressources.",
     },
+    {
+      id: 5,
+      question: "Qu'est-ce que DevFest Kivu ?",
+      answer:
+        'DevFest Kivu rassemble la communauté tech locale autour de conférences, ateliers et networking. Objectif : partager savoirs et opportunités.',
+    },
+    {
+      id: 6,
+      question: "Comment m'inscrire ?",
+      answer:
+        "Clique sur « S'inscrire maintenant » depuis la page d'accueil et suis la procédure. Tu recevras une confirmation par e-mail.",
+    },
+    {
+      id: 7,
+      question: 'Puis-je proposer un talk ?',
+      answer:
+        'Oui. Soumets ta proposition via le formulaire « Call for Proposals » sur la page Speakers. Respecte les deadlines indiquées.',
+    },
+    {
+      id: 8,
+      question: 'Ressources pour animer un workshop ?',
+      answer:
+        "L'équipe fournit des templates et guides. Contacte l'organisation via le formulaire Speakers/Sponsors pour obtenir les ressources.",
+    },
   ];
 
   // Open only one card at a time
