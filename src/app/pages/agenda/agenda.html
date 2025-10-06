@@ -1,437 +1,231 @@
-<!-- Agenda Section -->
-<section class="agenda-section py-12 md:py-16 lg:py-20 relative overflow-hidden">
-  <style>
-    @keyframes float {
-      0%,
-      100% {
-        transform: translateY(0px) rotate(0deg);
-      }
-      50% {
-        transform: translateY(-10px) rotate(5deg);
-      }
-    }
-    @keyframes slowSpin {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(360deg);
-      }
-    }
-    .animate-float {
-      animation: float 6s ease-in-out infinite;
-    }
-    .animate-slow-spin {
-      animation: slowSpin 20s linear infinite;
-    }
-  </style>
-  <!-- Background Illustrations -->
-  <div class="absolute inset-0 pointer-events-none">
-    <!-- Main background element -->
-    <img
+<!-- Design épuré basé sur les images de référence AlixPartn            }
+          </div>lass="min-h-screen bg-gradient-to-br from-yellow-50 via-orange-50 to-blue-50 relative overflow-hidden"
+>
+  <!-- Background avec wideback.png -->
+<div class="absolute inset-0 pointer-events-none">
+  <!-- <img
       src="/assets/wideback.png"
       alt=""
-      class="absolute inset-0 w-full h-full object-cover opacity-15 animate-float"
-      style="animation-duration: 8s"
-    />
+      class="absolute inset-0 w-full h-full object-cover opacity-20"
+    /> -->
+</div>
 
-    <!-- Top decorations -->
-    <img
-      src="/assets/illustrations/bracket.png"
-      alt=""
-      class="absolute top-10 left-10 w-12 h-12 opacity-10 rotate-12 animate-pulse"
-    />
-    <img
-      src="/assets/illustrations/dot.png"
-      alt=""
-      class="absolute top-20 right-20 w-8 h-8 opacity-15 animate-bounce"
-      style="animation-duration: 3s; animation-delay: 1s"
-    />
-    <img
-      src="/assets/illustrations/threedot.png"
-      alt=""
-      class="absolute top-40 left-1/4 w-16 h-16 opacity-8 rotate-45 animate-pulse"
-      style="animation-duration: 4s; animation-delay: 2s"
-    />
-
-    <!-- Middle decorations -->
-    <img
-      src="/assets/illustrations/superior.png"
-      alt=""
-      class="absolute top-1/3 right-10 w-20 h-20 opacity-12 -rotate-12 animate-pulse"
-      style="animation-duration: 5s; animation-delay: 0.5s"
-    />
-    <img
-      src="/assets/illustrations/bar.png"
-      alt=""
-      class="absolute top-1/2 left-16 w-14 h-14 opacity-10 rotate-90 animate-bounce"
-      style="animation-duration: 6s; animation-delay: 3s"
-    />
-    <img
-      src="/assets/illustrations/inferior.png"
-      alt=""
-      class="absolute top-2/3 right-1/4 w-18 h-18 opacity-8 rotate-30 animate-pulse"
-      style="animation-duration: 4.5s; animation-delay: 1.5s"
-    />
-
-    <!-- Bottom decorations -->
-    <img
-      src="/assets/illustrations/bracket.png"
-      alt=""
-      class="absolute bottom-20 right-16 w-10 h-10 opacity-12 -rotate-45 animate-float"
-    />
-    <img
-      src="/assets/illustrations/dot.png"
-      alt=""
-      class="absolute bottom-40 left-20 w-6 h-6 opacity-15 rotate-180 animate-slow-spin"
-    />
-    <img
-      src="/assets/illustrations/bar.png"
-      alt=""
-      class="absolute bottom-60 right-1/3 w-12 h-12 opacity-10 rotate-45 animate-float"
-      style="animation-delay: 2s"
-    />
-
-    <!-- Additional scattered elements for richness -->
-    <img
-      src="/assets/illustrations/threedot.png"
-      alt=""
-      class="absolute top-3/4 left-1/3 w-8 h-8 opacity-6 -rotate-30"
-    />
-    <img
-      src="/assets/illustrations/superior.png"
-      alt=""
-      class="absolute top-1/4 left-2/3 w-12 h-12 opacity-8 rotate-60"
-    />
-  </div>
-
-  <div class="max-w-7xl mx-auto px-md sm:px-lg lg:px-xl relative z-10">
-    <!-- Hero Header -->
-    <div class="text-center mb-16">
-      <div class="relative rounded-2xl p-8 md:p-12 mb-8 overflow-hidden">
-        <!-- Overlay pour améliorer la lisibilité du texte -->
-        <div class="absolute inset-0 bg-black/50 rounded-2xl"></div>
-
-        <!-- Decorative illustrations overlay -->
-        <div class="absolute inset-0 pointer-events-none">
-          <img
-            src="/assets/illustrations/bracket.png"
-            alt=""
-            class="absolute top-6 right-8 w-8 h-8 opacity-20 text-white rotate-12"
-          />
-          <img
-            src="/assets/illustrations/superior.png"
-            alt=""
-            class="absolute bottom-8 left-10 w-10 h-10 opacity-15 text-white -rotate-20"
-          />
-          <img
-            src="/assets/illustrations/dot.png"
-            alt=""
-            class="absolute top-1/2 right-12 w-6 h-6 opacity-25 text-white"
-          />
-        </div>
-
-        <!-- Contenu par-dessus l'overlay -->
-        <div class="relative z-10">
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-            Programme DevFest Kivu
-          </h1>
-          <p class="text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-            Découvrez notre programme complet avec des conférences inspirantes, des ateliers
-            pratiques et des opportunités de networking exceptionnelles.
-          </p>
-        </div>
-      </div>
+<div class="relative z-10">
+  <!-- Header épuré avec illustrations -->
+  <div class=" text-gray-900 py-12 relative overflow-hidden">
+    <!-- Éléments d'illustrations avec opacité ajustée -->
+    <div class="absolute inset-0 pointer-events-none">
+      <img
+        src="/assets/illustrations/bracket.png"
+        alt=""
+        class="absolute top-6 left-8 w-12 h-12 opacity-20 rotate-12"
+      />
+      <img
+        src="/assets/illustrations/dot.png"
+        alt=""
+        class="absolute top-4 right-16 w-8 h-8 opacity-25"
+      />
+      <img
+        src="/assets/illustrations/threedot.png"
+        alt=""
+        class="absolute bottom-6 left-16 w-10 h-10 opacity-20 rotate-45"
+      />
+      <img
+        src="/assets/illustrations/bar.png"
+        alt=""
+        class="absolute bottom-4 right-8 w-14 h-3 opacity-25"
+      />
+      <img
+        src="/assets/illustrations/superior.png"
+        alt=""
+        class="absolute top-1/2 right-4 w-6 h-6 opacity-20 transform -translate-y-1/2"
+      />
     </div>
 
-    <!-- Header -->
-    <div class="text-center mb-lg">
-      <!-- Navigation des jours (Swiper simple) -->
-      <div class="flex justify-center items-center gap-4 mb-6">
-        <!-- Bouton précédent -->
-        <button
-          (click)="previousDay()"
-          [disabled]="currentDayIndex === 0"
-          class="p-sm rounded-full hover:bg-primary/10 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <svg class="w-6 h-6 text-text/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 19l-7-7 7-7"
-            ></path>
-          </svg>
-        </button>
-
-        <!-- Swiper simple des jours -->
-        <div class="flex bg-gray-100 rounded-lg p-1 max-w-4xl">
-          @for (day of days; track day.id; let i = $index) {
-          <button
-            (click)="selectDay(i)"
-            class="px-lg py-md rounded-md font-semibold transition-all duration-200 flex-1"
-            [ngClass]="{
-              'bg-primary text-white shadow-sm': day.isActive,
-              'text-text/70 hover:text-text hover:bg-white/50': !day.isActive
-            }"
-          >
-            <div class="text-sm font-medium">{{ day.name }}</div>
-            <div class="text-lg font-bold">{{ day.date }}</div>
-          </button>
-          }
-        </div>
-
-        <!-- Bouton suivant -->
-        <button
-          (click)="nextDay()"
-          [disabled]="currentDayIndex === days.length - 1"
-          class="p-sm rounded-full hover:bg-primary/10 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <svg class="w-6 h-6 text-text/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 5l7 7-7 7"
-            ></path>
-          </svg>
-        </button>
-      </div>
-
-      <!-- Badges de subdivision des tracks (visible uniquement pour jeudi) -->
-      @if (isThursdaySelected) {
-      <div class="flex justify-center mb-6">
-        <div class="flex flex-wrap gap-2 bg-white rounded-xl p-3 shadow-sm border border-gray-200">
-          @for (track of thursdayTracks; track track.id) {
-          <button
-            (click)="selectThursdayTrack(track.id)"
-            class="flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 text-sm"
-            [ngClass]="{
-              'bg-blue-600 text-white shadow-md transform scale-105':
-                track.active && track.color === 'blue',
-              'bg-green-600 text-white shadow-md transform scale-105':
-                track.active && track.color === 'green',
-              'bg-red-600 text-white shadow-md transform scale-105':
-                track.active && track.color === 'red',
-              'bg-blue-500/30 hover:bg-blue-500/50 text-blue-800 hover:shadow-sm':
-                !track.active && track.color === 'blue',
-              'bg-green-500/30 hover:bg-green-500/50 text-green-800 hover:shadow-sm':
-                !track.active && track.color === 'green',
-              'bg-red-500/30 hover:bg-red-500/50 text-red-800 hover:shadow-sm':
-                !track.active && track.color === 'red'
-            }"
-          >
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-              <path [attr.d]="track.icon" />
-            </svg>
-            <span>{{ track.name }}</span>
-          </button>
-          }
-        </div>
-      </div>
-      }
-
-      <!-- Date complète du jour sélectionné -->
-      <p class="text-lg md:text-xl text-text/80 mb-sm">{{ currentDay.fullDate }}</p>
-      <div class="w-20 h-1 bg-primary mx-auto rounded-full"></div>
-    </div>
-
-    <!-- Agenda Responsive -->
-    <div class="bg-white rounded-lg shadow-card">
-      <!-- Version Desktop (tableau) -->
-      <div class="hidden lg:block overflow-x-auto">
-        <table class="w-full border-collapse">
-          <tbody>
-            @for (slot of timeSlots; track slot.time) {
-            <tr class="hover:bg-primary/5">
-              <!-- Colonne heure -->
-              <td
-                class="border border-gray-200 px-md py-lg bg-primary/5 font-medium text-text text-center align-top w-20"
-              >
-                {{ slot.display }}
-              </td>
-
-              <!-- Cas où il n'y a qu'un seul événement dans le créneau -->
-              @if (hasSingleEventInTimeSlot(slot.time) && getFirstEventInTimeSlot(slot.time); as
-              event) {
-              <td
-                [attr.colspan]="halls.length"
-                class="border border-gray-200 px-md py-md align-top"
-              >
-                <div
-                  class="event-card bg-background rounded-lg shadow-card p-md border border-primary/10 hover:shadow-xl hover:border-primary/30 hover:scale-[1.02] transition-all duration-300 group h-32 flex flex-col justify-between"
-                >
-                  <div class="flex justify-between items-start mb-2">
-                    <div class="flex items-center gap-2">
-                      <span class="text-sm font-medium text-text/50 bg-text/5 px-sm py-1 rounded">{{
-                        event.timeSlot
-                      }}</span>
-                      <span class="text-xs text-text/40">• {{ event.hall }}</span>
-                    </div>
-                    <span
-                      class="px-3 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase flex-shrink-0 shadow-lg border-2 transition-all duration-300 hover:scale-110 hover:shadow-xl"
-                      [ngClass]="{
-                        'bg-blue-500/30 border-blue-600 hover:bg-blue-500/50 text-blue-800':
-                          event.category === 'Talk',
-                        'bg-green-500/30 border-green-600 hover:bg-green-500/50 text-green-800':
-                          event.category === 'Workshop',
-                        'bg-red-500/30 border-red-600 hover:bg-red-500/50 text-red-800':
-                          event.category === 'Conference',
-                        'bg-yellow-500/30 border-yellow-600 hover:bg-yellow-500/50 text-yellow-800':
-                          event.category === 'Networking'
-                      }"
-                    >
-                      {{ event.category }}
-                    </span>
-                  </div>
-                  <div class="flex-1">
-                    <h4
-                      class="font-bold text-text text-sm mb-1 leading-tight group-hover:text-primary transition-colors duration-300"
-                    >
-                      {{ event.title }}
-                    </h4>
-                    @if (event.speaker) {
-                    <div class="flex items-center gap-2 mt-2">
-                      @if (event.speakerAvatar) {
-                      <img
-                        [src]="event.speakerAvatar"
-                        [alt]="event.speaker"
-                        class="w-10 h-10 rounded-full object-cover border border-gray-200"
-                      />
-                      }
-                      <p class="text-xs text-text/70 font-medium">
-                        {{ event.speaker }}
-                      </p>
-                    </div>
-                    }
-                  </div>
-                </div>
-              </td>
-              }
-
-              <!-- Cas où il y a plusieurs événements -->
-              @if (!hasSingleEventInTimeSlot(slot.time)) { @for (hall of halls; track hall) { @if
-              (getEventByTimeSlotAndHall(slot.time, hall); as event) {
-              <td class="border border-gray-200 px-md py-md align-top">
-                <div
-                  class="event-card bg-background rounded-lg shadow-card p-md border border-primary/10 hover:shadow-xl hover:border-primary/30 hover:scale-[1.02] transition-all duration-300 group h-32 flex flex-col justify-between"
-                >
-                  <div class="flex justify-between items-start mb-2">
-                    <span class="text-xs font-medium text-text/50 bg-text/5 px-xs py-0.5 rounded">
-                      {{ event.timeSlot }}
-                    </span>
-                    <span
-                      class="px-3 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase flex-shrink-0 shadow-lg border-2 transition-all duration-300 hover:scale-110 hover:shadow-xl"
-                      [ngClass]="{
-                        'bg-blue-500/30 border-blue-600 hover:bg-blue-500/50 text-blue-800':
-                          event.category === 'Talk',
-                        'bg-green-500/30 border-green-600 hover:bg-green-500/50 text-green-800':
-                          event.category === 'Workshop',
-                        'bg-red-500/30 border-red-600 hover:bg-red-500/50 text-red-800':
-                          event.category === 'Conference',
-                        'bg-yellow-500/30 border-yellow-600 hover:bg-yellow-500/50 text-yellow-800':
-                          event.category === 'Networking'
-                      }"
-                    >
-                      {{ event.category }}
-                    </span>
-                  </div>
-                  <div class="flex-1">
-                    <h4
-                      class="font-bold text-text text-sm mb-1 leading-tight group-hover:text-primary transition-colors duration-300"
-                    >
-                      {{ event.title }}
-                    </h4>
-                    @if (event.speaker) {
-                    <div class="flex items-center gap-2 mt-2">
-                      @if (event.speakerAvatar) {
-                      <img
-                        [src]="event.speakerAvatar"
-                        [alt]="event.speaker"
-                        class="w-10 h-10 rounded-full object-cover border border-gray-200"
-                      />
-                      }
-                      <p class="text-xs text-text/70 font-medium">
-                        {{ event.speaker }}
-                      </p>
-                    </div>
-                    }
-                  </div>
-                </div>
-              </td>
-              } } }
-            </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Version Mobile/Tablet (liste verticale) -->
-      <div class="lg:hidden p-md">
-        @for (slot of timeSlots; track slot.time) {
-        <div class="mb-lg last:mb-0">
-          <!-- Afficher seulement s'il y a des événements -->
-          @if (hasEventsInTimeSlot(slot.time)) {
-          <!-- En-tête du créneau horaire -->
-          <div class="flex items-center gap-3 mb-md">
-            <div class="bg-primary/10 px-sm py-xs rounded-lg">
-              <span class="font-bold text-primary text-sm">{{ slot.display }}</span>
-            </div>
-            <div class="flex-1 h-px bg-gray-200"></div>
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+      <div class="text-center">
+        <div class="flex flex-col md:flex-row items-center justify-center mb-6">
+          <div class="mb-4 md:mb-0 md:mr-6">
+            <img
+              src="/assets/logo.png"
+              alt="DevFest Logo"
+              class="h-16 md:h-20 w-auto drop-shadow-lg"
+            />
           </div>
-
-          <!-- Événements du créneau -->
-          <div class="space-y-sm">
-            <!-- Afficher tous les événements existants du créneau -->
-            @for (event of getEventsForMobileTimeSlot(slot.time); track event.hall + event.timeSlot)
-            {
-            <div
-              class="event-card bg-background rounded-lg shadow-card p-md border border-primary/10 hover:shadow-lg transition-all duration-300"
+          <div class="text-center md:text-left">
+            <h1
+              class="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent mb-2"
             >
-              <div class="flex justify-between items-start mb-sm">
-                <span class="text-xs font-medium text-text/50 bg-text/5 px-xs py-1 rounded">
-                  {{ event.hall }}
-                </span>
-                <span
-                  class="px-3 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase flex-shrink-0 shadow-lg border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl"
-                  [ngClass]="{
-                    'bg-blue-500/30 border-blue-600 hover:bg-blue-500/50 text-blue-800':
-                      event.category === 'Talk',
-                    'bg-green-500/30 border-green-600 hover:bg-green-500/50 text-green-800':
-                      event.category === 'Workshop',
-                    'bg-red-500/30 border-red-600 hover:bg-red-500/50 text-red-800':
-                      event.category === 'Conference',
-                    'bg-yellow-500/30 border-yellow-600 hover:bg-yellow-500/50 text-yellow-800':
-                      event.category === 'Networking'
-                  }"
-                >
-                  {{ event.category }}
-                </span>
+              DevFest Kivu 2025
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-700 font-light">Programme de la Conférence</p>
+            <p class="text-sm md:text-base text-gray-600 mt-2">
+              Le plus grand événement tech de la région des Grands Lacs
+            </p>
+          </div>
+        </div>
+
+        <!-- Navigation des jours intégrée dans l'en-tête -->
+        <div class="mt-8">
+          <div class="flex justify-center space-x-4 mb-6">
+            @for (day of days; track day.id; let i = $index) {
+            <button
+              (click)="selectDay(i)"
+              class="px-8 py-4 text-lg font-semibold transition-all duration-300 rounded-xl backdrop-blur-sm border-2 transform hover:scale-105"
+              [ngClass]="{
+                'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-600/20': day.isActive,
+                'bg-gray-100 border-gray-300 text-gray-700 hover:bg-gray-200 hover:border-gray-400':
+                  !day.isActive
+              }"
+            >
+              <div class="text-center">
+                <div class="font-bold">{{ day.name }}</div>
+                <div class="text-sm opacity-90">{{ day.date }}</div>
+                <div class="text-xs opacity-75 mt-1">{{ day.fullDate.split(' ')[0] }}</div>
               </div>
-              <h4 class="font-bold text-text text-sm mb-xs leading-tight">
-                {{ event.title }}
-              </h4>
-              @if (event.speaker) {
-              <div class="flex items-center gap-2 mt-2">
-                @if (event.speakerAvatar) {
-                <img
-                  [src]="event.speakerAvatar"
-                  [alt]="event.speaker"
-                  class="w-10 h-10 rounded-full object-cover border border-gray-200"
-                />
-                }
-                <p class="text-xs text-text/70 font-medium">
-                  {{ event.speaker }}
-                </p>
-              </div>
-              }
-            </div>
+            </button>
             }
           </div>
-          }
         </div>
-        }
       </div>
     </div>
   </div>
-</section>
+
+  <!-- Contenu principal -->
+  <div class="max-w-7xl mx-auto px-6 py-8">
+    <!-- Informations du jour -->
+    <div class="text-center mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ currentDay.fullDate }}</h2>
+      <p class="text-gray-600">{{ currentDay.location }}</p>
+    </div>
+
+    <!-- Day 1: Colonnes Web/Mobile -->
+    @if (currentDay.id === 'day1') {
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Colonne Web -->
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="bg-blue-600 text-white px-6 py-4">
+          <h3 class="text-xl font-bold flex items-center">
+            <span class="mr-3">🌐</span> Web Development
+          </h3>
+        </div>
+        <div class="p-0">
+          @for (event of getWebEvents(); track event.time) {
+          <div class="border-b border-gray-100 last:border-b-0">
+            <div class="p-6 hover:bg-gray-50 transition-colors">
+              <div class="flex items-start">
+                <div class="flex-shrink-0 mr-4">
+                  <div
+                    class="text-sm font-bold text-gray-600 bg-gray-100 rounded-md px-3 py-2 min-w-[80px] text-center"
+                  >
+                    {{ event.time.split(' - ')[0] }}
+                  </div>
+                </div>
+                <div class="flex-1">
+                  <h4 class="font-semibold text-gray-900 mb-2 leading-tight">
+                    {{ event.title }}
+                  </h4>
+                  @if (event.speaker) {
+                  <p class="text-sm text-gray-600 mb-3">{{ event.speaker }}</p>
+                  }
+                  <span
+                    class="inline-block px-3 py-1 text-xs font-medium rounded-full"
+                    [ngClass]="getBadgeColor(event.category)"
+                  >
+                    {{ event.category }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+
+      <!-- Colonne Mobile -->
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="bg-green-600 text-white px-6 py-4">
+          <h3 class="text-xl font-bold flex items-center">
+            <span class="mr-3">📱</span> Mobile Development
+          </h3>
+        </div>
+        <div class="p-0">
+          @for (event of getMobileEvents(); track event.time) {
+          <div class="border-b border-gray-100 last:border-b-0">
+            <div class="p-6 hover:bg-gray-50 transition-colors">
+              <div class="flex items-start">
+                <div class="flex-shrink-0 mr-4">
+                  <div
+                    class="text-sm font-bold text-gray-600 bg-gray-100 rounded-md px-3 py-2 min-w-[80px] text-center"
+                  >
+                    {{ event.time.split(' - ')[0] }}
+                  </div>
+                </div>
+                <div class="flex-1">
+                  <h4 class="font-semibold text-gray-900 mb-2 leading-tight">
+                    {{ event.title }}
+                  </h4>
+                  @if (event.speaker) {
+                  <p class="text-sm text-gray-600 mb-3">{{ event.speaker }}</p>
+                  }
+                  <span
+                    class="inline-block px-3 py-1 text-xs font-medium rounded-full"
+                    [ngClass]="getBadgeColor(event.category)"
+                  >
+                    {{ event.category }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+    }
+
+    <!-- Day 2: Programme général -->
+    @if (currentDay.id === 'day2') {
+    <div class="max-w-4xl mx-auto">
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="bg-red-600 text-white px-6 py-4">
+          <h3 class="text-xl font-bold flex items-center">
+            <span class="mr-3">🎯</span> Programme Général
+          </h3>
+        </div>
+        <div class="p-0">
+          @for (event of getDayTwoEvents(); track event.time) {
+          <div class="border-b border-gray-100 last:border-b-0">
+            <div class="p-6 hover:bg-gray-50 transition-colors">
+              <div class="flex items-start">
+                <div class="flex-shrink-0 mr-4">
+                  <div
+                    class="text-sm font-bold text-gray-600 bg-gray-100 rounded-md px-3 py-2 min-w-[80px] text-center"
+                  >
+                    {{ event.time.split(' - ')[0] }}
+                  </div>
+                </div>
+                <div class="flex-1">
+                  <h4 class="font-semibold text-gray-900 mb-2 leading-tight">
+                    {{ event.title }}
+                  </h4>
+                  @if (event.speaker) {
+                  <p class="text-sm text-gray-600 mb-3">{{ event.speaker }}</p>
+                  }
+                  <span
+                    class="inline-block px-3 py-1 text-xs font-medium rounded-full"
+                    [ngClass]="getBadgeColor(event.category)"
+                  >
+                    {{ event.category }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>
