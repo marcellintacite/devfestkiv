@@ -32,7 +32,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   hours = signal(0);
   daysLeft = signal(0);
 
-  targetDateTimeString = signal('2025-10-06T13:47:00');
+  targetDateTimeString = signal('2025-12-06T09:00:00');
   countdownRunning = signal(false);
 
   private countdownInterval: any;
