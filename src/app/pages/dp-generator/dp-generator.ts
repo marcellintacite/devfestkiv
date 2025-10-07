@@ -3,56 +3,121 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Profil } from './profil/profil';
 import { Generator } from './generator/generator';
+import { openDefaultEditor } from '@pqina/pintura';
+import html2canvas from 'html2canvas-pro';
 
 @Component({
   selector: 'app-dp-generator',
   standalone: true,
   imports: [CommonModule, FormsModule, Profil, Generator],
-  template: `
-    <div class="min-h-screen py-12 md:py-16">
-      <!-- Hero -->
-      <section class="container mx-auto px-4 mb-12 md:mb-16 text-center">
-        <h2 class="text-xs md:text-sm text-gray-600 mb-3 tracking-wide">
-          Faites savoir à tout le monde que vous venez !
-        </h2>
-        <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6 md:mb-8">
-          Créez votre photo d'affichage<br />
-          <span class="text-amber-600">DevFest personnalisée</span>
-        </h1>
-      </section>
-      <div class="container mx-auto px-4 mb-12 text-center">
-        <div class="flex justify-center gap-4">
-          <button
-            (click)="activeTab = 'profile'"
-            [class.bg-amber-600]="activeTab === 'profile'"
-            [class.text-white]="activeTab === 'profile'"
-            class="px-6 py-3 rounded-full font-medium transition-all text-gray-700 hover:bg-amber-500 hover:text-white"
-          >
-            Profile Picture
-          </button>
-
-          <button
-            (click)="activeTab = 'dp'"
-            [class.bg-amber-600]="activeTab === 'dp'"
-            [class.text-white]="activeTab === 'dp'"
-            class="px-6 py-3 rounded-full font-medium transition-all text-gray-700 hover:bg-amber-500 hover:text-white"
-          >
-            DP Generator
-          </button>
-        </div>
-      </div>
-
-      @if (activeTab === 'profile') {
-      <app-profil></app-profil>
-      } 
-      
-      @if (activeTab === 'dp') {
-      <app-generator></app-generator>
-      }
-    </div>
-    
-  `,
+  templateUrl: './dp-generator.html',
 })
 export default class DpGenerator {
   activeTab: 'profile' | 'dp' = 'profile';
+
+  // État partagé
+  fullName = '';
+  quote = '';
+  previewImage: string | ArrayBuffer | null = null;
+  isDraggingOver = false; // Pour le style du drag & drop
+
+  suggestedQuotes = [
+    'Le code est ma poésie.',
+    "DevFest Kivu 2025, j'arrive !",
+    'Prêt à networker et innover.',
+    'Talk is cheap. Show me the code.',
+    'Building the future, one line at a time.',
+  ];
+  private quoteIndex = 0;
+
+  // --- Logique de Drag & Drop ---
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    this.isDraggingOver = true;
+  }
+
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    this.isDraggingOver = false;
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    this.isDraggingOver = false;
+
+    const files = event.dataTransfer?.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      // On s'assure que c'est bien une image
+      if (file.type.startsWith('image/')) {
+        this.processFileWithPintura(file);
+      }
+    }
+  }
+
+  // --- Logique de gestion de fichier (refactorisée) ---
+  openFileInput() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e: any) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        this.processFileWithPintura(file);
+      }
+    };
+    input.click();
+  }
+
+  private processFileWithPintura(file: File) {
+    const editor: any = openDefaultEditor({
+      src: file,
+      imageCropAspectRatio: 1,
+      locale: {
+        labelButtonExport: 'Confirmer',
+        labelButtonCancel: 'Annuler',
+      },
+    });
+
+    editor.on('process', (imageState: any) => {
+      const blob: Blob | undefined = imageState?.dest;
+      if (!blob) return;
+
+      const reader = new FileReader();
+      reader.onload = () => (this.previewImage = reader.result);
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  // --- Autres méthodes ---
+  suggestQuote() {
+    this.quote = this.suggestedQuotes[this.quoteIndex];
+    this.quoteIndex = (this.quoteIndex + 1) % this.suggestedQuotes.length;
+  }
+
+  private async captureElement(elementId: string, fileName: string) {
+    const element = document.getElementById(elementId);
+    if (!element) {
+      console.error(`L'élément avec l'ID "${elementId}" n'a pas été trouvé.`);
+      return;
+    }
+
+    await new Promise((res) => setTimeout(res, 120));
+
+    const canvas = await html2canvas(element, { backgroundColor: null, scale: 2, useCORS: true });
+    const imageData = canvas.toDataURL('image/png');
+
+    const link = document.createElement('a');
+    link.href = imageData;
+    link.download = `${fileName.replace(/\s+/g, '_')}.png`;
+    link.click();
+  }
+
+  async captureProfileDP() {
+    await this.captureElement('dp-capture-zone-profile', `${this.fullName || 'ma-photo'}-profil`);
+  }
+
+  async captureGeneratorDP() {
+    await this.captureElement('dp-capture-zone-generator', `${this.fullName || 'mon-dp'}-devfest`);
+  }
 }

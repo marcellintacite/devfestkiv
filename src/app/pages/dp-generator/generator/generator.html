@@ -1,6 +1,114 @@
- <section class="container mx-auto px-4">
-      <div class="bg-gray-100 rounded-2xl shadow-lg p-8 text-center">
-        <h2 class="text-2xl font-bold mb-4">DP Generator – Bientôt disponible</h2>
-        <p>Cette fonctionnalité sera bientôt disponible.</p>
+<div class="bg-white rounded-2xl shadow-lg p-4 sm:p-6 md:p-8">
+  <h3 class="text-xl md:text-2xl font-bold text-center text-gray-900 mb-6 md:mb-8">
+    Aperçu de votre DP de Publication
+  </h3>
+
+  <!-- 
+    Wrapper pour le scaling. J'ai ajusté les valeurs pour un meilleur affichage sur toutes les tailles d'écran.
+  -->
+  <div class="w-full flex justify-center">
+    <div
+      class="origin-top scale-[0.35] sm:scale-[0.5] md:scale-[0.6] lg:scale-[0.5] xl:scale-[0.65] transition-transform duration-300"
+    >
+      <!-- 
+        LA ZONE DE CAPTURE : 1024x1024px
+        Le 'relative' est notre base pour tout positionner.
+      -->
+      <div
+        id="dp-capture-zone-generator"
+        class="relative w-[1024px] h-[1024px] overflow-hidden bg-primary-pastel"
+      >
+        <!-- COUCHE 1 (z-0) : Le cadre de fond (dp-layout.png) -->
+        <img
+          src="assets/dp-layout.png"
+          alt="Cadre de fond DevFest"
+          class="absolute inset-0 w-full h-full object-cover z-0"
+        />
+
+        <!-- COUCHE 2 (z-10) : La photo de l'utilisateur (ajustée au pixel près) -->
+        <div
+          class="absolute top-30 left-[520px] w-[350px] h-[480px] bg-gray-300 rounded-3xl shadow-2xl overflow-hidden flex items-center justify-center z-10 border-4 border-accent"
+        >
+          @if (previewImage) {
+          <img
+            [src]="previewImage"
+            alt="Aperçu de l'utilisateur"
+            class="w-full h-full object-cover"
+          />
+          } @else {
+          <div
+            class="w-full h-full flex items-center justify-center bg-background backdrop-blur-sm"
+          >
+            <p class="text/80 font-medium text-2xl">Votre photo ici</p>
+          </div>
+          }
+        </div>
+
+        <!-- COUCHE 3 (z-20) : Le bloc citation et la flèche -->
+        <div class="absolute top-50 left-28 w-[350px] z-20">
+          <!-- La bulle de conversation -->
+          <div class="relative bg-primary border-4 border-accent p-8 rounded-2xl shadow-lg">
+            <p class="text-gray-800 text-3xl italic text-center leading-tight">
+              "{{ quote || 'Le code est ma poésie.' }}"
+            </p>
+            <!-- La pointe de la bulle -->
+            <div
+              class="absolute left-full top-1/2 -translate-y-1/2 w-0 h-0 border-t-[15px] border-t-transparent border-b-[15px] border-b-transparent border-l-[20px] border-l-accent"
+            ></div>
+          </div>
+
+          <!-- Le texte et la flèche en dessous -->
+          <div class="mt-10 ml-4 space-y-3">
+            <!-- Ici la magie opère : on utilise des <span> ! -->
+            <p class="text-2xl font-light">
+              <span class="bg-secondary text-white px-3 py-1 rounded-md"
+                >@{{ fullName || 'alain' }}</span
+              >
+              <span class="bg-white text-text px-3 py-1 rounded-md">sera à :</span>
+            </p>
+
+            <!-- Flèche SVG stylée -->
+            <svg width="150" height="100" viewBox="0 0 150 100" class="mt-2 -ml-4">
+              <path
+                d="M 20 20 Q 80 100, 150 80"
+                stroke="white"
+                stroke-width="3"
+                fill="transparent"
+                stroke-dasharray="5,10"
+                stroke-linecap="round"
+              />
+              <path
+                d="M 140 72 L 150 80 L 140 88"
+                stroke="white"
+                stroke-width="3"
+                fill="transparent"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+
+        <!-- COUCHE 4 (z-10) : Le bloc d'infos DevFest (simulé avec du texte) -->
+        <div
+          class="absolute bottom-45 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-10"
+        >
+          <!-- Logo { DevFest } Kivu (recréé en HTML/Tailwind) -->
+          <div class="flex flex-col items-center">
+            <img src="assets/logo-1.png" alt="Devfest Big Logo" class="w-80" />
+          </div>
+
+          <p class="text text-4xl font-bold tracking-wider mt-4">Le 6 Décembre 2025</p>
+          <p class="text text-2xl font-light">Bukavu, République Démocratique du Congo</p>
+        </div>
+
+        <!-- COUCHE 5 (z-30) : Le logo circulaire en bas à gauche -->
+        <div
+          class="absolute bottom-25 bg-text left-16 w-32 h-32 rounded-full flex items-center justify-center shadow-lg z-30"
+        >
+          <img src="assets/logo.png" alt="Logo DevFest" class="w-28 object-contain m-0" />
+        </div>
       </div>
-    </section>
+    </div>
+  </div>
+</div>

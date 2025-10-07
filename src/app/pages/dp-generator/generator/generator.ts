@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-generator',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './generator.html',
-  styleUrl: './generator.css'
 })
 export class Generator {
-
+  @Input() fullName: string = '';
+  @Input() previewImage: string | ArrayBuffer | null = null;
+  @Input() quote: string = '';
 }

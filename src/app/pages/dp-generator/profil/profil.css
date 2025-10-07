@@ -1,8 +1,0 @@
-.upload-zone {
-  border: 2px dashed #cbd5e1;
-  transition: all 0.3s ease;
-}
-.upload-zone:hover {
-  border-color: #d97706;
-  background-color: rgba(217, 119, 6, 0.05);
-}
