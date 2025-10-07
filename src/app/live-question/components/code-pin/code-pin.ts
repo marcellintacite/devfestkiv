@@ -1,12 +1,12 @@
 import { Component, EventEmitter, inject, Inject, Output, PLATFORM_ID } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-code-pin',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   template: `
     <!-- Overlay -->
     <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
