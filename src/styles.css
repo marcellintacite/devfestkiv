@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+@import '@pqina/pintura/pintura.css';
+
+
 
 
 /* 
@@ -137,6 +140,7 @@ body {
 
 .btn-sm {
   padding: var(--spacing-xs) var(--spacing-sm);
+  
   font-size: 0.875rem;
   border-radius: var(--radius-sm);
 }
