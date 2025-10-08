@@ -1,135 +1,133 @@
 <div class="min-h-screen py-12 md:py-16">
-    <!-- Hero -->
-    <section class="container mx-auto px-4 mb-12 md:mb-16 text-center">
-      <h2 class="text-xs md:text-sm text-gray-600 mb-3 tracking-wide">
-        Faites savoir à tout le monde que vous venez !
-      </h2>
-      <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6 md:mb-8">
-        Créez votre visuel<br />
-        <span class="text-primary">DevFest personnalisé</span>
-      </h1>
-    </section>
-  
-    <!-- Tabs -->
-    <div class="container mx-auto px-4 mb-12 text-center">
-      <div class="flex justify-center gap-4">
-        <button
-          (click)="activeTab = 'profile'"
-          [class.bg-primary]="activeTab === 'profile'"
-          [class.text-white]="activeTab === 'profile'"
-          class="px-6 py-3 rounded-full font-medium transition-all text-gray-700 hover:bg-primary-halftone hover:text-white"
-        >
-          Photo de Profil
-        </button>
-  
-        <button
-          (click)="activeTab = 'dp'"
-          [class.bg-primary]="activeTab === 'dp'"
-          [class.text-white]="activeTab === 'dp'"
-          class="px-6 py-3 rounded-full font-medium transition-all text-gray-700 hover:bg-primary-halftone hover:text-white"
-        >
-          Générateur de DP
-        </button>
-      </div>
+  <!-- Hero -->
+  <section class="container mx-auto px-4 mb-12 md:mb-16 text-center">
+    <h2 class="text-xs md:text-sm text-gray-600 mb-3 tracking-wide">
+      Faites savoir à tout le monde que vous venez !
+    </h2>
+    <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6 md:mb-8">
+      Créez votre visuel<br />
+      <span class="text-primary">DevFest personnalisé</span>
+    </h1>
+  </section>
+
+  <!-- Tabs -->
+  <div class="container mx-auto px-4 mb-12 text-center">
+    <div class="flex justify-center gap-4">
+      <button
+        (click)="setActiveTab('profile')"
+        [class.bg-primary]="activeTab === 'profile'"
+        [class.text-white]="activeTab === 'profile'"
+        class="px-6 py-3 rounded-full font-medium transition-all text-gray-700 hover:bg-primary-halftone hover:text-white"
+      >
+        Photo de Profil
+      </button>
+
+      <button
+        (click)="setActiveTab('dp')"
+        [class.bg-primary]="activeTab === 'dp'"
+        [class.text-white]="activeTab === 'dp'"
+        class="px-6 py-3 rounded-full font-medium transition-all text-gray-700 hover:bg-primary-halftone hover:text-white"
+      >
+        Générateur de DP
+      </button>
     </div>
-  
-    <!-- Main Content -->
-    <section class="container mx-auto px-4">
-      <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-start">
-        
-        <!-- Formulaire Adaptatif -->
-        <div class="lg:col-span-2">
-          <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 sticky top-8">
-            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">Saisissez vos coordonnées</h3>
-            <div class="w-14 md:w-16 h-1 bg-primary mb-6 md:mb-8"></div>
-  
-            <form class="space-y-5 md:space-y-6">
-              <!-- Nom et Prénom -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Nom et prénom</label>
-                <input
-                  type="text"
-                  [(ngModel)]="fullName"
-                  name="fullName"
-                  placeholder="Votre nom"
-                  class="w-full px-4 py-3 text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary"
-                />
-              </div>
-  
-              <!-- Upload Image avec Drag & Drop -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                  {{ activeTab === 'profile' ? 'Télécharger l\'image' : 'Votre image' }}
-                </label>
-                <div
-                  (click)="openFileInput()"
-                  (dragover)="onDragOver($event)"
-                  (dragleave)="onDragLeave($event)"
-                  (drop)="onDrop($event)"
-                  class="rounded-lg p-6 md:p-8 text-center cursor-pointer border-2 border-dashed transition-all duration-300"
-                  [class.border-gray-300]="!isDraggingOver"
-                  [class.bg-gray-50]="!isDraggingOver"
-                  [class.border-primary]="isDraggingOver"
-                  [class.bg-primary/10]="isDraggingOver"
-                >
-                  <div class="flex flex-col items-center">
-                    <svg class="w-10 h-10 md:w-12 md:h-12 text-gray-400 mb-4" [class.text-primary]="isDraggingOver" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-                    </svg>
-                    @if (!isDraggingOver) {
-                      <p class="text-sm text-gray-600 mb-2">
-                        <span class="font-medium text-primary">Cliquez</span> ou déposez une image
-                      </p>
-                    } @else {
-                      <p class="text-sm text-primary font-semibold mb-2">
-                        Relâchez pour importer !
-                      </p>
-                    }
-                  </div>
-                </div>
-              </div>
-  
-              <!-- Champs spécifiques au Générateur de DP -->
-              @if (activeTab === 'dp') {
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Citation / Punchline</label>
-                  <div class="relative">
-                    <input
-                      type="text"
-                      [(ngModel)]="quote"
-                      name="quote"
-                      placeholder="Votre punchline ici..."
-                      class="w-full px-4 py-3 text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary"
-                    />
-                    <button type="button" (click)="suggestQuote()" class="absolute right-2 top-1/2 -translate-y-1/2 btn btn-ghost btn-sm">Suggérer</button>
-                  </div>
-                </div>
-              }
-  
-              <!-- Bouton d'action -->
-              @if (activeTab === 'profile') {
-                <button type="button" (click)="captureProfileDP()" class="btn btn-primary btn-md w-full text-center block">
-                  📸 Générer la Photo de Profil
-                </button>
-              } @else {
-                <button type="button" (click)="captureGeneratorDP()" class="btn btn-primary btn-md w-full text-center block">
-                  🚀 Générer le DP de Publication
-                </button>
-              }
-            </form>
-          </div>
-        </div>
-  
-        <!-- Zone d'Aperçu -->
-        <div class="lg:col-span-3">
-          @if (activeTab === 'profile') {
-            <app-profil [fullName]="fullName" [previewImage]="previewImage"></app-profil>
-          }
-          @if (activeTab === 'dp') {
-            <app-generator [fullName]="fullName" [previewImage]="previewImage" [quote]="quote"></app-generator>
-          }
-        </div>
-  
-      </div>
-    </section>
   </div>
+
+  <!-- Main Content -->
+  <section class="container mx-auto px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-start">
+      
+      <!-- Formulaire Adaptatif -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 sticky top-8">
+          <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">Saisissez vos coordonnées</h3>
+          <div class="w-14 md:w-16 h-1 bg-primary mb-6 md:mb-8"></div>
+
+          <form class="space-y-5 md:space-y-6">
+            <!-- Nom et Prénom -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Nom et prénom</label>
+              <input
+                type="text"
+                [(ngModel)]="fullName"
+                name="fullName"
+                placeholder="Votre nom"
+                class="w-full px-4 py-3 text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary"
+              />
+            </div>
+            
+            <!-- Champs spécifiques au Générateur de DP -->
+            @if (activeTab === 'dp') {
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Citation / Punchline</label>
+                <div class="relative">
+                  <input
+                    type="text"
+                    [(ngModel)]="quote"
+                    name="quote"
+                    placeholder="Votre punchline ici..."
+                    class="w-full px-4 py-3 text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary"
+                  />
+                  <button type="button" (click)="suggestQuote()" class="absolute right-2 top-1/2 -translate-y-1/2 btn btn-ghost btn-sm">Suggérer</button>
+                </div>
+              </div>
+            }
+
+            <!-- Upload Image avec validation -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Votre image</label>
+              <div
+                (click)="openFileInput()"
+                (dragover)="onDragOver($event)"
+                (dragleave)="onDragLeave($event)"
+                (drop)="onDrop($event)"
+                class="rounded-lg p-6 md:p-8 text-center border-2 border-dashed transition-all duration-300"
+                [class.cursor-pointer]="isFormReadyForUpload"
+                [class.cursor-not-allowed]="!isFormReadyForUpload"
+                [class.opacity-50]="!isFormReadyForUpload"
+                [class.border-gray-300]="!isDraggingOver"
+                [class.bg-gray-50]="!isDraggingOver"
+                [class.border-primary]="isDraggingOver"
+                [class.bg-primary/10]="isDraggingOver"
+              >
+                <div class="flex flex-col items-center">
+                  <svg class="w-10 h-10 md:w-12 md:h-12 text-gray-400 mb-4" [class.text-primary]="isDraggingOver" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                  </svg>
+                  <p class="text-sm text-gray-600 mb-2">
+                    <span class="font-medium text-primary">Cliquez</span> ou déposez une image
+                  </p>
+                </div>
+              </div>
+              @if (!isFormReadyForUpload) {
+                <p class="text-xs text-red-600 mt-2">Veuillez d'abord remplir votre nom{{ activeTab === 'dp' ? ' et votre citation' : '' }}.</p>
+              }
+            </div>
+
+            <!-- Bouton d'action -->
+            @if (activeTab === 'profile') {
+              <button type="button" (click)="captureProfileDP()" class="btn btn-primary btn-md w-full text-center block">
+                📸 Générer la Photo de Profil
+              </button>
+            } @else {
+              <button type="button" (click)="captureGeneratorDP()" class="btn btn-primary btn-md w-full text-center block">
+                🚀 Générer le DP de Publication
+              </button>
+            }
+          </form>
+        </div>
+      </div>
+
+      <!-- Zone d'Aperçu -->
+      <div class="lg:col-span-3">
+        @if (activeTab === 'profile') {
+          <app-profil [fullName]="fullName" [previewImage]="previewImage" [uiState]="uiState"></app-profil>
+        }
+        @if (activeTab === 'dp') {
+          <app-generator [fullName]="fullName" [previewImage]="previewImage" [quote]="quote" [uiState]="uiState"></app-generator>
+        }
+      </div>
+
+    </div>
+  </section>
+</div>

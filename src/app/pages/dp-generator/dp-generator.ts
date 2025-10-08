@@ -15,6 +15,9 @@ import html2canvas from 'html2canvas-pro';
 export default class DpGenerator {
   activeTab: 'profile' | 'dp' = 'profile';
 
+  // NOUVEL ÉTAT POUR L'UX
+  uiState: 'initial' | 'imageVisible' | 'templateVisible' = 'initial';
+
   // État partagé
   fullName = '';
   quote = '';
@@ -30,8 +33,29 @@ export default class DpGenerator {
   ];
   private quoteIndex = 0;
 
-  // --- Logique de Drag & Drop ---
+  // Getter pour la validation du formulaire
+  get isFormReadyForUpload(): boolean {
+    if (this.activeTab === 'profile') {
+      return !!this.fullName.trim();
+    }
+    // Pour le DP Generator, le nom ET la citation sont requis
+    return !!this.fullName.trim() && !!this.quote.trim();
+  }
+
+  // Méthode pour changer d'onglet et réinitialiser l'état
+  setActiveTab(tab: 'profile' | 'dp') {
+    this.activeTab = tab;
+    // On réinitialise l'animation si on change d'onglet
+    if (!this.previewImage) {
+      this.uiState = 'initial';
+    } else {
+      this.uiState = 'templateVisible';
+    }
+  }
+
+  // --- Logique de Drag & Drop (avec validation) ---
   onDragOver(event: DragEvent) {
+    if (!this.isFormReadyForUpload) return;
     event.preventDefault();
     this.isDraggingOver = true;
   }
@@ -42,6 +66,7 @@ export default class DpGenerator {
   }
 
   onDrop(event: DragEvent) {
+    if (!this.isFormReadyForUpload) return;
     event.preventDefault();
     this.isDraggingOver = false;
 
@@ -54,7 +79,9 @@ export default class DpGenerator {
     }
   }
 
+  // --- Logique de gestion de fichier (avec validation) ---
   openFileInput() {
+    if (!this.isFormReadyForUpload) return;
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
@@ -67,6 +94,7 @@ export default class DpGenerator {
     input.click();
   }
 
+  // --- MISE À JOUR DE LA LOGIQUE D'ANIMATION ---
   private processFileWithPintura(file: File) {
     const editor: any = openDefaultEditor({
       src: file,
@@ -82,7 +110,17 @@ export default class DpGenerator {
       if (!blob) return;
 
       const reader = new FileReader();
-      reader.onload = () => (this.previewImage = reader.result);
+      reader.onload = () => {
+        this.previewImage = reader.result;
+        // ACTE III : On affiche SEULEMENT l'image
+        this.uiState = 'imageVisible';
+
+        // On attend un court instant pour que l'image s'affiche...
+        setTimeout(() => {
+          // ACTE IV : On déclenche l'animation du template
+          this.uiState = 'templateVisible';
+        }, 200); // 200ms, c'est parfait pour l'effet
+      };
       reader.readAsDataURL(blob);
     });
   }
@@ -92,40 +130,28 @@ export default class DpGenerator {
     this.quoteIndex = (this.quoteIndex + 1) % this.suggestedQuotes.length;
   }
 
-  // --- NOUVELLE LOGIQUE DE CAPTURE ---
   private async captureElement(elementId: string, fileName: string) {
     const originalElement = document.getElementById(elementId);
     if (!originalElement) {
       console.error(`L'élément avec l'ID "${elementId}" n'a pas été trouvé.`);
       return;
     }
-
-    // 1. Cloner l'élément
     const clone = originalElement.cloneNode(true) as HTMLElement;
-
-    // 2. Appliquer les styles pour le rendre invisible mais capturable à 100%
     clone.style.position = 'absolute';
     clone.style.top = '0';
-    clone.style.left = '-9999px'; // On le cache hors de l'écran
+    clone.style.left = '-9999px';
     clone.style.zIndex = '-10';
-    clone.style.transform = 'none'; // TRÈS IMPORTANT : On annule le scale
-
-    // 3. Ajouter le clone au body pour qu'il soit dans le DOM
+    clone.style.transform = 'none';
     document.body.appendChild(clone);
-
     try {
-      // 4. Lancer html2canvas sur le CLONE
       const canvas = await html2canvas(clone, {
         backgroundColor: null,
         useCORS: true,
-        // On peut forcer la taille pour être sûr, même si ce n'est plus forcément nécessaire
         width: clone.offsetWidth,
         height: clone.offsetHeight,
-        scale: 2, // On peut même augmenter la résolution pour une qualité encore meilleure
+        scale: 2,
       });
       const imageData = canvas.toDataURL('image/png');
-
-      // Le reste de la logique de téléchargement
       const link = document.createElement('a');
       link.href = imageData;
       link.download = `${fileName.replace(/\s+/g, '_')}.png`;
@@ -133,7 +159,6 @@ export default class DpGenerator {
     } catch (error) {
       console.error("Erreur pendant la capture d'écran :", error);
     } finally {
-      // 5. TRÈS IMPORTANT : Toujours supprimer le clone après l'opération
       document.body.removeChild(clone);
     }
   }

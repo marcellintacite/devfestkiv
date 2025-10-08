@@ -10,4 +10,5 @@ import { CommonModule } from '@angular/common';
 export class Profil {
   @Input() fullName: string = '';
   @Input() previewImage: string | ArrayBuffer | null = null;
+  @Input() uiState: 'initial' | 'imageVisible' | 'templateVisible' = 'initial';
 }

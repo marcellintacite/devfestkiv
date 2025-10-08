@@ -11,4 +11,5 @@ export class Generator {
   @Input() fullName: string = '';
   @Input() previewImage: string | ArrayBuffer | null = null;
   @Input() quote: string = '';
+  @Input() uiState: 'initial' | 'imageVisible' | 'templateVisible' = 'initial';
 }
