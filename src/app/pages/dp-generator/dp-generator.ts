@@ -19,7 +19,7 @@ export default class DpGenerator {
   fullName = '';
   quote = '';
   previewImage: string | ArrayBuffer | null = null;
-  isDraggingOver = false; // Pour le style du drag & drop
+  isDraggingOver = false;
 
   suggestedQuotes = [
     'Le code est ma poésie.',
@@ -48,14 +48,12 @@ export default class DpGenerator {
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
       const file = files[0];
-      // On s'assure que c'est bien une image
       if (file.type.startsWith('image/')) {
         this.processFileWithPintura(file);
       }
     }
   }
 
-  // --- Logique de gestion de fichier (refactorisée) ---
   openFileInput() {
     const input = document.createElement('input');
     input.type = 'file';
@@ -89,28 +87,55 @@ export default class DpGenerator {
     });
   }
 
-  // --- Autres méthodes ---
   suggestQuote() {
     this.quote = this.suggestedQuotes[this.quoteIndex];
     this.quoteIndex = (this.quoteIndex + 1) % this.suggestedQuotes.length;
   }
 
+  // --- NOUVELLE LOGIQUE DE CAPTURE ---
   private async captureElement(elementId: string, fileName: string) {
-    const element = document.getElementById(elementId);
-    if (!element) {
+    const originalElement = document.getElementById(elementId);
+    if (!originalElement) {
       console.error(`L'élément avec l'ID "${elementId}" n'a pas été trouvé.`);
       return;
     }
 
-    await new Promise((res) => setTimeout(res, 120));
+    // 1. Cloner l'élément
+    const clone = originalElement.cloneNode(true) as HTMLElement;
 
-    const canvas = await html2canvas(element, { backgroundColor: null, scale: 2, useCORS: true });
-    const imageData = canvas.toDataURL('image/png');
+    // 2. Appliquer les styles pour le rendre invisible mais capturable à 100%
+    clone.style.position = 'absolute';
+    clone.style.top = '0';
+    clone.style.left = '-9999px'; // On le cache hors de l'écran
+    clone.style.zIndex = '-10';
+    clone.style.transform = 'none'; // TRÈS IMPORTANT : On annule le scale
 
-    const link = document.createElement('a');
-    link.href = imageData;
-    link.download = `${fileName.replace(/\s+/g, '_')}.png`;
-    link.click();
+    // 3. Ajouter le clone au body pour qu'il soit dans le DOM
+    document.body.appendChild(clone);
+
+    try {
+      // 4. Lancer html2canvas sur le CLONE
+      const canvas = await html2canvas(clone, {
+        backgroundColor: null,
+        useCORS: true,
+        // On peut forcer la taille pour être sûr, même si ce n'est plus forcément nécessaire
+        width: clone.offsetWidth,
+        height: clone.offsetHeight,
+        scale: 2, // On peut même augmenter la résolution pour une qualité encore meilleure
+      });
+      const imageData = canvas.toDataURL('image/png');
+
+      // Le reste de la logique de téléchargement
+      const link = document.createElement('a');
+      link.href = imageData;
+      link.download = `${fileName.replace(/\s+/g, '_')}.png`;
+      link.click();
+    } catch (error) {
+      console.error("Erreur pendant la capture d'écran :", error);
+    } finally {
+      // 5. TRÈS IMPORTANT : Toujours supprimer le clone après l'opération
+      document.body.removeChild(clone);
+    }
   }
 
   async captureProfileDP() {
