@@ -46,7 +46,7 @@
           [class.-translate-x-full]="uiState !== 'templateVisible'"
         >
           <div class="relative bg-primary border-4 border-accent p-8 rounded-2xl shadow-lg">
-            <p class="text-gray-800 text-3xl italic text-center leading-tight">
+            <p class="text-gray-800 text-3xl italic text-center leading-tight break-words">
               "{{ quote || 'Le code est ma poésie.' }}"
             </p>
             <div
@@ -83,13 +83,52 @@
           <div class="flex flex-col items-center">
             <img src="assets/logo-1.png" alt="Devfest Big Logo" class="w-64" />
           </div>
-          <p class="text text-4xl font-bold tracking-wider mt-4">Le 6 Décembre 2025</p>
-          <p class="text text-2xl font-light">Bukavu, République Démocratique du Congo</p>
+          <div class="flex flex-col gap-1 w-full px-0">
+            <div class="flex items-center gap-4">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-8 h-8"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
+                />
+              </svg>
+              <p class="text-3xl font-bold tracking-wider">Le 6 Décembre 2025</p>
+            </div>
+            <div class="flex items-center gap-4">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-8 h-8"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+                />
+              </svg>
+              <p class="text-2xl font-light">Bukavu, République Démocratique du Congo</p>
+            </div>
+          </div>
         </div>
 
         <!-- Logo circulaire : pop-in -->
         <div
-          class="absolute bottom-20 bg-text left-12 w-28 h-28 rounded-full flex items-center justify-center shadow-lg z-30 transition-transform duration-300 ease-out delay-200"
+          class="absolute bottom-28 bg-text left-15 w-28 h-28 rounded-full flex items-center justify-center shadow-lg z-30 transition-transform duration-300 ease-out delay-200"
           [class.scale-100]="uiState === 'templateVisible'"
           [class.scale-0]="uiState !== 'templateVisible'"
         >
