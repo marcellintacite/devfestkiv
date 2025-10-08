@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Profil } from './profil/profil';
@@ -12,9 +12,14 @@ import html2canvas from 'html2canvas-pro';
   imports: [CommonModule, FormsModule, Profil, Generator],
   templateUrl: './dp-generator.html',
 })
-export default class DpGenerator {
+export default class DpGenerator implements OnInit {
   activeTab: 'profile' | 'dp' = 'profile';
   uiState: 'initial' | 'imageVisible' | 'templateVisible' = 'initial';
+
+  ngOnInit() {
+    // Scroll to top when component initializes
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   // État partagé
   fullName = '';

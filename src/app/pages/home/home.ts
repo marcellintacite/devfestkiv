@@ -32,7 +32,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   hours = signal(0);
   daysLeft = signal(0);
 
-  targetDateTimeString = signal('2025-12-06T09:00:00');
+  targetDateTimeString = signal('2025-11-29T09:00:00');
   countdownRunning = signal(false);
 
   private countdownInterval: any;
@@ -40,6 +40,9 @@ export default class HomeComponent implements OnInit, OnDestroy {
   private readonly STORAGE_KEY = 'countdown_end_time';
 
   ngOnInit(): void {
+    // Scroll to top when component initializes
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     this.initializeCountdown();
     this.startCountdown();
   }
