@@ -4,19 +4,19 @@
   </h3>
 
   <!-- 
-    Wrapper pour le scaling. J'ai ajusté les valeurs pour un meilleur affichage sur toutes les tailles d'écran.
+    Wrapper pour le scaling. Valeurs ajustées pour un meilleur affichage sur toutes les tailles d'écran.
   -->
   <div class="w-full flex justify-center">
     <div
       class="origin-top scale-[0.35] sm:scale-[0.5] md:scale-[0.6] lg:scale-[0.5] xl:scale-[0.65] transition-transform duration-300"
     >
       <!-- 
-        LA ZONE DE CAPTURE : 1024x1024px
+        LA ZONE DE CAPTURE : 837x837px
         Le 'relative' est notre base pour tout positionner.
       -->
       <div
         id="dp-capture-zone-generator"
-        class="relative w-[1024px] h-[1024px] overflow-hidden bg-primary-pastel"
+        class="relative w-[837px] h-[837px] overflow-hidden bg-primary-pastel"
       >
         <!-- COUCHE 1 (z-0) : Le cadre de fond (dp-layout.png) -->
         <img
@@ -27,7 +27,7 @@
 
         <!-- COUCHE 2 (z-10) : La photo de l'utilisateur (ajustée au pixel près) -->
         <div
-          class="absolute top-30 left-[520px] w-[350px] h-[480px] bg-gray-300 rounded-3xl shadow-2xl overflow-hidden flex items-center justify-center z-10 border-4 border-accent"
+          class="absolute top-24 left-[425px] w-[286px] h-[392px] bg-gray-300 rounded-3xl shadow-2xl overflow-hidden flex items-center justify-center z-10 border-4 border-accent"
         >
           @if (previewImage) {
           <img
@@ -45,7 +45,7 @@
         </div>
 
         <!-- COUCHE 3 (z-20) : Le bloc citation et la flèche -->
-        <div class="absolute top-50 left-28 w-[350px] z-20">
+        <div class="absolute top-40 left-24 w-[286px] z-20">
           <!-- La bulle de conversation -->
           <div class="relative bg-primary border-4 border-accent p-8 rounded-2xl shadow-lg">
             <p class="text-gray-800 text-3xl italic text-center leading-tight">
@@ -56,46 +56,31 @@
               class="absolute left-full top-1/2 -translate-y-1/2 w-0 h-0 border-t-[15px] border-t-transparent border-b-[15px] border-b-transparent border-l-[20px] border-l-accent"
             ></div>
           </div>
-
+        </div>
+        <div class="absolute top-80 left-24 w-[286px] z-20 mt-4 ml-4 space-y-2">
           <!-- Le texte et la flèche en dessous -->
-          <div class="mt-10 ml-4 space-y-3">
-            <!-- Ici la magie opère : on utilise des <span> ! -->
-            <p class="text-2xl font-light">
-              <span class="bg-secondary text-white px-3 py-1 rounded-md"
-                >@{{ fullName || 'alain' }}</span
-              >
-              <span class="bg-white text-text px-3 py-1 rounded-md">sera à :</span>
-            </p>
+          <p class="text-2xl font-light">
+            <span class="bg-secondary text-white px-3 py-1 rounded-md"
+              >@{{ fullName || 'alain' }}</span
+            >
+            <span class="bg-white text-text px-3 py-1 rounded-md">sera à :</span>
+          </p>
 
-            <!-- Flèche SVG stylée -->
-            <svg width="150" height="100" viewBox="0 0 150 100" class="mt-2 -ml-4">
-              <path
-                d="M 20 20 Q 80 100, 150 80"
-                stroke="white"
-                stroke-width="3"
-                fill="transparent"
-                stroke-dasharray="5,10"
-                stroke-linecap="round"
-              />
-              <path
-                d="M 140 72 L 150 80 L 140 88"
-                stroke="white"
-                stroke-width="3"
-                fill="transparent"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </div>
+          <!-- Flèche png stylée -->
+          <img
+            src="assets/arrow.png"
+            alt="fleche"
+            class="w-30 h-48 object-contain -rotate-30 ml-10"
+          />
         </div>
 
-        <!-- COUCHE 4 (z-10) : Le bloc d'infos DevFest (simulé avec du texte) -->
+        <!-- COUCHE 4 (z-10) : Le bloc d'infos DevFest -->
         <div
-          class="absolute bottom-45 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-10"
+          class="absolute bottom-28 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-10"
         >
-          <!-- Logo { DevFest } Kivu (recréé en HTML/Tailwind) -->
+          <!-- Logo DevFest Kivu -->
           <div class="flex flex-col items-center">
-            <img src="assets/logo-1.png" alt="Devfest Big Logo" class="w-80" />
+            <img src="assets/logo-1.png" alt="Devfest Big Logo" class="w-64" />
           </div>
 
           <p class="text text-4xl font-bold tracking-wider mt-4">Le 6 Décembre 2025</p>
@@ -104,9 +89,9 @@
 
         <!-- COUCHE 5 (z-30) : Le logo circulaire en bas à gauche -->
         <div
-          class="absolute bottom-25 bg-text left-16 w-32 h-32 rounded-full flex items-center justify-center shadow-lg z-30"
+          class="absolute bottom-20 bg-text left-12 w-28 h-28 rounded-full flex items-center justify-center shadow-lg z-30"
         >
-          <img src="assets/logo.png" alt="Logo DevFest" class="w-28 object-contain m-0" />
+          <img src="assets/logo.png" alt="Logo DevFest" class="w-24 object-contain m-0" />
         </div>
       </div>
     </div>
