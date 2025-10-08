@@ -6,7 +6,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   selector: 'app-navbar',
   imports: [RouterLink, RouterLinkActive],
   template: `
-    <nav class=" backdrop-blur-sm sticky top-0 z-50 shadow-xs transition-all duration-300">
+    <nav class=" backdrop-blur-sm sticky top-0 z-50 transition-all duration-300 border-b border-gray-100">
       <div class="max-w-7xl mx-auto px-md sm:px-lg lg:px-xl">
         <div class="flex justify-between items-center h-16">
           <!-- Logo Section -->
