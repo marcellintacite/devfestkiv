@@ -28,61 +28,79 @@
         id="dp-capture-zone-generator"
         class="relative w-[837px] h-[837px] overflow-hidden bg-primary-pastel"
       >
-        <!-- Le template qui apparaît en fondu -->
-        <div
-          class="transition-opacity duration-700 ease-out"
+        <!-- Le cadre de fond : fondu rapide -->
+        <img
+          src="assets/dp-layout.png"
+          alt="Cadre de fond DevFest"
+          class="absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-300 ease-in"
           [class.opacity-100]="uiState === 'templateVisible'"
           [class.opacity-0]="uiState !== 'templateVisible'"
+        />
+
+        <!-- Bloc citation et flèche : slide depuis la gauche avec rebond -->
+        <div
+          class="absolute top-40 left-24 w-[286px] z-20 transition-all duration-500 ease-out"
+          [class.opacity-100]="uiState === 'templateVisible'"
+          [class.translate-x-0]="uiState === 'templateVisible'"
+          [class.opacity-0]="uiState !== 'templateVisible'"
+          [class.-translate-x-full]="uiState !== 'templateVisible'"
         >
-          <img
-            src="assets/dp-layout.png"
-            alt="Cadre de fond DevFest"
-            class="absolute inset-0 w-full h-full object-cover z-0"
-          />
-
-          <!-- Bloc citation et flèche -->
-          <div class="absolute top-40 left-24 w-[286px] z-20">
-            <div class="relative bg-primary border-4 border-accent p-8 rounded-2xl shadow-lg">
-              <p class="text-gray-800 text-3xl italic text-center leading-tight">"{{ quote }}"</p>
-              <div
-                class="absolute left-full top-1/2 -translate-y-1/2 w-0 h-0 border-t-[15px] border-t-transparent border-b-[15px] border-b-transparent border-l-[20px] border-l-accent"
-              ></div>
-            </div>
-          </div>
-          <div class="absolute top-80 left-24 w-[286px] z-20 mt-4 ml-4 space-y-2">
-            <p class="text-2xl font-light">
-              <span class="bg-secondary text-white px-3 py-1 rounded-md">@{{ fullName }}</span>
-              <span class="bg-white text-text px-3 py-1 rounded-md">sera à :</span>
+          <div class="relative bg-primary border-4 border-accent p-8 rounded-2xl shadow-lg">
+            <p class="text-gray-800 text-3xl italic text-center leading-tight">
+              "{{ quote || 'Le code est ma poésie.' }}"
             </p>
-            <img
-              src="assets/arrow.png"
-              alt="fleche"
-              class="w-30 h-48 object-contain -rotate-30 ml-10"
-            />
-          </div>
-
-          <!-- Bloc d'infos DevFest -->
-          <div
-            class="absolute bottom-28 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-10"
-          >
-            <div class="flex flex-col items-center">
-              <img src="assets/logo-1.png" alt="Devfest Big Logo" class="w-64" />
-            </div>
-            <p class="text text-4xl font-bold tracking-wider mt-4">Le 6 Décembre 2025</p>
-            <p class="text text-2xl font-light">Bukavu, République Démocratique du Congo</p>
-          </div>
-
-          <!-- Logo circulaire -->
-          <div
-            class="absolute bottom-20 bg-text left-12 w-28 h-28 rounded-full flex items-center justify-center shadow-lg z-30"
-          >
-            <img src="assets/logo.png" alt="Logo DevFest" class="w-24 object-contain m-0" />
+            <div
+              class="absolute left-full top-1/2 -translate-y-1/2 w-0 h-0 border-t-[15px] border-t-transparent border-b-[15px] border-b-transparent border-l-[20px] border-l-accent"
+            ></div>
           </div>
         </div>
-
-        <!-- La photo de l'utilisateur (toujours visible après upload) -->
         <div
-          class="absolute top-24 left-[425px] w-[286px] h-[392px] bg-gray-300 rounded-3xl shadow-2xl overflow-hidden flex items-center justify-center z-10 border-4 border-accent"
+          class="absolute top-80 left-24 w-[286px] z-20 mt-4 ml-4 space-y-2 transition-all duration-500 ease-out delay-100"
+          [class.opacity-100]="uiState === 'templateVisible'"
+          [class.translate-x-0]="uiState === 'templateVisible'"
+          [class.opacity-0]="uiState !== 'templateVisible'"
+          [class.-translate-x-full]="uiState !== 'templateVisible'"
+        >
+          <p class="text-2xl font-light">
+            <span class="bg-secondary text-white px-3 py-1 rounded-md">@{{ fullName }}</span>
+            <span class="bg-white text-text px-3 py-1 rounded-md">sera à :</span>
+          </p>
+          <img
+            src="assets/arrow.png"
+            alt="fleche"
+            class="w-30 h-48 object-contain -rotate-30 ml-10"
+          />
+        </div>
+
+        <!-- Bloc d'infos DevFest : slide depuis le bas -->
+        <div
+          class="absolute bottom-28 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-10 transition-all duration-500 ease-out delay-150"
+          [class.opacity-100]="uiState === 'templateVisible'"
+          [class.translate-y-0]="uiState === 'templateVisible'"
+          [class.opacity-0]="uiState !== 'templateVisible'"
+          [class.translate-y-full]="uiState !== 'templateVisible'"
+        >
+          <div class="flex flex-col items-center">
+            <img src="assets/logo-1.png" alt="Devfest Big Logo" class="w-64" />
+          </div>
+          <p class="text text-4xl font-bold tracking-wider mt-4">Le 6 Décembre 2025</p>
+          <p class="text text-2xl font-light">Bukavu, République Démocratique du Congo</p>
+        </div>
+
+        <!-- Logo circulaire : pop-in -->
+        <div
+          class="absolute bottom-20 bg-text left-12 w-28 h-28 rounded-full flex items-center justify-center shadow-lg z-30 transition-transform duration-300 ease-out delay-200"
+          [class.scale-100]="uiState === 'templateVisible'"
+          [class.scale-0]="uiState !== 'templateVisible'"
+        >
+          <img src="assets/logo.png" alt="Logo DevFest" class="w-24 object-contain m-0" />
+        </div>
+
+        <!-- La photo de l'utilisateur : zoom-in agressif -->
+        <div
+          class="absolute top-24 left-[425px] w-[286px] h-[392px] bg-gray-300 rounded-3xl shadow-2xl overflow-hidden flex items-center justify-center z-10 border-4 border-accent transition-transform duration-300 ease-in-out"
+          [class.scale-100]="uiState === 'imageVisible' || uiState === 'templateVisible'"
+          [class.scale-0]="!(uiState === 'imageVisible' || uiState === 'templateVisible')"
         >
           <img
             [src]="previewImage"

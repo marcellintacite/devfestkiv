@@ -14,8 +14,6 @@ import html2canvas from 'html2canvas-pro';
 })
 export default class DpGenerator {
   activeTab: 'profile' | 'dp' = 'profile';
-
-  // NOUVEL ÉTAT POUR L'UX
   uiState: 'initial' | 'imageVisible' | 'templateVisible' = 'initial';
 
   // État partagé
@@ -23,6 +21,10 @@ export default class DpGenerator {
   quote = '';
   previewImage: string | ArrayBuffer | null = null;
   isDraggingOver = false;
+
+  // NOUVEAUX ÉTATS POUR LA PHOTO DE PROFIL
+  profileTheme: 'yellow' | 'blue' | 'green' | 'red' = 'yellow';
+  profileStyle: 'classic' | 'minimalist' = 'classic';
 
   suggestedQuotes = [
     'Le code est ma poésie.',
@@ -33,19 +35,15 @@ export default class DpGenerator {
   ];
   private quoteIndex = 0;
 
-  // Getter pour la validation du formulaire
   get isFormReadyForUpload(): boolean {
     if (this.activeTab === 'profile') {
       return !!this.fullName.trim();
     }
-    // Pour le DP Generator, le nom ET la citation sont requis
     return !!this.fullName.trim() && !!this.quote.trim();
   }
 
-  // Méthode pour changer d'onglet et réinitialiser l'état
   setActiveTab(tab: 'profile' | 'dp') {
     this.activeTab = tab;
-    // On réinitialise l'animation si on change d'onglet
     if (!this.previewImage) {
       this.uiState = 'initial';
     } else {
@@ -53,7 +51,15 @@ export default class DpGenerator {
     }
   }
 
-  // --- Logique de Drag & Drop (avec validation) ---
+  // NOUVELLES MÉTHODES POUR LA PERSONNALISATION
+  setProfileTheme(theme: 'yellow' | 'blue' | 'green' | 'red') {
+    this.profileTheme = theme;
+  }
+
+  toggleProfileStyle() {
+    this.profileStyle = this.profileStyle === 'classic' ? 'minimalist' : 'classic';
+  }
+
   onDragOver(event: DragEvent) {
     if (!this.isFormReadyForUpload) return;
     event.preventDefault();
@@ -69,7 +75,6 @@ export default class DpGenerator {
     if (!this.isFormReadyForUpload) return;
     event.preventDefault();
     this.isDraggingOver = false;
-
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
       const file = files[0];
@@ -79,7 +84,6 @@ export default class DpGenerator {
     }
   }
 
-  // --- Logique de gestion de fichier (avec validation) ---
   openFileInput() {
     if (!this.isFormReadyForUpload) return;
     const input = document.createElement('input');
@@ -94,7 +98,6 @@ export default class DpGenerator {
     input.click();
   }
 
-  // --- MISE À JOUR DE LA LOGIQUE D'ANIMATION ---
   private processFileWithPintura(file: File) {
     const editor: any = openDefaultEditor({
       src: file,
@@ -108,18 +111,13 @@ export default class DpGenerator {
     editor.on('process', (imageState: any) => {
       const blob: Blob | undefined = imageState?.dest;
       if (!blob) return;
-
       const reader = new FileReader();
       reader.onload = () => {
         this.previewImage = reader.result;
-        // ACTE III : On affiche SEULEMENT l'image
         this.uiState = 'imageVisible';
-
-        // On attend un court instant pour que l'image s'affiche...
         setTimeout(() => {
-          // ACTE IV : On déclenche l'animation du template
           this.uiState = 'templateVisible';
-        }, 200); // 200ms, c'est parfait pour l'effet
+        }, 100);
       };
       reader.readAsDataURL(blob);
     });
