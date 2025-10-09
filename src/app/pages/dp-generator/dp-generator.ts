@@ -3,31 +3,32 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Profil } from './profil/profil';
 import { Generator } from './generator/generator';
-import { openDefaultEditor } from '@pqina/pintura';
 import html2canvas from 'html2canvas-pro';
+import { ImageCropperComponent, ImageCroppedEvent } from 'ngx-image-cropper';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-dp-generator',
   standalone: true,
-  imports: [CommonModule, FormsModule, Profil, Generator],
+  imports: [CommonModule, FormsModule, Profil, Generator, ImageCropperComponent],
   templateUrl: './dp-generator.html',
 })
 export default class DpGenerator implements OnInit {
+  constructor(private cdr: ChangeDetectorRef) {}
   activeTab: 'profile' | 'dp' = 'profile';
   uiState: 'initial' | 'imageVisible' | 'templateVisible' = 'initial';
 
-  ngOnInit() {
-    // Scroll to top when component initializes
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  // État partagé
   fullName = '';
   quote = '';
   previewImage: string | ArrayBuffer | null = null;
   isDraggingOver = false;
 
-  // NOUVEAUX ÉTATS POUR LA PHOTO DE PROFIL
+  // === Recadrage ===
+  showCropper = false;
+  imageBase64: string | undefined = undefined;
+  tempCroppedImage: string | null = null;
+
   profileTheme: 'yellow' | 'blue' | 'green' | 'red' = 'yellow';
   profileStyle: 'classic' | 'minimalist' = 'classic';
 
@@ -40,23 +41,22 @@ export default class DpGenerator implements OnInit {
   ];
   private quoteIndex = 0;
 
-  get isFormReadyForUpload(): boolean {
-    if (this.activeTab === 'profile') {
-      return !!this.fullName.trim();
+  ngOnInit() {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  }
+
+  get isFormReadyForUpload(): boolean {
+    if (this.activeTab === 'profile') return !!this.fullName.trim();
     return !!this.fullName.trim() && !!this.quote.trim();
   }
 
   setActiveTab(tab: 'profile' | 'dp') {
     this.activeTab = tab;
-    if (!this.previewImage) {
-      this.uiState = 'initial';
-    } else {
-      this.uiState = 'templateVisible';
-    }
+    this.uiState = this.previewImage ? 'templateVisible' : 'initial';
   }
 
-  // NOUVELLES MÉTHODES POUR LA PERSONNALISATION
   setProfileTheme(theme: 'yellow' | 'blue' | 'green' | 'red') {
     this.profileTheme = theme;
   }
@@ -65,6 +65,7 @@ export default class DpGenerator implements OnInit {
     this.profileStyle = this.profileStyle === 'classic' ? 'minimalist' : 'classic';
   }
 
+  // === Drag & Drop ===
   onDragOver(event: DragEvent) {
     if (!this.isFormReadyForUpload) return;
     event.preventDefault();
@@ -80,15 +81,13 @@ export default class DpGenerator implements OnInit {
     if (!this.isFormReadyForUpload) return;
     event.preventDefault();
     this.isDraggingOver = false;
-    const files = event.dataTransfer?.files;
-    if (files && files.length > 0) {
-      const file = files[0];
-      if (file.type.startsWith('image/')) {
-        this.processFileWithPintura(file);
-      }
+    const file = event.dataTransfer?.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      this.openCropper(file);
     }
   }
 
+  // === Fichier manuel ===
   openFileInput() {
     if (!this.isFormReadyForUpload) return;
     const input = document.createElement('input');
@@ -96,36 +95,55 @@ export default class DpGenerator implements OnInit {
     input.accept = 'image/*';
     input.onchange = (e: any) => {
       const file = e.target.files?.[0];
-      if (file) {
-        this.processFileWithPintura(file);
-      }
+      if (file) this.openCropper(file);
     };
     input.click();
   }
 
-  private processFileWithPintura(file: File) {
-    const editor: any = openDefaultEditor({
-      src: file,
-      imageCropAspectRatio: 1,
-      locale: {
-        labelButtonExport: 'Confirmer',
-        labelButtonCancel: 'Annuler',
-      },
-    });
+  // === Cropper ===
+  openCropper(file: File) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imageBase64 = reader.result as string;
+      this.showCropper = true;
+      this.tempCroppedImage = null;
+    };
+    reader.readAsDataURL(file);
+  }
 
-    editor.on('process', (imageState: any) => {
-      const blob: Blob | undefined = imageState?.dest;
-      if (!blob) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.previewImage = reader.result;
-        this.uiState = 'imageVisible';
-        setTimeout(() => {
-          this.uiState = 'templateVisible';
-        }, 100);
-      };
-      reader.readAsDataURL(blob);
-    });
+onImageCropped(event: ImageCroppedEvent) {
+  this.tempCroppedImage = event.base64 ?? null;
+  console.log('✅ ImageCropped (base64) :', this.tempCroppedImage?.substring?.(0,50));
+  this.cdr.detectChanges(); // utile si Angular ne rafraîchit pas immédiatement
+}
+
+
+confirmCrop() {
+  if (this.tempCroppedImage) {
+    this.previewImage = this.tempCroppedImage;
+    console.log(' ConfirmCrop - PreviewImage mise à jour :', this.previewImage?.substring(0, 50));
+
+    this.uiState = 'imageVisible';
+    console.log(' UI State -> imageVisible');
+
+    setTimeout(() => {
+      this.uiState = 'templateVisible';
+      console.log(' UI State -> templateVisible');
+    }, 100);
+  } else {
+    console.warn(' Aucune image recadrée trouvée (tempCroppedImage vide)');
+  }
+
+  this.showCropper = false;
+  this.tempCroppedImage = null;
+  console.log(' Cropper fermé');
+}
+
+
+
+  imageCropperCancelled() {
+    this.showCropper = false;
+    this.tempCroppedImage = null;
   }
 
   suggestQuote() {
@@ -134,18 +152,16 @@ export default class DpGenerator implements OnInit {
   }
 
   private async captureElement(elementId: string, fileName: string) {
-    const originalElement = document.getElementById(elementId);
-    if (!originalElement) {
-      console.error(`L'élément avec l'ID "${elementId}" n'a pas été trouvé.`);
-      return;
-    }
-    const clone = originalElement.cloneNode(true) as HTMLElement;
+    const el = document.getElementById(elementId);
+    if (!el) return console.error(`Élément ${elementId} introuvable`);
+
+    const clone = el.cloneNode(true) as HTMLElement;
     clone.style.position = 'absolute';
     clone.style.top = '0';
     clone.style.left = '-9999px';
     clone.style.zIndex = '-10';
-    clone.style.transform = 'none';
     document.body.appendChild(clone);
+
     try {
       const canvas = await html2canvas(clone, {
         backgroundColor: null,
@@ -154,13 +170,12 @@ export default class DpGenerator implements OnInit {
         height: clone.offsetHeight,
         scale: 2,
       });
-      const imageData = canvas.toDataURL('image/png');
       const link = document.createElement('a');
-      link.href = imageData;
+      link.href = canvas.toDataURL('image/png');
       link.download = `${fileName.replace(/\s+/g, '_')}.png`;
       link.click();
-    } catch (error) {
-      console.error("Erreur pendant la capture d'écran :", error);
+    } catch (e) {
+      console.error('Erreur de capture', e);
     } finally {
       document.body.removeChild(clone);
     }
