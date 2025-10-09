@@ -3,7 +3,6 @@ import {
   Component,
   ElementRef,
   HostListener,
-  Inject,
   OnDestroy,
   Renderer2,
   ViewChild,
@@ -30,6 +29,28 @@ import { DOCUMENT } from '@angular/common';
           technologie qui viendront partager leur expertise, leurs parcours et leurs visions pour
           inspirer et faire grandir toute la communauté.
         </p>
+        <p class="text-gray-600 text-lg">
+          Deux jours d’échanges et d’innovation au cœur de l’Afrique
+        </p>
+
+        <!-- Boutons de filtrage -->
+        <div class="flex justify-center gap-4 mb-4">
+          <button
+            class="px-5 py-2 font-medium color-text btn-sm btn-primary"
+            [class.opacity-60]="selectedDay === 'jour1'"
+            (click)="filterByDay('jour1')"
+          >
+            Jour 1
+          </button>
+
+          <button
+            class="px-5 py-2  font-medium btn-sm color-text  btn-primary"
+            [class.opacity-60]="selectedDay === 'jour2'"
+            (click)="filterByDay('jour2')"
+          >
+            Jour 2
+          </button>
+        </div>
       </section>
 
       <!-- Grille responsive -->
@@ -37,9 +58,9 @@ import { DOCUMENT } from '@angular/common';
         class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-4 max-w-7xl mx-auto px-4"
       >
         <!-- Boucle sur chaque speaker -->
-        @for (speaker of speakers; track speaker.name) {
+        @for (speaker of filteredSpeakers; track speaker.name) {
         <div
-          class="bg-orange-100 rounded-2xl border border-gray-200 p-4 text-center border-md hover:border-lg transition-all duration-300"
+          class=" rounded-2xl border border-gray-200 p-4 text-center border-md hover:border-lg transition-all duration-300"
         >
           <!-- Photo -->
           <img
@@ -47,7 +68,8 @@ import { DOCUMENT } from '@angular/common';
             [alt]="speaker.name"
             width="144"
             height="144"
-            class="w-36 h-36 rounded-full mx-auto mb-4 object-cover cursor-pointer"
+            class="w-36 h-36 rounded-full mx-auto mb-4 object-cover border-4 cursor-pointer"
+            [class]="speaker.color?.borderColor"
             (click)="selectSpeaker(speaker)"
             (keydown.enter)="selectSpeaker(speaker)"
             tabindex="0"
@@ -55,10 +77,14 @@ import { DOCUMENT } from '@angular/common';
 
           <h2 class="text-xl font-bold">{{ speaker.name }}</h2>
           <p class="text-gray-700">{{ speaker.title }}</p>
-
-          <p class="text-gray-500 text-sm mt-2">
-            {{ truncateBio(speaker.bio) }}
-          </p>
+          <div
+            class="text-center my-4 p-2 border rounded-2xl"
+            [class]="speaker.color?.bgColor + ' ' + speaker.color?.borderColor"
+          >
+            <p class="text-gray-500 text-sm mt-2">
+              {{ truncateBio(speaker.bio) }}
+            </p>
+          </div>
         </div>
         }
       </div>
@@ -75,7 +101,7 @@ import { DOCUMENT } from '@angular/common';
         >
           <!-- Contenu de la modale -->
           <div
-            class="bg-white py-5 m-full grid grid-cols-2 lg:grid-cols-1 gap-2 items-center jystify-center "
+            class="bg-white py-5 m-full grid grid-cols-2 lg:grid-cols-1 gap-2 items-center justify-center "
           >
             <div>
               <img
@@ -148,10 +174,36 @@ export default class Speakers implements OnDestroy {
   speakersService = inject(SpeakersService);
   speakers: Speaker[] = this.speakersService.speakers;
 
+  filteredSpeakers: Speaker[] = [];
+  selectedDay: string = 'jour1';
+
   selectedSpeaker: Speaker | null = null;
   @ViewChild('speakerDialog') dialog!: ElementRef<HTMLDialogElement>;
   private renderer = inject(Renderer2);
   private document = inject(DOCUMENT);
+
+  // 🎨 Définir les 4 couleurs de rotation
+  colors = [
+    { borderColor: 'border-blue-500', bgColor: 'bg-blue-500/20', bgColorFull: 'bg-blue-500' },
+    { borderColor: 'border-secondary', bgColor: 'bg-secondary/20', bgColorFull: 'bg-secondary' },
+    { borderColor: 'border-accent', bgColor: 'bg-accent/20', bgColorFull: 'bg-accent' },
+    { borderColor: 'border-danger', bgColor: 'bg-danger/20', bgColorFull: 'bg-danger' },
+  ];
+
+  constructor() {
+    // Appliquer les couleurs aux speakers
+    this.speakers = this.speakers.map((s, i) => ({
+      ...s,
+      color: this.colors[i % this.colors.length],
+    }));
+    this.filterByDay(this.selectedDay); // affichage initial jour1
+  }
+
+  // 🧩 Filtrer les speakers selon le jour
+  filterByDay(day: string) {
+    this.selectedDay = day;
+    this.filteredSpeakers = this.speakers.filter((s) => s.day === day);
+  }
 
   ngOnDestroy() {
     this.renderer.removeClass(this.document.body, 'overflow-hidden');

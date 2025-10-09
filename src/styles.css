@@ -1,6 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@import "tailwindcss";
-
+@import 'tailwindcss';
 
 /* 
 What are theme variables?
@@ -19,16 +18,15 @@ to use them :
 
 */
 
-
 /* global variable */
 @theme {
   /* Primary brand colors */
-  --color-primary: #f9ab00;   /* Blue 500 */
+  --color-primary: #f9ab00; /* Blue 500 */
   --color-secondary: #34a853; /* Green 500 */
-  --color-accent: #f9ab00;    /* Yellow 600 */
-  --color-danger: #ea4335;    /* Red 500 */
+  --color-accent: #f9ab00; /* Yellow 600 */
+  --color-danger: #ea4335; /* Red 500 */
 
-  --background:#faf5e8;
+  --background: #faf5e8;
 
   /* Halftones */
   --color-primary-halftone: #ffd427;
@@ -44,7 +42,7 @@ to use them :
 
   /* Grayscale */
   --color-background: #f0f0f0; /* Off White */
-  --color-text: #1e1e1e;       /* Black 02 */
+  --color-text: #1e1e1e; /* Black 02 */
 
   /* Spacing */
   --spacing-xs: 4px;
@@ -61,7 +59,7 @@ to use them :
 }
 
 body {
-    background-color: var(--background);
+  background-color: var(--background);
 }
 
 /* Button Utility Classes */
@@ -158,10 +156,7 @@ body {
   box-shadow: var(--shadow-card);
 }
 
-
-
 /* view transition setup */
-
 
 /* Define keyframe animations */
 @keyframes rotate-out {
