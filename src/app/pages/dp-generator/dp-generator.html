@@ -135,7 +135,7 @@
             <!-- Bouton d'action -->
             <button type="button" (click)="activeTab === 'profile' ? captureProfileDP() : captureGeneratorDP()"
               class="btn btn-primary w-full text-center block">
-              📸 Générer et Télécharger
+               Générer et Télécharger
             </button>
           </form>
         </div>
@@ -162,22 +162,18 @@
   <div class="bg-white rounded-2xl p-6 shadow-2xl w-full max-w-2xl">
     <h3 class="text-lg font-bold text-gray-900 mb-4">Recadrez votre image</h3>
     <div class="w-full h-[400px]">
-<image-cropper
-  [imageBase64]="imageBase64"
-  [maintainAspectRatio]="true"
-  [aspectRatio]="1"
-  [resizeToWidth]="600"
-  [format]="'png'"
-  [autoCrop]="true"
-  [output]="'base64'"
-  class="w-full h-full"
-  (imageCropped)="onImageCropped($event)"
-  (loadImageFailed)="imageCropperCancelled()"
-></image-cropper>
-
-
+    <image-cropper
+      [imageBase64]="imageBase64"
+      [maintainAspectRatio]="true"
+      [aspectRatio]="1"
+      [resizeToWidth]="600"
+      [format]="'png'"
+      [output]="'base64'"
+      class="w-full h-full"
+      (imageCropped)="onImageCropped($event)"
+      (loadImageFailed)="imageCropperCancelled()"
+    ></image-cropper>
     </div>
-
     <div class="flex justify-end mt-4 gap-3">
       <button class="btn btn-secondary" (click)="imageCropperCancelled()">Annuler</button>
       <button class="btn btn-primary" (click)="confirmCrop()">Confirmer</button>

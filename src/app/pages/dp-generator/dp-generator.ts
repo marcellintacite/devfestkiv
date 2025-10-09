@@ -7,7 +7,6 @@ import html2canvas from 'html2canvas-pro';
 import { ImageCropperComponent, ImageCroppedEvent } from 'ngx-image-cropper';
 import { ChangeDetectorRef } from '@angular/core';
 
-
 @Component({
   selector: 'app-dp-generator',
   standalone: true,
@@ -111,35 +110,23 @@ export default class DpGenerator implements OnInit {
     reader.readAsDataURL(file);
   }
 
-onImageCropped(event: ImageCroppedEvent) {
-  this.tempCroppedImage = event.base64 ?? null;
-  console.log('✅ ImageCropped (base64) :', this.tempCroppedImage?.substring?.(0,50));
-  this.cdr.detectChanges(); // utile si Angular ne rafraîchit pas immédiatement
-}
-
-
-confirmCrop() {
-  if (this.tempCroppedImage) {
-    this.previewImage = this.tempCroppedImage;
-    console.log(' ConfirmCrop - PreviewImage mise à jour :', this.previewImage?.substring(0, 50));
-
-    this.uiState = 'imageVisible';
-    console.log(' UI State -> imageVisible');
-
-    setTimeout(() => {
-      this.uiState = 'templateVisible';
-      console.log(' UI State -> templateVisible');
-    }, 100);
-  } else {
-    console.warn(' Aucune image recadrée trouvée (tempCroppedImage vide)');
+  onImageCropped(event: ImageCroppedEvent) {
+    this.tempCroppedImage = event.base64 ?? null;
+    this.cdr.detectChanges();
   }
 
-  this.showCropper = false;
-  this.tempCroppedImage = null;
-  console.log(' Cropper fermé');
-}
+  confirmCrop() {
+    if (this.tempCroppedImage) {
+      this.previewImage = this.tempCroppedImage;
+      this.uiState = 'imageVisible';
+      setTimeout(() => {
+        this.uiState = 'templateVisible';
+      }, 100);
+    }
 
-
+    this.showCropper = false;
+    this.tempCroppedImage = null;
+  }
 
   imageCropperCancelled() {
     this.showCropper = false;
