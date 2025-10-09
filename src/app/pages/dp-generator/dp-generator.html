@@ -18,14 +18,18 @@
           class="px-6 py-3 rounded-lg font-semibold text-sm md:text-base transition-all duration-300"
           [class.bg-white]="activeTab === 'profile'" [class.text-primary]="activeTab === 'profile'"
           [class.shadow-md]="activeTab === 'profile'" [class.text-gray-600]="activeTab !== 'profile'"
-          [class.hover:text-gray-900]="activeTab !== 'profile'">
+          [class.hover:text-gray-900]="activeTab !== 'profile'"
+          [class.cursor-pointer]="activeTab !== 'profile'" [class.cursor-default]="activeTab === 'profile'"
+          >
           Photo de Profil
         </button>
         <button (click)="setActiveTab('dp')"
           class="px-6 py-3 rounded-lg font-semibold text-sm md:text-base transition-all duration-300"
           [class.bg-white]="activeTab === 'dp'" [class.text-primary]="activeTab === 'dp'"
           [class.shadow-md]="activeTab === 'dp'" [class.text-gray-600]="activeTab !== 'dp'"
-          [class.hover:text-gray-900]="activeTab !== 'dp'">
+          [class.hover:text-gray-900]="activeTab !== 'dp'"
+          [class.cursor-pointer]="activeTab !== 'dp'" [class.cursor-default]="activeTab === 'dp'"
+          >
           Générateur de DP
         </button>
       </div>
