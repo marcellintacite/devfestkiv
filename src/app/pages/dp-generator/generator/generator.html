@@ -83,15 +83,18 @@
           <div class="flex flex-col items-center">
             <img src="assets/logo-1.png" alt="Devfest Big Logo" class="w-64" />
           </div>
-          <div class="flex flex-col gap-1 w-full px-0">
-            <div class="flex items-center gap-4">
+          <div
+            class="flex bg-background py-4 rounded-2xl px-4 shadow-md border-2 border-accent h-20 w-[460px] items-center"
+          >
+            <!-- Section Date et Heure -->
+            <div class="flex-1 flex items-center gap-2 min-w-0">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="w-8 h-8"
+                class="w-6 h-6 flex-shrink-0"
               >
                 <path
                   stroke-linecap="round"
@@ -99,16 +102,24 @@
                   d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
                 />
               </svg>
-              <p class="text-3xl font-bold tracking-wider">Le 29 Novembre 2025</p>
+              <div class="flex flex-col min-w-0">
+                <p class="text-sm font-bold tracking-wider truncate">29 Novembre 2025</p>
+                <p class="text-sm font-light truncate">09:00</p>
+              </div>
             </div>
-            <div class="flex items-center gap-4">
+
+            <!-- Ligne de séparation -->
+            <div class="border-l border-text h-10 mx-2"></div>
+
+            <!-- Section Lieu -->
+            <div class="flex-1 flex items-center gap-2 min-w-0">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="w-8 h-8"
+                class="w-6 h-6 flex-shrink-0"
               >
                 <path
                   stroke-linecap="round"
@@ -121,7 +132,10 @@
                   d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
                 />
               </svg>
-              <p class="text-2xl font-light">salle INPP Labotte</p>
+              <div class="flex flex-col min-w-0">
+                <p class="text-sm font-bold tracking-wider truncate">salle INPP Labotte</p>
+                <p class="text-sm font-light truncate">Sud-Kivu</p>
+              </div>
             </div>
           </div>
         </div>
