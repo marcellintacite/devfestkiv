@@ -26,7 +26,9 @@
       <!-- ACTES III & IV : La zone de capture qui s'anime -->
       <div
         id="dp-capture-zone-generator"
-        class="relative w-[837px] h-[837px] overflow-hidden bg-primary-pastel"
+        class="relative w-[837px] h-[837px] overflow-hidden transition-colors duration-300"
+        [class.bg-primary-pastel]="generatorTheme === 'default'"
+        [class.bg-yellow-50]="generatorTheme === 'white'"
       >
         <!-- Le cadre de fond : fondu rapide -->
         <img
@@ -63,7 +65,14 @@
         >
           <p class="text-2xl font-light">
             <span class="bg-secondary text-white px-3 py-1 rounded-md">@{{ fullName }}</span>
-            <span class="bg-white text-text px-3 py-1 rounded-md">sera au :</span>
+            <span
+              class="text-text px-3 py-1 rounded-md"
+              [ngClass]="{
+                'bg-white': generatorTheme === 'default',
+                'bg-gray-100': generatorTheme === 'white'
+              }"
+              >sera au :</span
+            >
           </p>
           <img
             src="assets/arrow.png"
@@ -84,7 +93,11 @@
             <img src="assets/logo-1.png" alt="Devfest Big Logo" class="w-64" />
           </div>
           <div
-            class="flex bg-background py-4 rounded-2xl px-4 shadow-md border-2 border-accent h-20 w-[460px] items-center"
+            class="flex py-4 rounded-2xl px-4 shadow-md border-2 border-accent h-20 w-[460px] items-center"
+            [ngClass]="{
+              'bg-background': generatorTheme === 'default',
+              'bg-primary': generatorTheme === 'white'
+            }"
           >
             <!-- Section Date et Heure -->
             <div class="flex-1 flex items-center gap-2 min-w-0">
