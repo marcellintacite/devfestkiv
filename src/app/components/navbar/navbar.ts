@@ -1,23 +1,22 @@
 import { Component, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, RouterLinkActive, CommonModule],
+  imports: [RouterLink, RouterLinkActive],
   template: `
-    <nav class=" backdrop-blur-sm sticky top-0 z-50 shadow-xs transition-all duration-300">
+    <nav class=" backdrop-blur-sm sticky top-0 z-50 transition-all duration-300 border-b border-gray-100">
       <div class="max-w-7xl mx-auto px-md sm:px-lg lg:px-xl">
         <div class="flex justify-between items-center h-16">
           <!-- Logo Section -->
           <div class="flex-shrink-0 flex items-center">
             <a routerLink="/" class="flex items-center space-x-3">
-              <img 
-                src="/assets/logo-1.png" 
-                alt="DevFest Kivu Logo" 
+              <img
+                src="/assets/logo-1.png"
+                alt="DevFest Kivu Logo"
                 class="h-8 w-auto sm:h-10 lg:h-10"
-              >
-          
+              />
             </a>
           </div>
 
@@ -25,26 +24,21 @@ import { CommonModule } from '@angular/common';
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline space-x-1 lg:space-x-2 group">
               @for (item of navItems(); track item.path) {
-                <a 
-                  [routerLink]="item.path"
-                  routerLinkActive="nav-active"
-                  class="nav-link lg:text-base"
-                  [attr.aria-current]="item.path === '/' ? 'page' : null"
-                >
-                  {{ item.label }}
-                </a>
+              <a
+                [routerLink]="item.path"
+                routerLinkActive="nav-active"
+                class="nav-link lg:text-base"
+                [attr.aria-current]="item.path === '/' ? 'page' : null"
+              >
+                {{ item.label }}
+              </a>
               }
             </div>
           </div>
 
           <!-- CTA Button (Desktop) -->
           <div class="hidden md:block">
-            <a 
-              routerLink="/dp-generator"
-              class="btn btn-primary btn-md"
-            >
-              Genérer votre DP
-            </a>
+            <a routerLink="/dp-generator" class="btn btn-primary btn-md"> Genérer votre DP </a>
           </div>
 
           <!-- Mobile Menu Button -->
@@ -57,34 +51,34 @@ import { CommonModule } from '@angular/common';
               aria-label="Toggle navigation menu"
             >
               <div class="relative w-6 h-6">
-                <svg 
+                <svg
                   class="absolute inset-0 w-6 h-6 transition-all duration-300"
                   [class.opacity-0]="isMobileMenuOpen()"
                   [class.rotate-180]="isMobileMenuOpen()"
-                  fill="none" 
-                  viewBox="0 0 24 24" 
+                  fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path 
-                    stroke-linecap="round" 
-                    stroke-linejoin="round" 
-                    stroke-width="2" 
-                    d="M4 6h16M4 12h16M4 18h16" 
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"
                   />
                 </svg>
-                <svg 
+                <svg
                   class="absolute inset-0 w-6 h-6 transition-all duration-300"
                   [class.opacity-0]="!isMobileMenuOpen()"
                   [class.rotate-180]="!isMobileMenuOpen()"
-                  fill="none" 
-                  viewBox="0 0 24 24" 
+                  fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path 
-                    stroke-linecap="round" 
-                    stroke-linejoin="round" 
-                    stroke-width="2" 
-                    d="M6 18L18 6M6 6l12 12" 
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
               </div>
@@ -94,12 +88,12 @@ import { CommonModule } from '@angular/common';
       </div>
 
       <!-- Mobile Navigation Menu -->
-      <div 
+      <div
         class="md:hidden bg-white/95 backdrop-blur-sm border-t border-background overflow-hidden transition-all duration-500 ease-in-out"
         [class.max-h-0]="!isMobileMenuOpen()"
         [class.max-h-screen]="isMobileMenuOpen()"
       >
-        <div 
+        <div
           class="px-md pt-lg pb-xl space-y-1 transition-all duration-300 delay-100"
           [class.opacity-0]="!isMobileMenuOpen()"
           [class.opacity-100]="isMobileMenuOpen()"
@@ -107,17 +101,17 @@ import { CommonModule } from '@angular/common';
           [class.translate-y-0]="isMobileMenuOpen()"
         >
           @for (item of navItems(); track item.path; let i = $index) {
-            <a
-              [routerLink]="item.path"
-              routerLinkActive="nav-active-mobile"
-              (click)="closeMobileMenu()"
-              class="block px-sm py-md text-base font-medium text-text hover:text-primary transition-all duration-300 border-l-4 border-transparent hover:translate-x-1 hover:border-primary"
-              [style.transition-delay]="(i * 50) + 'ms'"
-            >
-              {{ item.label }}
-            </a>
+          <a
+            [routerLink]="item.path"
+            routerLinkActive="nav-active-mobile"
+            (click)="closeMobileMenu()"
+            class="block px-sm py-md text-base font-medium text-text hover:text-primary transition-all duration-300 border-l-4 border-transparent hover:translate-x-1 hover:border-primary"
+            [style.transition-delay]="i * 50 + 'ms'"
+          >
+            {{ item.label }}
+          </a>
           }
-          
+
           <!-- Mobile CTA Button -->
           <div class="pt-lg border-t border-background/50 mt-md">
             <a
@@ -192,21 +186,23 @@ import { CommonModule } from '@angular/common';
     .transition-max-height {
       transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
-  `
+  `,
 })
 export class Navbar {
   isMobileMenuOpen = signal(false);
+
 
   navItems = signal([
     { path: '/', label: 'Home' },
     { path: '/agenda', label: 'Agenda' },
     { path: '/speakers', label: 'Speakers' },
     { path: '/sponsor', label: 'Sponsors' },
-    { path: '/qa', label: 'Q&A' }
+    { path: '/qa', label: 'Q&A' },
+    { path: '/live_q', label: 'Live Q' },
   ]);
 
   toggleMobileMenu() {
-    this.isMobileMenuOpen.update(value => !value);
+    this.isMobileMenuOpen.update((value) => !value);
   }
 
   closeMobileMenu() {
