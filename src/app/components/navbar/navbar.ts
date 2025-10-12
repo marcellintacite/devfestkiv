@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 
@@ -6,9 +6,28 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   selector: 'app-navbar',
   imports: [RouterLink, RouterLinkActive],
   template: `
-    <nav class=" backdrop-blur-sm sticky top-0 z-50 transition-all duration-300 border-b border-gray-100">
-      <div class="max-w-7xl mx-auto px-md sm:px-lg lg:px-xl">
-        <div class="flex justify-between items-center h-16">
+    <nav class="sticky z-50 transition-all duration-500 ease-in-out"
+         [class.top-0]="!isScrolled()"
+         [class.top-2]="isScrolled()"
+         [class.sm:top-4]="isScrolled()">
+      <div class="transition-all duration-500 ease-in-out mx-auto"
+           [class.max-w-7xl]="!isScrolled()"
+           [class.max-w-6xl]="isScrolled()"
+           [class.px-3]="!isScrolled()"
+           [class.sm:px-6]="!isScrolled()"
+           [class.lg:px-8]="!isScrolled()"
+           [class.px-2]="isScrolled()"
+           [class.sm:px-3]="isScrolled()">
+        <div class="transition-all duration-500 ease-in-out backdrop-blur-md"
+             [class.bg-white/95]="isScrolled()"
+             [class.rounded-xl]="isScrolled()"
+             [class.sm:rounded-2xl]="isScrolled()"
+             [class.shadow-sm]="isScrolled()"
+             [class.border-gray-100]="!isScrolled()">
+          <div class="flex justify-between items-center h-16"
+               [class.px-4]="!isScrolled()"
+               [class.px-3]="isScrolled()"
+               [class.sm:px-6]="isScrolled()">
           <!-- Logo Section -->
           <div class="flex-shrink-0 flex items-center">
             <a routerLink="/" class="flex items-center space-x-3">
@@ -85,14 +104,13 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
             </button>
           </div>
         </div>
-      </div>
 
-      <!-- Mobile Navigation Menu -->
-      <div
-        class="md:hidden bg-white/95 backdrop-blur-sm border-t border-background overflow-hidden transition-all duration-500 ease-in-out"
-        [class.max-h-0]="!isMobileMenuOpen()"
-        [class.max-h-screen]="isMobileMenuOpen()"
-      >
+        <!-- Mobile Navigation Menu -->
+        <div
+          class="md:hidden bg-white/95 backdrop-blur-sm border-t border-gray-100 overflow-hidden transition-all duration-500 ease-in-out"
+          [class.max-h-0]="!isMobileMenuOpen()"
+          [class.max-h-screen]="isMobileMenuOpen()"
+        >
         <div
           class="px-md pt-lg pb-xl space-y-1 transition-all duration-300 delay-100"
           [class.opacity-0]="!isMobileMenuOpen()"
@@ -122,6 +140,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
               Genérer votre DP
             </a>
           </div>
+        </div>
+        </div>
         </div>
       </div>
     </nav>
@@ -188,9 +208,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     }
   `,
 })
-export class Navbar {
+export class Navbar implements OnInit, OnDestroy {
   isMobileMenuOpen = signal(false);
-
+  isScrolled = signal(false);
 
   navItems = signal([
     { path: '/', label: 'Home' },
@@ -200,6 +220,24 @@ export class Navbar {
     { path: '/qa', label: 'Q&A' },
     { path: '/live_q', label: 'Live Q' },
   ]);
+
+  ngOnInit() {
+    this.checkScroll();
+  }
+
+  ngOnDestroy() {
+    // Cleanup if needed
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    this.checkScroll();
+  }
+
+  private checkScroll() {
+    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    this.isScrolled.set(scrollPosition > 50);
+  }
 
   toggleMobileMenu() {
     this.isMobileMenuOpen.update((value) => !value);

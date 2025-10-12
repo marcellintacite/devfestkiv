@@ -10,8 +10,86 @@ import { RouterLink } from '@angular/router';
       aspect-ratio: 16 / 9;
     }
     
+    /* Hero Section Animations */
+    .animate-fade-in {
+      animation: fadeIn 1s ease-out forwards;
+      opacity: 0;
+    }
+
+    .animate-slide-down {
+      animation: slideDown 0.8s ease-out forwards;
+      opacity: 0;
+    }
+
+    .animate-slide-up {
+      animation: slideUp 0.8s ease-out forwards;
+      opacity: 0;
+    }
+
+    .animate-slide-right {
+      animation: slideRight 1s ease-out forwards;
+      opacity: 0;
+    }
+
+    .animate-pulse-slow {
+      animation: pulseSlow 4s ease-in-out infinite;
+    }
+    
     .animate-fade-in-up {
       animation: fadeInUp 0.8s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 0.4;
+      }
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideRight {
+      from {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes pulseSlow {
+      0%, 100% {
+        opacity: 0.5;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+      }
     }
     
     @keyframes fadeInUp {
