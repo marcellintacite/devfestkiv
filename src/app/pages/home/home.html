@@ -1,9 +1,9 @@
 <!-- Hero Section -->
 <section class="hero-section relative overflow-hidden bg-white min-h-[85vh] flex items-center">
     <!-- Subtle background decoration -->
-    <div class="absolute inset-0 overflow-hidden opacity-40">
-        <div class="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl"></div>
-        <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"></div>
+    <div class="absolute inset-0 overflow-hidden opacity-40 animate-fade-in">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse-slow"></div>
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative z-10 w-full py-12 md:py-16">
@@ -12,13 +12,13 @@
             <!-- Left Content -->
             <div class="text-center lg:text-left space-y-6 md:space-y-8">
                 <!-- Event Badge -->
-                <div class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium">
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium animate-slide-down" style="animation-delay: 0.1s;">
                     <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
                     <span>{{ eventDay.start() }} {{ eventDay.month() }} {{ eventDay.year() }} • Bukavu, RD Congo</span>
                 </div>
 
                 <!-- Main Heading -->
-                <div>
+                <div class="animate-slide-up" style="animation-delay: 0.2s;">
                     <h1 class="text-5xl sm:text-6xl md:text-6xl lg:text-7xl font-bold text-text leading-tight mb-4">
                         DevFest Kivu
                         <span class="block text-primary mt-2">{{ NowDate.getFullYear() }}</span>
@@ -29,7 +29,7 @@
                 </div>
 
                 <!-- CTA Buttons -->
-                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-slide-up" style="animation-delay: 0.4s;">
                     <a href="https://gdg.community.dev/events/details/google-gdg-kivu-presents-devfest-kivu-2025/cohost-gdg-kivu" 
                         target="_blank" 
                         class="btn btn-primary group w-fit mx-auto lg:mx-0">
@@ -43,7 +43,7 @@
                 </div>
 
                 <!-- Technology Tags -->
-                <div class="flex flex-wrap justify-center lg:justify-start gap-2 pt-4">
+                <div class="flex flex-wrap justify-center lg:justify-start gap-2 pt-4 animate-fade-in" style="animation-delay: 0.6s;">
                     <span class="px-3 py-1 text-xs font-medium text-text/70 bg-gray-100 rounded-full">Web</span>
                     <span class="px-3 py-1 text-xs font-medium text-text/70 bg-gray-100 rounded-full">Mobile</span>
                     <span class="px-3 py-1 text-xs font-medium text-text/70 bg-gray-100 rounded-full">AI</span>
@@ -53,7 +53,7 @@
             </div>
 
             <!-- Right Visual - Image Album -->
-            <div class="mt-12 lg:mt-0">
+            <div class="mt-12 lg:mt-0 animate-slide-right" style="animation-delay: 0.3s;">
                 <!-- Mobile View - Album Effect (Scaled Down) -->
                 <div class="lg:hidden relative h-[380px] w-full max-w-lg mx-auto px-4">
                     <!-- Image 1 - Back Left -->
