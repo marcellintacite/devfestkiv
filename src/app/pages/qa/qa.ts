@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 type QaItem = {
@@ -15,9 +15,14 @@ type QaItem = {
   imports: [CommonModule],
   templateUrl: './qa.html',
 })
-export default class QaComponent {
+export default class QaComponent implements OnInit {
   // Only state we need for now
   openId: number | null = null;
+
+  ngOnInit(): void {
+    // Scroll to top when component initializes
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   qaItems: QaItem[] = [
     {

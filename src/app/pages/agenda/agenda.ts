@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, signal, computed, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { EventConfigService } from '../../config/event-config.service';
 
 interface Event {
   time: string;
@@ -13,20 +14,36 @@ interface Event {
   templateUrl: './agenda.html',
   standalone: true,
   imports: [CommonModule],
-})
-export default class AgendaComponent {
-  currentDayIndex = 0;
+  styles: [`
+    .animate-fade-in {
+      animation: fadeIn 0.8s ease-out forwards;
+      opacity: 0;
+    }
 
-  days = [
-    {
-      id: 'day1',
-      name: 'DevFest Kivu',
-      date: '23 Oct',
-      fullDate: 'Jeudi 23 Octobre 2025',
-      location: 'Centre de Conférences DevFest',
-      isActive: true,
-    },
-  ];
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  `],
+})
+export default class AgendaComponent implements OnInit {
+  eventConfig = inject(EventConfigService);
+
+  currentDayIndex = 0;
+  activeTab = signal<'web' | 'mobile'>('web');
+
+  ngOnInit(): void {
+    // Scroll to top when component initializes
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  days = this.eventConfig.agenda.days;
 
   // Données avec colonnes Web/Mobile
   eventsData = {
@@ -124,15 +141,15 @@ export default class AgendaComponent {
 
   getBadgeColor(category: string): string {
     const colors: { [key: string]: string } = {
-      Break: 'bg-gray-100 text-gray-700 border border-gray-300',
-      Conference: 'bg-blue-100 text-blue-700 border border-blue-300',
-      Keynote: 'bg-green-100 text-green-700 border border-green-300',
-      Workshop: 'bg-yellow-100 text-yellow-700 border border-yellow-300',
-      Talk: 'bg-red-100 text-red-700 border border-red-300',
-      // Discussion: 'bg-red-100 text-red-700 border border-red-300',
-      // Closing: 'bg-orange-100 text-orange-700 border border-orange-300',
+      Break: 'bg-gray-500 text-white border border-gray-600',
+      Conference: 'bg-blue-500 text-white border border-blue-600',
+      Keynote: 'bg-green-500 text-white border border-green-600',
+      Workshop: 'bg-yellow-500 text-white border border-yellow-600',
+      Talk: 'bg-red-500 text-white border border-red-600',
+      Discussion: 'bg-purple-500 text-white border border-purple-600',
+      Closing: 'bg-orange-500 text-white border border-orange-600',
     };
-    return colors[category] || 'bg-gray-100 text-gray-700 border border-gray-300';
+    return colors[category] || 'bg-gray-500 text-white border border-gray-600';
   }
 
   // Méthodes pour récupérer les événements depuis json
