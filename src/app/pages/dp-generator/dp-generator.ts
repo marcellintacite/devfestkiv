@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Profil } from './profil/profil';
@@ -6,6 +6,7 @@ import { Generator } from './generator/generator';
 import html2canvas from 'html2canvas-pro';
 import { ImageCropperComponent, ImageCroppedEvent } from 'ngx-image-cropper';
 import { ChangeDetectorRef } from '@angular/core';
+import { EventConfigService } from '../../config/event-config.service';
 
 @Component({
   selector: 'app-dp-generator',
@@ -15,6 +16,8 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export default class DpGenerator implements OnInit {
   constructor(private cdr: ChangeDetectorRef) {}
+  eventConfig = inject(EventConfigService);
+
   activeTab: 'profile' | 'dp' = 'profile';
   uiState: 'initial' | 'imageVisible' | 'templateVisible' = 'initial';
 
@@ -36,8 +39,8 @@ export default class DpGenerator implements OnInit {
   generatorTheme: 'default' | 'white' = 'default';
 
   suggestedQuotes = [
-    'Le code est ma poésie.',
-    "DevFest Kivu 2025, j'arrive !",
+    'Coder est ma passion.',
+    `${this.eventConfig.fullName}, j'arrive !`,
     'Prêt à networker et innover.',
     'Talk is cheap. Show me the code.',
     'Building the future, one line at a time.',

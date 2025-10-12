@@ -1,239 +1,117 @@
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  OnDestroy,
-  Renderer2,
-  ViewChild,
-  inject,
-} from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { SpeakersService } from '../../service/speakers.service';
 import { Speaker } from '../../models/speaker.model';
-import { DOCUMENT } from '@angular/common';
+import { EventConfigService } from '../../config/event-config.service';
 
 @Component({
   selector: 'app-speakers',
   standalone: true,
   imports: [CommonModule, NgOptimizedImage],
-  template: `
-    <div class="mx-auto px-0 pb-12 relative">
-      <section
-        class="text-center max-w-full lg:max-w-7xl bg-orange-50 mx-auto mb-8 py-6 px-4 md:px-6"
-      >
-        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-center mb-12">Nos Speakers</h1>
-
-        <p class="text-lg text-gray-500 leading-relaxed">
-          Découvrez les speakers du
-          <span class="font-semibold text-primary">DevFest Kivu 2025</span> : des passionnés de
-          technologie qui viendront partager leur expertise, leurs parcours et leurs visions pour
-          inspirer et faire grandir toute la communauté.
+ template: `
+  <div class="min-h-screen bg-gray-50 relative">
+    <!-- Hero -->
+    <section class="relative text-center py-16 px-4">
+      <div class="max-w-3xl mx-auto">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
+          Nos <span class="text-yellow-500">Speakers</span>
+        </h1>
+        <p class="text-gray-600 text-lg leading-relaxed">
+          Les voix qui inspireront le DevFest Kivu {{ eventConfig.year }}. Des experts tech qui partagent leur passion et leur expérience.
         </p>
-        <p class="text-gray-600 text-lg">
-          Deux jours d’échanges et d’innovation au cœur de l’Afrique
-        </p>
+      </div>
+      <div class="absolute inset-0 -z-10 bg-gradient-to-b from-yellow-50 to-transparent opacity-60"></div>
+    </section>
 
-        <!-- Boutons de filtrage -->
-        <div class="flex justify-center gap-4 mb-4">
-          <button
-            class="px-5 py-2 font-medium color-text btn-sm btn-primary"
-            [class.opacity-60]="selectedDay === 'jour1'"
-            (click)="filterByDay('jour1')"
-          >
-            Jour 1
-          </button>
-
-          <button
-            class="px-5 py-2  font-medium btn-sm color-text  btn-primary"
-            [class.opacity-60]="selectedDay === 'jour2'"
-            (click)="filterByDay('jour2')"
-          >
-            Jour 2
-          </button>
-        </div>
-      </section>
-
-      <!-- Grille responsive -->
+    <!-- Speakers Grid -->
+    <div class="max-w-7xl mx-auto px-4 md:px-6 pb-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      @for (speaker of speakers; track speaker.name) {
       <div
-        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-4 max-w-7xl mx-auto px-4"
+        class="group transition-all duration-300 p-4 relative overflow-hidden"
       >
-        <!-- Boucle sur chaque speaker -->
-        @for (speaker of filteredSpeakers; track speaker.name) {
-        <div
-          class=" rounded-2xl border border-gray-200 p-4 text-center border-md hover:border-lg transition-all duration-300"
-        >
-          <!-- Photo -->
+
+        <!-- Speaker Photo -->
+        <div class="flex flex-col items-center text-center mb-6 relative">
           <img
             [ngSrc]="speaker.photo"
             [alt]="speaker.name"
-            width="144"
-            height="144"
-            class="w-36 h-36 rounded-full mx-auto mb-4 object-cover border-4 cursor-pointer"
-            [class]="speaker.color?.borderColor"
-            (click)="selectSpeaker(speaker)"
-            (keydown.enter)="selectSpeaker(speaker)"
-            tabindex="0"
+            width="180"
+            height="180"
+            class="w-40 h-40 rounded-full object-cover border-4 border-gray-200 group-hover:border-yellow-400 transition-all duration-300"
           />
 
-          <h2 class="text-xl font-bold">{{ speaker.name }}</h2>
-          <p class="text-gray-700">{{ speaker.title }}</p>
-          <div
-            class="text-center my-4 p-2 border rounded-2xl"
-            [class]="speaker.color?.bgColor + ' ' + speaker.color?.borderColor"
-          >
-            <p class="text-gray-500 text-sm mt-2">
-              {{ truncateBio(speaker.bio) }}
-            </p>
-          </div>
-        </div>
-        }
-      </div>
-
-      <!-- Modale -->
-      <dialog
-        #speakerDialog
-        class="m-8 mx-auto w-130 h-150 p-4 bg-transparent backdrop:bg-black/70 backdrop:backdrop-blur-sm open:animate-zoom-in"
-      >
-        @if (selectedSpeaker) {
-        <div
-          (click)="$event.stopPropagation()"
-          class="bg-orange-100  mx-auto rounded-2xl border border-gray-200 p-1 text-center  "
-        >
-          <!-- Contenu de la modale -->
-          <div
-            class="bg-white py-5 m-full grid grid-cols-2 lg:grid-cols-1 gap-2 items-center justify-center "
-          >
-            <div>
-              <img
-                [ngSrc]="selectedSpeaker.photo"
-                [alt]="selectedSpeaker.name"
-                width="160"
-                height="160"
-                class="w-36 h-36  rounded-full mx-auto mb-4 object-cover border-4 border-primary"
-              />
-            </div>
-            <div>
-              <h2 class="text-3xl font-bold text-text">{{ selectedSpeaker.name }}</h2>
-            </div>
-          </div>
-          <div p-4>
-            <p class="text-primary font-semibold mb-4 p-4">{{ selectedSpeaker.title }}</p>
-            <p class="text-gray-600 text-base leading-relaxed text-left  px-2 break-words">
-              {{ selectedSpeaker.bio }}
-            </p>
-
-            <!-- Liens sociaux dans la modale -->
-            <div class="flex justify-center space-x-6 mt-6">
-              @if (selectedSpeaker.socials.twitter) {
+            <!-- Socials -->
+            <div
+              class="absolute -bottom-4 left-1/2 -translate-x-1/2 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300"
+            >
+              @if (speaker.socials.twitter) {
               <a
-                [href]="selectedSpeaker.socials.twitter"
+                [href]="speaker.socials.twitter"
                 target="_blank"
-                class="text-blue-500 hover:text-blue-700 text-2xl"
-                aria-label="Twitter de {{ selectedSpeaker.name }}"
+                class="w-8 h-8 bg-yellow-400 text-white rounded-full flex items-center justify-center hover:bg-yellow-500 transition"
+                aria-label="Twitter"
               >
-                <i class="fab fa-twitter"></i>
+                <i class="bi bi-twitter"></i>
               </a>
-              } @if (selectedSpeaker.socials.linkedin) {
+              }
+              @if (speaker.socials.linkedin) {
               <a
-                [href]="selectedSpeaker.socials.linkedin"
+                [href]="speaker.socials.linkedin"
                 target="_blank"
-                class="text-blue-700 hover:text-blue-900 text-2xl"
-                aria-label="LinkedIn de {{ selectedSpeaker.name }}"
+                class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition"
+                aria-label="LinkedIn"
               >
-                <i class="fab fa-linkedin"></i>
+                <i class="bi bi-linkedin"></i>
               </a>
-              } @if (selectedSpeaker.socials.github) {
+              }
+              @if (speaker.socials.github) {
               <a
-                [href]="selectedSpeaker.socials.github"
+                [href]="speaker.socials.github"
                 target="_blank"
-                class="text-gray-800 hover:text-black text-2xl"
-                aria-label="GitHub de {{ selectedSpeaker.name }}"
+                class="w-8 h-8 bg-gray-800 text-white rounded-full flex items-center justify-center hover:bg-gray-900 transition"
+                aria-label="GitHub"
               >
-                <i class="fab fa-github"></i>
+                <i class="bi bi-github"></i>
               </a>
               }
             </div>
-
-            <div class="mt-8">
-              <button (click)="closeModal()" class="btn btn-primary btn-md">Fermer</button>
-            </div>
           </div>
+
+        <!-- Info -->
+        <div class="text-center">
+          <h3 class="text-xl font-semibold text-gray-900 group-hover:text-yellow-600 transition">
+            {{ speaker.name }}
+          </h3>
+          <p class="text-sm uppercase tracking-wide text-yellow-600 font-medium mt-1 mb-3">
+            {{ speaker.title }}
+          </p>
+
+          <div class="w-10 h-1 bg-gradient-to-r from-yellow-400 to-orange-500 mx-auto mb-3"></div>
+
+          <p class="text-gray-600 text-sm leading-relaxed line-clamp-3">
+            {{ speaker.bio }}
+          </p>
         </div>
-        }
-      </dialog>
+      </div>
+      }
     </div>
-  `,
-  styles: `
-  dialog::backdrop{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }`,
+  </div>
+`
+,
+  styles: ``,
 })
-export default class Speakers implements OnDestroy {
+export default class Speakers implements OnInit {
   speakersService = inject(SpeakersService);
-  speakers: Speaker[] = this.speakersService.speakers;
-
-  filteredSpeakers: Speaker[] = [];
-  selectedDay: string = 'jour1';
-
-  selectedSpeaker: Speaker | null = null;
-  @ViewChild('speakerDialog') dialog!: ElementRef<HTMLDialogElement>;
-  private renderer = inject(Renderer2);
-  private document = inject(DOCUMENT);
-
-  // 🎨 Définir les 4 couleurs de rotation
-  colors = [
-    { borderColor: 'border-blue-500', bgColor: 'bg-blue-500/20', bgColorFull: 'bg-blue-500' },
-    { borderColor: 'border-secondary', bgColor: 'bg-secondary/20', bgColorFull: 'bg-secondary' },
-    { borderColor: 'border-accent', bgColor: 'bg-accent/20', bgColorFull: 'bg-accent' },
-    { borderColor: 'border-danger', bgColor: 'bg-danger/20', bgColorFull: 'bg-danger' },
-  ];
+  eventConfig = inject(EventConfigService);
+  speakers: Speaker[] = [];
 
   constructor() {
-    // Appliquer les couleurs aux speakers
-    this.speakers = this.speakers.map((s, i) => ({
-      ...s,
-      color: this.colors[i % this.colors.length],
-    }));
-    this.filterByDay(this.selectedDay); // affichage initial jour1
+    // Initialize speakers from service
+    this.speakers = this.speakersService.speakers || [];
   }
 
-  // 🧩 Filtrer les speakers selon le jour
-  filterByDay(day: string) {
-    this.selectedDay = day;
-    this.filteredSpeakers = this.speakers.filter((s) => s.day === day);
-  }
-
-  ngOnDestroy() {
-    this.renderer.removeClass(this.document.body, 'overflow-hidden');
-  }
-
-  @HostListener('document:keydown.escape')
-  onEscapeKey() {
-    if (this.selectedSpeaker) {
-      this.closeModal();
-    }
-  }
-
-  selectSpeaker(speaker: Speaker) {
-    this.selectedSpeaker = speaker;
-    this.renderer.addClass(this.document.body, 'overflow-hidden');
-    this.dialog.nativeElement.showModal();
-  }
-
-  closeModal() {
-    this.dialog.nativeElement.close();
-    this.renderer.removeClass(this.document.body, 'overflow-hidden');
-    this.selectedSpeaker = null;
-  }
-
-  truncateBio(bio: string, maxLength: number = 80): string {
-    if (bio.length <= maxLength) {
-      return bio;
-    }
-    // Trouve le dernier espace avant la limite pour ne pas couper un mot
-    const lastSpace = bio.lastIndexOf(' ', maxLength);
-    return bio.substring(0, lastSpace > 0 ? lastSpace : maxLength) + '...';
+  ngOnInit(): void {
+    // Scroll to top when component initializes
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

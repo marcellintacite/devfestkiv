@@ -1,6 +1,8 @@
-import { Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal, inject } from '@angular/core';
 import PastEventsGallery from '../../components/past-events-gallery/past-events-gallery';
 import { RouterLink } from '@angular/router';
+import { EventConfigService } from '../../config/event-config.service';
+
 @Component({
   selector: 'app-home',
   imports: [PastEventsGallery, RouterLink],
@@ -105,12 +107,14 @@ import { RouterLink } from '@angular/router';
   `,
 })
 export default class HomeComponent implements OnInit, OnDestroy {
+  private eventConfig = inject(EventConfigService);
+
   seconde = signal(0);
   minutes = signal(0);
   hours = signal(0);
   daysLeft = signal(0);
 
-  targetDateTimeString = signal('2025-11-29T09:00:00');
+  targetDateTimeString = signal(this.eventConfig.getTargetDateTimeString());
   countdownRunning = signal(false);
 
   private countdownInterval: any;
@@ -220,7 +224,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   }
 
   NowDate = new Date();
-  eventDay = { start: signal(5), end: signal(6), month: signal('Décembre'), year: signal(2025) };
+  eventDay = this.eventConfig.getEventDay();
 
   updateEventDayFromTarget(): void {
     const dateValue = this.targetDateTimeString();
@@ -249,53 +253,11 @@ export default class HomeComponent implements OnInit, OnDestroy {
     this.eventDay.year.set(date.getFullYear());
   }
 
-  engagementYear = 5;
+  engagementYear = this.eventConfig.engagementYear;
 
-  impactStats = [
-    {
-      number: '30+',
-      rawNumber: 30,
-      label: 'Événements Organisés',
-      description: 'Conférences, workshops,...',
-    },
-    {
-      number: '500+',
-      rawNumber: 500,
-      label: 'Développeurs Rassemblés',
-      description: 'Une communauté grandissante',
-    },
-    {
-      number: '10+',
-      rawNumber: 10,
-      label: 'Startups & Entreprises',
-      description: 'Partenaires et sponsors',
-    },
-    {
-      number: '700+',
-      rawNumber: 700,
-      label: 'Personnes Formées',
-      description: 'Compétences développées',
-    },
-  ];
+  impactStats = this.eventConfig.impactStats;
 
-  supports = [
-    {
-      name: 'DrcMind',
-      role: 'Partenaire Principal',
-      quote:
-        "DrcMind accompagne le DevFest Kivu dans la promotion de l'innovation technologique et le développement des compétences numériques.",
-    },
-    {
-      name: 'Jambo World',
-      role: 'Partenaire Média',
-      quote:
-        'Jambo World contribue à la visibilité du DevFest Kivu à travers la couverture médiatique et la diffusion d’actualités tech.',
-    },
-    {
-      name: 'Congo Cloud Computer',
-      role: 'Partenaire Technique',
-      quote:
-        'Congo Cloud Computer fournit l’infrastructure cloud et le support technique pour assurer une expérience fluide durant l’événement.',
-    },
-  ];
+  supports = this.eventConfig.supports;
+
+  registrationUrl = this.eventConfig.registrationUrl;
 }
