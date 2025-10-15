@@ -14,7 +14,7 @@ import {questionInterface} from '../../../models/session-model';
         <!-- Bouton fermer -->
         <button
           (click)="onClose()"
-          class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 transition"
+          class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 transition cursor-pointer font-size-20"
         >
           ✕
         </button>

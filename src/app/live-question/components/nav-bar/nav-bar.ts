@@ -43,7 +43,9 @@ import { EventConfigService } from '../../../config/event-config.service';
                   />
                 </svg>
 
-                <span>{{ eventConfig.date.display.month }} {{ eventConfig.date.display.year }}</span>
+                <span
+                  >{{ eventConfig.date.display.month }} {{ eventConfig.date.display.year }}</span
+                >
               </div>
               <div class="flex items-center gap-1">
                 <!-- Map Pin Icon -->
@@ -70,6 +72,9 @@ import { EventConfigService } from '../../../config/event-config.service';
                 <span>Bukavu, RDC</span>
               </div>
             </div>
+
+            <!-- Bouton Présentateur -->
+            @if(isLoged ){
             <a routerLink="/live_q">
               <button
                 class="flex items-center gap-2 border border-[#4285F4]/30 
@@ -92,9 +97,6 @@ import { EventConfigService } from '../../../config/event-config.service';
                 <span class="hidden sm:inline">Accueil</span>
               </button>
             </a>
-
-            <!-- Bouton Présentateur -->
-            @if(isLoged ){
             <a routerLink="/presenter">
               <button
                 class="flex items-center gap-2 border border-[#4285F4]/30 
@@ -163,7 +165,7 @@ import { EventConfigService } from '../../../config/event-config.service';
 })
 export class NavBar {
   showCodePin = false;
-  isLoged:string | null ='';
+  isLoged: string | null = '';
   private platformId = inject(PLATFORM_ID);
   private router = inject(Router);
   eventConfig = inject(EventConfigService);

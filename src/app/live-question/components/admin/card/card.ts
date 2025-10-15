@@ -112,19 +112,19 @@ import {Session,questionInterface} from '../../../../models/session-model';
           <div class="flex items-center gap-2">
             <button
               (click)="vieuwDialog(session)"
-              class="px-3 py-1.5 text-xs font-semibold bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition"
+              class="px-3 py-1.5 text-xs font-semibold bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition cursor-pointer"
             >
               Voir
             </button>
             <button
               (click)="editSession(session)"
-              class="px-3 py-1.5 text-xs font-semibold bg-yellow-400 hover:bg-yellow-500 text-black rounded-lg transition"
+              class="px-3 py-1.5 text-xs font-semibold bg-yellow-400 hover:bg-yellow-500 text-black rounded-lg transition cursor-pointer"
             >
               Modifier
             </button>
             <button
               (click)="deleteSession(session)"
-              class="px-3 py-1.5 text-xs font-semibold bg-red-500 hover:bg-red-600 text-white rounded-lg transition"
+              class="px-3 py-1.5 text-xs font-semibold bg-red-500 hover:bg-red-600 text-white rounded-lg transition cursor-pointer"
             >
               Supprimer
             </button>
@@ -158,7 +158,6 @@ export class Card {
   selectedSession?: any;
   dialogOuvert = false;
   sessionSelectionnee: any;
-  
 
   getBadgeColor(track: string) {
     const colors: Record<string, string> = {
@@ -202,11 +201,10 @@ export class Card {
     return colors[track] || 'border-gray-200';
   }
 
-  
-    onQuestionSubmit(question: questionInterface) {
-      this.session.questions.push(question);
-      this.fs.setSession(this.session);
-    }
+  onQuestionSubmit(question: questionInterface) {
+    this.session.questions.push(question);
+    this.fs.setSession(this.session);
+  }
 
   vieuwDialog(session: any) {
     this.sessionSelectionnee = session;
