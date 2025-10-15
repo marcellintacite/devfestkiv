@@ -17,7 +17,7 @@ import {FirestoreService} from '../../../services/firestore';
             <div class="mb-6">
               <h2 class="text-5xl md:text-6xl font-bold mb-4 text-balance">
                 <span class="text-foreground/9"> Posez vos questions </span>
-                <br/>
+                <br />
                 <span class="text-foreground/90">anonymement</span>
               </h2>
             </div>
@@ -35,10 +35,10 @@ import {FirestoreService} from '../../../services/firestore';
                   stroke-width="2"
                   fill="none"
                 />
-                <circle cx="30" cy="10" r="2" fill="#4285F4"/>
-                <circle cx="70" cy="10" r="2" fill="#EA4335"/>
-                <circle cx="110" cy="10" r="2" fill="#34A853"/>
-                <circle cx="150" cy="10" r="2" fill="#FBBC04"/>
+                <circle cx="30" cy="10" r="2" fill="#4285F4" />
+                <circle cx="70" cy="10" r="2" fill="#EA4335" />
+                <circle cx="110" cy="10" r="2" fill="#34A853" />
+                <circle cx="150" cy="10" r="2" fill="#FBBC04" />
               </svg>
             </div>
             <p
@@ -91,8 +91,8 @@ import {FirestoreService} from '../../../services/firestore';
       style="width:100%; height:100%; position:absolute; top:0; left:0; z-index:-3;"
     >
       <!-- Formes Google animées -->
-      <polygon class="move1" points="100,50 200,150 50,150" fill="#EA4335" fill-opacity="0.2"/>
-      <circle class="pulse" cx="600" cy="120" r="60" fill="#34A853" fill-opacity="0.3"/>
+      <polygon class="move1" points="100,50 200,150 50,150" fill="#EA4335" fill-opacity="0.2" />
+      <circle class="pulse" cx="600" cy="120" r="60" fill="#34A853" fill-opacity="0.3" />
 
       <!-- Icônes codeur -->
       <text
@@ -189,51 +189,63 @@ import {FirestoreService} from '../../../services/firestore';
             strokeWidth="2"
             fill="none"
           />
-          <circle cx="30" cy="10" r="2" fill="#4285F4"/>
-          <circle cx="70" cy="10" r="2" fill="#EA4335"/>
-          <circle cx="110" cy="10" r="2" fill="#34A853"/>
-          <circle cx="150" cy="10" r="2" fill="#FBBC04"/>
+          <circle cx="30" cy="10" r="2" fill="#4285F4" />
+          <circle cx="70" cy="10" r="2" fill="#EA4335" />
+          <circle cx="110" cy="10" r="2" fill="#34A853" />
+          <circle cx="150" cy="10" r="2" fill="#FBBC04" />
         </svg>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
         @for (session of activeSessions; track $index) {
-          <div
-            (click)="openDialog(session)"
-            class="card-session p-6 rounded-xl shadow-lg flex flex-col items-center relative overflow-hidden"
-          >
-            <!-- Fond léger -->
-            <div class="absolute inset-0 bg-gray-50 opacity-20 z-0"></div>
+        <div
+          (click)="openDialog(session)"
+          class="card-session p-6 rounded-xl shadow-lg flex flex-col items-center relative overflow-hidden cursor-pointer hover:shadow-2xl transition duration-300"
+        >
+          <!-- Fond léger -->
+          <div class="absolute inset-0 bg-gray-50 opacity-20 z-0"></div>
 
-            <!-- Contenu -->
-            <div class="relative z-10 flex flex-col items-center">
-              <!-- Nom du speaker -->
-              <h3 class="text-xl font-bold mb-1 text-center">{{ session.speaker }}</h3>
+          <!-- Contenu -->
+          <div class="relative z-10 flex flex-col items-center">
+            <!-- Image du speaker -->
+            <img
+              [src]="'assets/devfest.png'"
+              alt="{{ session.speaker }}"
+              class="w-50 h-50 rounded-xl object-cover mb-4 border-none shadow-md"
+            />
 
-              <!-- Titre de la session -->
-              <p class="text-sm text-gray-700 mb-4 text-center">{{ session.title }}</p>
+            <!-- Nom du speaker -->
+            <h3 class="text-xl font-bold mb-1 text-center text-gray-900">
+              {{ session.speaker }}
+            </h3>
 
-              <!-- Bouton Question -->
-              <button
-                class="px-4 py-2 rounded-md text-white font-semibold transition transform hover:scale-105"
-                [ngStyle]="{ 'background-color': getTrackColor('Infrastructure') }"
-                (click)="openDialog(session)"
-              >
-                Question
-              </button>
-            </div>
+            <!-- Titre de la session -->
+            <p class="text-sm text-gray-700 mb-4 text-center">
+              {{ session.title }}
+            </p>
+
+            <!-- Bouton Question -->
+            <button
+              class="px-4 py-2 rounded-md text-white font-semibold transition transform hover:scale-105"
+              [ngStyle]="{ 'background-color': getTrackColor('Infrastructure') }"
+              (click)="openDialog(session)"
+            >
+              Question
+            </button>
           </div>
+        </div>
+
         }
       </div>
     </main>
 
     @if (dialogOuvert) {
-      <app-questions
-        [sessionTitle]="SelectedSession.title"
-        [initialQuestions]="SelectedSession.questions"
-        (close)="dialogOuvert= false"
-        (questionSubmitted)="onQuestionSubmit($event)"
-      ></app-questions>
+    <app-questions
+      [sessionTitle]="SelectedSession.title"
+      [initialQuestions]="SelectedSession.questions"
+      (close)="dialogOuvert = false"
+      (questionSubmitted)="onQuestionSubmit($event)"
+    ></app-questions>
     }
   `,
   styles: `
@@ -330,9 +342,9 @@ export default class Home implements OnInit {
     };
   }
 
-  SelectedSession! :Session<Timestamp>;
+  SelectedSession!: Session<Timestamp>;
 
-  openDialog(session:Session<Timestamp>) {
+  openDialog(session: Session<Timestamp>) {
     this.SelectedSession = session;
     this.dialogOuvert = true;
   }
@@ -340,7 +352,6 @@ export default class Home implements OnInit {
   onQuestionSubmit(question: questionInterface) {
     this.SelectedSession.questions.push(question);
     //console.log(this.SelectedSession.questions);
-    this.FireStore.setSession(this.SelectedSession)
+    this.FireStore.setSession(this.SelectedSession);
   }
-
 }

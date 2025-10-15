@@ -3,6 +3,7 @@ import { Component, EventEmitter, inject, Inject, Output, PLATFORM_ID } from '@a
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
+import { EventConfigService } from '../../../config/event-config.service';
 @Component({
   selector: 'app-code-pin',
   standalone: true,
@@ -72,9 +73,10 @@ import { isPlatformBrowser } from '@angular/common';
 export class CodePin {
   pin: string = '';
   error: string = '';
+  private eventConfig = inject(EventConfigService);
 
   /** Valeur par défaut du code PIN */
-  private readonly defaultPin = 'dev2025';
+  private readonly defaultPin = this.eventConfig.liveQuestion.defaultPin;
 
 
   /** Événement pour fermer le dialog */

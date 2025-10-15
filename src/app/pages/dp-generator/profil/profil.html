@@ -1,0 +1,128 @@
+<div class="bg-white rounded-2xl border-2 border-gray-200 p-6 md:p-8">
+  <h3 class="text-xl md:text-2xl font-bold text-center text-gray-900 mb-6 md:mb-8">
+    Aperçu de votre Photo de Profil
+  </h3>
+
+  <div class="flex justify-center">
+    @if (uiState === 'initial') {
+    <div
+      class="relative w-64 h-64 md:w-80 md:h-80 flex items-center justify-center bg-gray-50 rounded-2xl border-2 border-dashed border-gray-300 animate-pulse"
+    >
+      <p class="text-gray-500 font-medium">Votre PFP apparaîtra ici...</p>
+    </div>
+    } @else {
+    <div
+      id="dp-capture-zone-profile"
+      class="relative w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden flex items-center justify-center border-2 border-gray-200"
+    >
+      <!-- COUCHE 1 (z-0) : La photo (pop-in) -->
+      <img
+        [src]="previewImage"
+        alt="Preview"
+        class="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-300 ease-out scale-100"
+      />
+
+      <!-- COUCHE 2 (z-10) : Le masque (fondu) -->
+      <div
+        class="absolute inset-0 z-10 transition-opacity duration-300 ease-out delay-100"
+        [class.opacity-100]="uiState === 'templateVisible'"
+        [class.opacity-0]="uiState !== 'templateVisible'"
+        [style.background]="
+          'radial-gradient(circle, transparent 60%, ' +
+          (profileTheme === 'yellow'
+            ? 'rgba(245, 158, 11, 0.8)'
+            : profileTheme === 'blue'
+            ? 'rgba(59, 130, 246, 0.8)'
+            : profileTheme === 'green'
+            ? 'rgba(34, 197, 94, 0.8)'
+            : 'rgba(239, 68, 68, 0.8)') +
+          ' 95%)'
+        "
+      ></div>
+
+      <!-- COUCHE 3 (z-20) : Les cadres (animations agressives) -->
+      @if (profileStyle === 'classic') {
+      <img
+        src="assets/border.png"
+        alt="Cadre décoratif"
+        class="absolute inset-0 w-full h-full object-contain z-20 transition-all duration-500 ease-out delay-200"
+        [class.opacity-100]="uiState === 'templateVisible'"
+        [class.scale-100]="uiState === 'templateVisible'"
+        [class.rotate-0]="uiState === 'templateVisible'"
+        [class.opacity-0]="uiState !== 'templateVisible'"
+        [class.scale-50]="uiState !== 'templateVisible'"
+        [class.-rotate-45]="uiState !== 'templateVisible'"
+      />
+      } @else {
+      <div
+        class="absolute top-4 left-4 w-16 h-8 rounded-tl-xl border-t-4 border-l-4 z-20 transition-all duration-500 ease-out delay-200"
+        [ngClass]="{
+          'border-amber-500': profileTheme === 'yellow',
+          'border-blue-500': profileTheme === 'blue',
+          'border-green-500': profileTheme === 'green',
+          'border-red-500': profileTheme === 'red'
+        }"
+        [class.opacity-100]="uiState === 'templateVisible'"
+        [class.translate-x-0]="uiState === 'templateVisible'"
+        [class.translate-y-0]="uiState === 'templateVisible'"
+        [class.opacity-0]="uiState !== 'templateVisible'"
+        [class.-translate-x-8]="uiState !== 'templateVisible'"
+        [class.-translate-y-8]="uiState !== 'templateVisible'"
+      ></div>
+      <div
+        class="absolute bottom-4 right-4 w-16 h-8 rounded-br-xl border-b-4 border-r-4 z-20 transition-all duration-500 ease-out delay-200"
+        [ngClass]="{
+          'border-amber-500': profileTheme === 'yellow',
+          'border-blue-500': profileTheme === 'blue',
+          'border-green-500': profileTheme === 'green',
+          'border-red-500': profileTheme === 'red'
+        }"
+        [class.opacity-100]="uiState === 'templateVisible'"
+        [class.translate-x-0]="uiState === 'templateVisible'"
+        [class.translate-y-0]="uiState === 'templateVisible'"
+        [class.opacity-0]="uiState !== 'templateVisible'"
+        [class.translate-x-8]="uiState !== 'templateVisible'"
+        [class.translate-y-8]="uiState !== 'templateVisible'"
+      ></div>
+      }
+
+      <!-- COUCHE 4 (z-30) : Les badges (slide-in) -->
+      <div
+        class="absolute top-4 left-1/2 -translate-x-1/2 z-30 bg-white border border-gray-300 px-3 py-1 rounded-full md:text-base font-semibold shadow transition-all duration-500 ease-out delay-300 text-sm"
+        [ngClass]="{
+          'text-amber-600': profileTheme === 'yellow',
+          'text-blue-600': profileTheme === 'blue',
+          'text-green-600': profileTheme === 'green',
+          'text-red-600': profileTheme === 'red'
+        }"
+        [class.opacity-100]="uiState === 'templateVisible'"
+        [class.translate-y-0]="uiState === 'templateVisible'"
+        [class.opacity-0]="uiState !== 'templateVisible'"
+        [class.-translate-y-20]="uiState !== 'templateVisible'"
+      >
+        DevFest Kivu
+      </div>
+      <!-- NOUVELLE ANIMATION : Le nom glisse depuis le bas -->
+      <div
+        class="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 text-white px-4 py-1 rounded-full text-lg font-semibold transition-all duration-500 ease-out delay-400"
+        [ngClass]="{
+          'bg-amber-600': profileTheme === 'yellow',
+          'bg-blue-600': profileTheme === 'blue',
+          'bg-green-600': profileTheme === 'green',
+          'bg-red-600': profileTheme === 'red'
+        }"
+        [class.opacity-100]="uiState === 'templateVisible' && fullName"
+        [class.translate-y-0]="uiState === 'templateVisible' && fullName"
+        [class.opacity-0]="uiState !== 'templateVisible' || !fullName"
+        [class.translate-y-20]="uiState !== 'templateVisible' || !fullName"
+      >
+        {{ fullName }}
+      </div>
+    </div>
+    }
+  </div>
+
+  <p class="text-center mt-6 md:mt-8 text-gray-600 text-xs md:text-sm">
+    Votre photo sera exportée en tant qu'image carrée.
+  </p>
+</div>
