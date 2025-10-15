@@ -295,7 +295,9 @@ export default class Home implements OnInit {
   ngOnInit(): void {
     let sessionListRef = this.FireStore.getSessions();
     let sessionList :Session<Timestamp>[] = [];
-    sessionListRef.forEach((e:Session<Timestamp>[]) =>this.activeSessions= e)
+    sessionListRef.forEach((e:Session<Timestamp>[]) => {
+     this.activeSessions = e.filter(session => session.isActive);
+    })
   }
   private readonly FireStore = inject(FirestoreService);
   // Fake data pour tester

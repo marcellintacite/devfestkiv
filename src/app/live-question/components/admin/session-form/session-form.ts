@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, inject } from '@angular/core';
 
-import { FormsModule } from '@angular/forms';
+import {FormsModule, NgForm} from '@angular/forms';
 import { FirestoreService } from '../../../../services/firestore';
 import { FieldValue } from '@angular/fire/firestore';
 import {Session} from '../../../../models/session-model';
@@ -16,7 +16,7 @@ import {Session} from '../../../../models/session-model';
           {{ editingSession ? 'Modifier Session' : 'Ajouter Session' }}
         </h2>
 
-        <form (ngSubmit)="submitForm()" class="space-y-4 max-h-100 overflow-y-auto">
+        <form #sessionForm= "ngForm" (ngSubmit)="submitForm(sessionForm)" class="space-y-4 max-h-100 overflow-y-auto">
           <input type="hidden" [(ngModel)]="session.id" name="id" />
 
           <div>
@@ -114,7 +114,6 @@ import {Session} from '../../../../models/session-model';
             Annuler
           </button>
           <button
-            (click)="submitForm()"
             class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
             {{ editingSession ? 'Mettre à jour' : 'Enregistrer' }}
@@ -162,13 +161,15 @@ export class SessionForm<T>  {
     };
   }
 
-  submitForm() {
-    this.session.id= this.session.id != '' ? this.session.id : this.fs.createDocId(`sessions`);
-    this.session.createAt = this.session.createAt != '' ?this.session.createAt: new Date() as any;
-    this.session.updateAt = new Date() as any;
-    this.fs.setSession(this.session as Session<FieldValue>);
+  submitForm(form:NgForm) {
+    if(form.valid){
+      this.session.id= this.session.id != '' ? this.session.id : this.fs.createDocId(`sessions`);
+      this.session.createAt = this.session.createAt != '' ?this.session.createAt: new Date() as any;
+      this.session.updateAt = new Date() as any;
+      this.fs.setSession(this.session as Session<FieldValue>);
 
-    this.closeForm();
+      this.closeForm();
+    }
   }
 
   closeForm() {
