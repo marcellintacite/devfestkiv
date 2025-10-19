@@ -1,141 +1,61 @@
-<div class="min-h-screen relative">
-  <div class="fixed inset-0 pointer-events-none -z-20">
-    <img
-      src="/assets/wideback.png"
-      alt=""
-      class="absolute inset-0 w-full h-full object-cover blur-md"
-    />
-  </div>
-
-  <div class="relative z-10">
-    <div class="text-gray-900 py-8 md:py-12 relative overflow-hidden">
-
-      <div class="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
-        <div class="text-center">
-          <div class="flex flex-col items-center justify-center">
-            <div class="text-center">
-              <h1
-                class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-2"
-              >
-                Découvrez l'agenda pour {{ eventConfig.year }}
-              </h1>
-             <p class="text-xl md:text-2xl text-gray-700 font-light">
-              Rejoignez-nous pour une journée riche en apprentissages, réseautage et innovation !
-             </p>
-            </div>
-          </div>
-        </div>
-      </div>
+<div class="min-h-screen bg-gray-50">
+  <div class="max-w-4xl mx-auto px-4 py-16">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        Agenda {{ eventConfig.year }}
+      </h1>
+      <p class="text-xl text-gray-600">
+        Découvrez le programme complet de DevFest Kivu {{ eventConfig.year }}
+      </p>
     </div>
 
-    <!-- Contenu principal -->
-    <div class="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-8">
-      <!-- Tabs for mobile, side-by-side for desktop -->
-      <div class="lg:hidden mb-6">
-        <div class="flex justify-center">
-          <div class="bg-white rounded-lg shadow-md p-1 flex">
-            <button
-              (click)="activeTab.set('web')"
-              [class.active]="activeTab() === 'web'"
-              class="flex-1 px-4 py-2 md:px-6 md:py-3 rounded-md font-medium transition-all duration-200"
-              [class.bg-yellow-500]="activeTab() === 'web'"
-              [class.text-white]="activeTab() === 'web'"
-              [class.text-gray-700]="activeTab() !== 'web'"
-              [class.hover:bg-yellow-50]="activeTab() !== 'web'"
-            >
-              Web
-            </button>
-            <button
-              (click)="activeTab.set('mobile')"
-              [class.active]="activeTab() === 'mobile'"
-              class="flex-1 px-4 py-2 md:px-6 md:py-3 rounded-md font-medium transition-all duration-200"
-              [class.bg-yellow-500]="activeTab() === 'mobile'"
-              [class.text-white]="activeTab() === 'mobile'"
-              [class.text-gray-700]="activeTab() !== 'mobile'"
-              [class.hover:bg-yellow-50]="activeTab() !== 'mobile'"
-            >
-              Mobile
-            </button>
-          </div>
+    <!-- Coming Soon Content -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 md:p-12">
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-100 rounded-full mb-6">
+          <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
         </div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">
+          Agenda Bientôt Disponible
+        </h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">
+          Nous travaillons dur pour vous préparer un programme exceptionnel.
+          Restez connectés pour découvrir les sessions passionnantes qui vous attendent !
+        </p>
       </div>
 
-      <!-- Content -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-        <!-- Web Track -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden border border-yellow-200 hidden lg:block" [class.!block]="activeTab() === 'web'">
-          <div class="bg-yellow-500 text-white px-4 py-3 md:px-6 md:py-4">
-            <h3 class="text-xl font-bold">Track Web</h3>
+      <!-- Event Details -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+        <!-- Date -->
+        <div class="text-center">
+          <div class="flex items-center justify-center mb-3">
+            <svg class="w-6 h-6 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">Date</span>
           </div>
-          <div class="p-0">
-            @for (event of getWebEvents(); track event.time) {
-            <div class="border-b border-gray-100 last:border-b-0 animate-fade-in" [style]="'animation-delay: ' + ($index * 0.1) + 's'">
-              <div class="p-4 md:p-6 hover:bg-yellow-50 hover:shadow-sm transition-all duration-300 hover:scale-[1.02]">
-                <div class="flex items-start">
-                  <div class="flex-shrink-0 mr-4">
-                    <div
-                      class="text-xs md:text-sm font-bold text-gray-700 md:text-white bg-transparent md:bg-yellow-500 rounded-none md:rounded-md px-0 py-0 md:px-3 md:py-2 min-w-[60px] md:min-w-[80px] text-center md:shadow-sm"
-                    >
-                      {{ event.time.split(' - ')[0] }}
-                    </div>
-                  </div>
-                  <div class="flex-1">
-                    <h4 class="font-semibold text-gray-900 mb-2 leading-tight">
-                      {{ event.title }}
-                    </h4>
-                    @if (event.speaker) {
-                    <p class="text-sm text-gray-600 mb-3">{{ event.speaker }}</p>
-                    }
-                    <span
-                      class="inline-block px-3 py-1 text-xs font-medium rounded-full"
-                      [ngClass]="getBadgeColor(event.category)"
-                    >
-                      {{ event.category }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            }
-          </div>
+          <p class="text-lg font-semibold text-gray-900">
+            {{ eventConfig.date.display.start }} {{ eventConfig.date.display.month }} {{ eventConfig.date.display.year }}
+          </p>
+          <p class="text-sm text-gray-500 mt-1">9h00 - 18h00</p>
         </div>
 
-        <!-- Mobile Track -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden border border-yellow-200 hidden lg:block" [class.!block]="activeTab() === 'mobile'">
-          <div class="bg-yellow-500 text-white px-4 py-3 md:px-6 md:py-4">
-            <h3 class="text-xl font-bold">Track Mobile</h3>
+        <!-- Location -->
+        <div class="text-center">
+          <div class="flex items-center justify-center mb-3">
+            <svg class="w-6 h-6 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">Lieu</span>
           </div>
-          <div class="p-0">
-            @for (event of getMobileEvents(); track event.time) {
-            <div class="border-b border-gray-100 last:border-b-0 animate-fade-in" [style]="'animation-delay: ' + ($index * 0.1) + 's'">
-              <div class="p-4 md:p-6 hover:bg-yellow-50 hover:shadow-sm transition-all duration-300 hover:scale-[1.02]">
-                <div class="flex items-start">
-                  <div class="flex-shrink-0 mr-4">
-                    <div
-                      class="text-xs md:text-sm font-bold text-gray-700 md:text-white bg-transparent md:bg-yellow-500 rounded-none md:rounded-md px-0 py-0 md:px-3 md:py-2 min-w-[60px] md:min-w-[80px] text-center md:shadow-sm"
-                    >
-                      {{ event.time.split(' - ')[0] }}
-                    </div>
-                  </div>
-                  <div class="flex-1">
-                    <h4 class="font-semibold text-gray-900 mb-2 leading-tight">
-                      {{ event.title }}
-                    </h4>
-                    @if (event.speaker) {
-                    <p class="text-sm text-gray-600 mb-3">{{ event.speaker }}</p>
-                    }
-                    <span
-                      class="inline-block px-3 py-1 text-xs font-medium rounded-full"
-                      [ngClass]="getBadgeColor(event.category)"
-                    >
-                      {{ event.category }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            }
-          </div>
+          <p class="text-lg font-semibold text-gray-900">
+            {{ eventConfig.venue.conferenceCenter }}
+          </p>
+          <p class="text-sm text-gray-500 mt-1">{{ eventConfig.venue.fullLocation }}</p>
         </div>
       </div>
     </div>
