@@ -165,8 +165,6 @@ private async captureElement(elementId: string, fileName: string) {
     console.error(`Élément ${elementId} introuvable`);
     return;
   }
-
-  // Clone pour éviter problèmes de style / state pendant la capture
   const clone = el.cloneNode(true) as HTMLElement;
   clone.style.position = 'absolute';
   clone.style.top = '0';
@@ -193,7 +191,6 @@ private async captureElement(elementId: string, fileName: string) {
       const safeName = `${fileName.replace(/\s+/g, '_')}.png`;
       const url = URL.createObjectURL(blob);
 
-      // Création d'un <a> pour le téléchargement
       const a = document.createElement('a');
       a.href = url;
       a.download = safeName;
@@ -203,7 +200,6 @@ private async captureElement(elementId: string, fileName: string) {
       try {
         a.click();
       } catch (err) {
-        // si click() est bloqué, on tente la fallback d'ouverture dans un nouvel onglet
         const opened = window.open(url, '_blank', 'noopener noreferrer');
         if (!opened) {
           alert('Impossible de lancer le téléchargement automatiquement. Désactivez le bloqueur de pop-ups et essayez à nouveau.');
@@ -224,9 +220,6 @@ private async captureElement(elementId: string, fileName: string) {
     if (clone.parentNode) document.body.removeChild(clone);
   }
 }
-
-
-  // NOUVEAU : Fonction pour scroller
   private scrollToPreview() {
     const elementId =
       this.activeTab === 'profile' ? 'dp-capture-zone-profile' : 'dp-capture-zone-generator';
@@ -236,11 +229,11 @@ private async captureElement(elementId: string, fileName: string) {
 
   async captureProfileDP() {
     await this.captureElement('dp-capture-zone-profile', `${this.fullName || 'ma-photo'}-profil`);
-    this.scrollToPreview(); // On ajoute le scroll ici
+    this.scrollToPreview(); 
   }
 
   async captureGeneratorDP() {
     await this.captureElement('dp-capture-zone-generator', `${this.fullName || 'mon-dp'}-devfest`);
-    this.scrollToPreview(); // Et ici aussi
+    this.scrollToPreview(); 
   }
 }
