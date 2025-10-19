@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Profil } from './profil/profil';
@@ -14,7 +14,7 @@ import { EventConfigService } from '../../config/event-config.service';
   imports: [CommonModule, FormsModule, Profil, Generator, ImageCropperComponent],
   templateUrl: './dp-generator.html',
 })
-export default class DpGenerator implements OnInit {
+export default class DpGenerator implements OnInit, OnDestroy {
   constructor(private cdr: ChangeDetectorRef) {}
   eventConfig = inject(EventConfigService);
 
@@ -35,7 +35,7 @@ export default class DpGenerator implements OnInit {
   profileTheme: 'yellow' | 'blue' | 'green' | 'red' = 'yellow';
   profileStyle: 'classic' | 'minimalist' = 'classic';
 
-  // NOUVEAU : Thèmes pour le Générateur de DP
+  // Thèmes pour le Générateur de DP
   generatorTheme: 'default' | 'white' = 'default';
 
   suggestedQuotes = [
@@ -47,10 +47,60 @@ export default class DpGenerator implements OnInit {
   ];
   private quoteIndex = 0;
 
+  // === MOBILE UX ===
+  isMobile = false;
+  showPreviewOverlay = false; // overlay mobile (après recadrage)
+
+  private checkIsMobileBound = this.checkIsMobile.bind(this);
+
   ngOnInit() {
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      this.checkIsMobile();
+      window.addEventListener('resize', this.checkIsMobileBound);
     }
+  }
+
+  ngOnDestroy() {
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('resize', this.checkIsMobileBound);
+      // ensure scroll is restored if component is destroyed while overlay open
+      this.restoreBodyScroll();
+    }
+  }
+
+  private checkIsMobile() {
+    this.isMobile = typeof window !== 'undefined' ? window.innerWidth <= 768 : false;
+  }
+
+  private preventBodyScroll() {
+    try {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.touchAction = 'none';
+    } catch (e) {
+      // silent
+    }
+  }
+
+  private restoreBodyScroll() {
+    try {
+      document.body.style.overflow = '';
+      document.documentElement.style.touchAction = '';
+    } catch (e) {
+      // silent
+    }
+  }
+
+  openMobileOverlay() {
+    this.showPreviewOverlay = true;
+    // prevent background scroll
+    this.preventBodyScroll();
+  }
+
+  closeMobileOverlay() {
+    this.showPreviewOverlay = false;
+    // restore scroll
+    this.restoreBodyScroll();
   }
 
   get isFormReadyForUpload(): boolean {
@@ -66,7 +116,7 @@ export default class DpGenerator implements OnInit {
       this.uiState = 'imageVisible';
       setTimeout(() => {
         this.uiState = 'templateVisible';
-      }, 10); // Un court délai suffit pour que le changement soit détecté
+      }, 10);
     } else {
       this.uiState = 'initial';
     }
@@ -80,7 +130,6 @@ export default class DpGenerator implements OnInit {
     this.profileStyle = this.profileStyle === 'classic' ? 'minimalist' : 'classic';
   }
 
-  // NOUVEAU : Fonction pour changer le thème du générateur
   setGeneratorTheme(theme: 'default' | 'white') {
     this.generatorTheme = theme;
   }
@@ -139,10 +188,15 @@ export default class DpGenerator implements OnInit {
   confirmCrop() {
     if (this.tempCroppedImage) {
       this.previewImage = this.tempCroppedImage;
-      this.uiState = 'imageVisible';
-      setTimeout(() => {
-        this.uiState = 'templateVisible';
-      }, 100);
+
+      if (this.isMobile) {
+        this.openMobileOverlay();
+      } else {
+        this.uiState = 'imageVisible';
+        setTimeout(() => {
+          this.uiState = 'templateVisible';
+        }, 100);
+      }
     }
 
     this.showCropper = false;
@@ -189,7 +243,6 @@ export default class DpGenerator implements OnInit {
     }
   }
 
-  // NOUVEAU : Fonction pour scroller
   private scrollToPreview() {
     const elementId =
       this.activeTab === 'profile' ? 'dp-capture-zone-profile' : 'dp-capture-zone-generator';
@@ -199,11 +252,20 @@ export default class DpGenerator implements OnInit {
 
   async captureProfileDP() {
     await this.captureElement('dp-capture-zone-profile', `${this.fullName || 'ma-photo'}-profil`);
-    this.scrollToPreview(); // On ajoute le scroll ici
+    this.scrollToPreview();
   }
 
   async captureGeneratorDP() {
     await this.captureElement('dp-capture-zone-generator', `${this.fullName || 'mon-dp'}-devfest`);
-    this.scrollToPreview(); // Et ici aussi
+    this.scrollToPreview();
+  }
+
+  // Téléchargement depuis overlay mobile : on capture la zone affichée (DOM) ou on fallback sur l'image preview
+  async downloadFromPreview() {
+    if (this.isMobile && this.activeTab === 'dp') {
+      this.captureGeneratorDP();
+    } else if (this.isMobile && this.activeTab === 'profile') {
+      this.captureProfileDP();
+    }
   }
 }

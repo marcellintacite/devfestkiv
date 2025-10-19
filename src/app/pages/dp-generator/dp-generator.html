@@ -154,22 +154,25 @@
               }
             </div>
 
-            <!-- Bouton d'action -->
+            <!-- Bouton d'action (desktop only) -->
+            @if (!isMobile) {
             <button type="button" (click)="activeTab === 'profile' ? captureProfileDP() : captureGeneratorDP()"
               class="btn btn-primary w-full text-center block">
                Générer et Télécharger
             </button>
+            }
           </form>
         </div>
       </div>
 
       <!-- Preview -->
       <div class="lg:col-span-3">
-        @if (activeTab === 'profile') {
+        <!-- Desktop only : garde le flow pixel-perfect -->
+        @if (!isMobile && activeTab === 'profile') {
         <app-profil [fullName]="fullName" [previewImage]="previewImage" [uiState]="uiState"
           [profileTheme]="profileTheme" [profileStyle]="profileStyle"></app-profil>
         }
-        @if (activeTab === 'dp') {
+        @if (!isMobile && activeTab === 'dp') {
         <app-generator [fullName]="fullName" [previewImage]="previewImage" [quote]="quote"
           [uiState]="uiState" [generatorTheme]="generatorTheme" [eventConfig]="eventConfig"></app-generator>
         }
@@ -199,6 +202,54 @@
     <div class="flex justify-end mt-4 gap-3">
       <button class="btn btn-danger" (click)="imageCropperCancelled()">Annuler</button>
       <button class="btn btn-primary" (click)="confirmCrop()">Confirmer</button>
+    </div>
+  </div>
+</div>
+}
+
+<!-- OVERLAY MOBILE : preview + close + download + capture-zone rendu -->
+@if (isMobile && showPreviewOverlay) {
+<div class="fixed inset-0 z-50 flex items-center justify-center">
+  <!-- Backdrop -->
+  <div class="absolute inset-0 bg-black/60" (click)="closeMobileOverlay()"></div>
+
+  <!-- Content -->
+  <div class="relative bg-white rounded-2xl max-w-[94vw] w-full max-h-[94vh] p-3 overflow-auto z-60">
+    <button (click)="closeMobileOverlay()" class="absolute right-3 top-3 rounded-md w-9 h-9 flex items-center justify-center bg-white shadow z-70">
+      ✕
+    </button>
+
+    <div class="flex flex-col items-center gap-4 pt-6">
+      <!-- Ici on rend le composant complet (capture zone) en version réduite pour mobile -->
+      <div class="mobile-capture-wrapper">
+        @if (activeTab === 'dp') {
+          <app-generator
+            [fullName]="fullName"
+            [previewImage]="previewImage"
+            [quote]="quote"
+            [uiState]="'templateVisible'"
+            [generatorTheme]="generatorTheme"
+            [eventConfig]="eventConfig"
+            class="mobile-capture"
+          ></app-generator>
+        }
+        @if (activeTab === 'profile') {
+          <app-profil
+            [fullName]="fullName"
+            [previewImage]="previewImage"
+            [uiState]="'templateVisible'"
+            [profileTheme]="profileTheme"
+            [profileStyle]="profileStyle"
+            class="mobile-capture"
+          ></app-profil>
+        }
+      </div>
+
+      <div class="w-full flex justify-center mt-2 px-4">
+        <button (click)="downloadFromPreview()" class="btn btn-primary w-full">
+          Télécharger
+        </button>
+      </div>
     </div>
   </div>
 </div>
