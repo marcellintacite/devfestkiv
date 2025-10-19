@@ -10,235 +10,148 @@ import {FirestoreService} from '../../../services/firestore';
   imports: [CommonModule, Questions],
 
   template: `
-    <main class="container mx-auto px-4 py-8 relative z-10">
-      <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-16 relative">
-          <div class="relative z-10">
-            <div class="mb-6">
-              <h2 class="text-5xl md:text-6xl font-bold mb-4 text-balance">
-                <span class="text-foreground/9"> Posez vos questions </span>
-                <br />
-                <span class="text-foreground/90">anonymement</span>
-              </h2>
-            </div>
-            <div class="flex justify-center my-6">
-              <svg
-                width="200"
-                height="20"
-                viewBox="0 0 200 20"
-                fill="none"
-                className="animate-pulse-slow"
-              >
-                <path
-                  d="M20,10 L40,5 L60,10 L80,5 L100,10 L120,5 L140,10 L160,5 L180,10"
-                  stroke="#FBBC04"
-                  stroke-width="2"
-                  fill="none"
-                />
-                <circle cx="30" cy="10" r="2" fill="#4285F4" />
-                <circle cx="70" cy="10" r="2" fill="#EA4335" />
-                <circle cx="110" cy="10" r="2" fill="#34A853" />
-                <circle cx="150" cy="10" r="2" fill="#FBBC04" />
-              </svg>
-            </div>
-            <p
-              class="text-xl text-muted-foreground text-pretty max-w-3xl mx-auto mb-8 leading-relaxed"
-            >
-              Sélectionnez une session ci-dessous et posez votre question de manière anonyme. Vos
-              questions seront transmises directement aux intervenants en temps réel.
-            </p>
-            <div class="flex justify-center gap-4 flex-wrap">
-              <!-- Badge sessions actives -->
-              <div
-                class="flex items-center text-base px-4 py-2 border border-[#34A853]/30 bg-[#34A853]/10 rounded-md"
-              >
-                <div class="w-2 h-2 bg-[#34A853] rounded-full animate-pulse-google mr-2"></div>
-                {{ activeSessions.length }} session(s) active(s)
-              </div>
+    <!-- ========================== -->
+    <!-- HERO SECTION -->
+    <!-- ========================== -->
+    <section
+      class="relative overflow-hidden bg-gradient-to-br from-white via-gray-50 to-gray-100 min-h-[90vh] flex items-center justify-center"
+    >
+      <!-- Background Deco -->
+      <div class="absolute inset-0 overflow-hidden opacity-50 animate-fade-in">
+        <div
+          class="absolute -top-40 -right-40 w-96 h-96 bg-[#4285F4]/20 rounded-full blur-3xl animate-pulse-slow"
+        ></div>
+        <div
+          class="absolute -bottom-40 -left-40 w-[28rem] h-[28rem] bg-[#34A853]/20 rounded-full blur-3xl animate-pulse-slow"
+        ></div>
+        <div
+          class="absolute top-[40%] left-[45%] w-64 h-64 bg-[#FBBC04]/10 rounded-full blur-3xl animate-pulse-slow"
+        ></div>
+      </div>
 
-              <!-- Badge questions en temps réel -->
-              <div
-                class="flex items-center text-base px-4 py-2 border border-[#4285F4]/30 bg-[#4285F4]/10 rounded-md"
-              >
-                <!-- Icône MessageSquare en SVG -->
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="w-4 h-4 mr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77
-               9.77 0 01-4-.8l-4 1 1-3.6A7.7 7.7 0 013 12c0-4.418 4.03-8 9-8s9
-               3.582 9 8z"
-                  />
-                </svg>
-                Questions en temps réel
-              </div>
-            </div>
-          </div>
+      <!-- Hero Content -->
+      <div class="relative z-10 max-w-5xl mx-auto px-6 sm:px-8 text-center space-y-10">
+        <!-- Badge -->
+        <div
+          class="inline-flex items-center gap-2 px-4 py-2 bg-[#4285F4]/10 text-[#4285F4] rounded-full text-sm font-medium animate-slide-down"
+          style="animation-delay:0.1s;"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-4 h-4 mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77
+              9.77 0 01-4-.8l-4 1 1-3.6A7.7 7.7 0 013 12c0-4.418 4.03-8 9-8s9
+              3.582 9 8z"
+            />
+          </svg>
+          <span> Questions en temps réel</span>
+        </div>
+
+        <!-- Heading -->
+        <div class="animate-slide-up" style="animation-delay:0.2s;">
+          <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold text-gray-900 leading-tight mb-4">
+            Posez vos questions
+            <span class="block text-[#34A853] mt-3">anonymement</span>
+          </h1>
+          <p class="text-lg md:text-xl text-gray-600 font-light max-w-3xl mx-auto leading-relaxed">
+            Sélectionnez une session ci-dessous et posez votre question en toute confidentialité.
+            Vos messages sont transmis en temps réel aux intervenants.
+          </p>
+        </div>
+
+    
+        <!-- CTA -->
+        <div class="animate-slide-up" style="animation-delay:0.8s;">
+          <a
+            href="#sessions"
+            class="inline-flex items-center gap-3 px-8 py-3 rounded-full bg-[#EA4335] text-white text-lg font-semibold hover:bg-[#d83b2e] hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+          >
+            <span>Voir les sessions disponibles</span>
+            <svg
+              class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
+            </svg>
+          </a>
         </div>
       </div>
-    </main>
-    <svg
-      viewBox="0 0 800 400"
-      xmlns="http://www.w3.org/2000/svg"
-      preserveAspectRatio="xMidYMid meet"
-      style="width:100%; height:100%; position:absolute; top:0; left:0; z-index:-3;"
-    >
-      <!-- Formes Google animées -->
-      <polygon class="move1" points="100,50 200,150 50,150" fill="#EA4335" fill-opacity="0.2" />
-      <circle class="pulse" cx="600" cy="120" r="60" fill="#34A853" fill-opacity="0.3" />
+    </section>
 
-      <!-- Icônes codeur -->
-      <text
-        class="float"
-        x="350"
-        y="300"
-        font-family="monospace"
-        font-size="50"
-        fill="#F4B400"
-        opacity="0.9"
-      >
-        &lt;/&gt;
-      </text>
-      <text
-        class="float"
-        x="100"
-        y="350"
-        font-family="monospace"
-        font-size="30"
-        fill="#EA4335"
-        opacity="0.7"
-      >
-        &#123;DevFest&#125;
-      </text>
-      <text
-        class="float"
-        x="200"
-        y="70"
-        font-family="monospace"
-        font-size="25"
-        fill="#4285F4"
-        opacity="0.7"
-      >
-        &#40;&#41;
-      </text>
-      <text
-        class="float"
-        x="650"
-        y="250"
-        font-family="monospace"
-        font-size="35"
-        fill="#34A853"
-        opacity="0.7"
-      >
-        &lt;Kivu/&gt;
-      </text>
-      <text
-        class="float"
-        x="500"
-        y="350"
-        font-family="monospace"
-        font-size="20"
-        fill="#FBBC05"
-        opacity="0.6"
-      >
-        ;
-      </text>
-      <text
-        class="float"
-        x="750"
-        y="70"
-        font-family="monospace"
-        font-size="25"
-        fill="#EA4335"
-        opacity="0.6"
-      >
-        #
-      </text>
-      <text
-        class="float"
-        x="600"
-        y="100"
-        font-family="monospace"
-        font-size="25"
-        fill="#EA4335"
-        opacity="0.6"
-      >
-        ?
-      </text>
-    </svg>
-    <main class="container mx-auto px-4 py-8 relative z-10">
-      <h2 class="text-4xl font-bold mb-8 text-center text-gray-900">Speakers en live</h2>
-      <div class="flex justify-center my-6">
-        <svg
-          width="200"
-          height="20"
-          viewBox="0 0 200 20"
-          fill="none"
-          className="animate-pulse-slow"
-        >
-          <path
-            d="M20,10 L40,5 L60,10 L80,5 L100,10 L120,5 L140,10 L160,5 L180,10"
-            stroke="#FBBC04"
-            strokeWidth="2"
-            fill="none"
-          />
-          <circle cx="30" cy="10" r="2" fill="#4285F4" />
-          <circle cx="70" cy="10" r="2" fill="#EA4335" />
-          <circle cx="110" cy="10" r="2" fill="#34A853" />
-          <circle cx="150" cy="10" r="2" fill="#FBBC04" />
-        </svg>
+    <!-- ========================== -->
+    <!-- SPEAKERS SECTION -->
+    <!-- ========================== -->
+    <main class="mx-auto px-4 py-16 relative z-10 bg-gradient-to-b">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-bold text-gray-900">
+          🎤 Speakers en <span class="text-[#4285F4]">live</span>
+        </h2>
+
+        <div class="flex justify-center mt-6">
+          <svg width="200" height="20" viewBox="0 0 200 20" fill="none">
+            <path
+              d="M20,10 L40,5 L60,10 L80,5 L100,10 L120,5 L140,10 L160,5 L180,10"
+              stroke="#FBBC04"
+              stroke-width="2"
+              fill="none"
+            />
+            <circle cx="30" cy="10" r="2" fill="#4285F4" />
+            <circle cx="70" cy="10" r="2" fill="#EA4335" />
+            <circle cx="110" cy="10" r="2" fill="#34A853" />
+            <circle cx="150" cy="10" r="2" fill="#FBBC04" />
+          </svg>
+        </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-5xl mx-auto">
         @for (session of activeSessions; track $index) {
         <div
           (click)="openDialog(session)"
-          class="card-session p-6 rounded-xl shadow-lg flex flex-col items-center relative overflow-hidden cursor-pointer hover:shadow-2xl transition duration-300"
+          class="group relative shadow-2xl p-6 rounded-2xl  overflow-hidden cursor-pointer transition-all duration-500 hover:shadow-2xl hover:-translate-y-2"
         >
-          <!-- Fond léger -->
-          <div class="absolute inset-0 bg-gray-50 opacity-20 z-0"></div>
+          <div
+            class="absolute inset-0 bg-gradient-to-tr from-[#4285F4]/10 via-[#34A853]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          ></div>
 
-          <!-- Contenu -->
-          <div class="relative z-10 flex flex-col items-center">
-            <!-- Image du speaker -->
+          <div class="relative z-10 flex flex-col items-center text-center space-y-3">
             <img
               [src]="'assets/devfest.png'"
               alt="{{ session.speaker }}"
-              class="w-50 h-50 rounded-xl object-cover mb-4 border-none shadow-md"
+              class="w-40 h-40 rounded-lg object-cover shadow-lg border-4 border-white mb-3"
             />
-
-            <!-- Nom du speaker -->
-            <h3 class="text-xl font-bold mb-1 text-center text-gray-900">
-              {{ session.speaker }}
-            </h3>
-
-            <!-- Titre de la session -->
-            <p class="text-sm text-gray-700 mb-4 text-center">
-              {{ session.title }}
-            </p>
-
-            <!-- Bouton Question -->
+            <h3 class="text-xl font-bold text-gray-900">{{ session.speaker }}</h3>
+            <p class="text-gray-600 text-sm mb-3">{{ session.title }}</p>
             <button
-              class="px-4 py-2 rounded-md text-white font-semibold transition transform hover:scale-105"
+              class="px-5 py-2.5 rounded-md text-white font-semibold hover:scale-105 transition-transform duration-300"
               [ngStyle]="{ 'background-color': getTrackColor('Infrastructure') }"
               (click)="openDialog(session)"
             >
-              Question
+              Poser une question
             </button>
           </div>
         </div>
-
         }
       </div>
     </main>
 
+    <!-- ========================== -->
+    <!-- DIALOG COMPONENT -->
+    <!-- ========================== -->
     @if (dialogOuvert) {
     <app-questions
       [sessionTitle]="SelectedSession.title"
@@ -249,57 +162,46 @@ import {FirestoreService} from '../../../services/firestore';
     }
   `,
   styles: `
-  @keyframes moveX {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(10px); }
-}
-.move1 { animation: moveX 6s ease-in-out infinite; }
-.move2 { animation: moveX 8s ease-in-out infinite reverse; }
-
-/* Pulser le cercle */
-@keyframes pulseAnim {
-  0%, 100% { r: 60; opacity:0.7; }
-  50% { r: 70; opacity:1; }
-}
-.pulse { animation: pulseAnim 4s ease-in-out infinite; }
-
-/* Flotter verticalement les symboles de code */
-@keyframes floatY {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
-}
-.float { animation: floatY 5s ease-in-out infinite; }
-
-/* Rotation douce pour motifs africains */
-@keyframes rotateAnim {
-  0% { transform: rotate(0deg); transform-origin: 620px 300px; }
-  50% { transform: rotate(15deg); }
-  100% { transform: rotate(0deg); }
-}
-.card-session {
-  position: relative;
-  background-color: #ffffff;
-  border-radius: 1rem;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-  overflow: hidden;
+ 
+.animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
+  opacity: 0;
 }
 
-/* Bordure du bas avec 4 couleurs distinctes de Google */
-.card-session::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 2px; /* épaisseur de la bordure */
-  background: linear-gradient(
-    to right,
-    #4285F4 0%, #4285F4 25%,    /* bleu */
-    #34A853 25%, #34A853 50%,   /* vert */
-    #FBBC05 50%, #FBBC05 75%,   /* jaune */
-    #EA4335 75%, #EA4335 100%   /* rouge */
-  );
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out forwards;
+  opacity: 0;
 }
+
+.animate-slide-down {
+  animation: slideDown 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-pulse-slow {
+  animation: pulseSlow 4s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 0.4; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseSlow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
 
   `,
 })
@@ -307,7 +209,9 @@ export default class Home implements OnInit {
   ngOnInit(): void {
     let sessionListRef = this.FireStore.getSessions();
     let sessionList: Session<Timestamp>[] = [];
-    sessionListRef.forEach((e: Session<Timestamp>[]) => (this.activeSessions = e));
+    sessionListRef.forEach((e: Session<Timestamp>[]) => {
+      this.activeSessions = e.filter((session) => session.isActive);
+    });
   }
   private readonly FireStore = inject(FirestoreService);
   // Fake data pour tester

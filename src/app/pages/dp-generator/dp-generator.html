@@ -18,14 +18,18 @@
           class="px-6 py-3 rounded-lg font-semibold text-sm md:text-base transition-all duration-300"
           [class.bg-white]="activeTab === 'profile'" [class.text-primary]="activeTab === 'profile'"
           [class.shadow-md]="activeTab === 'profile'" [class.text-gray-600]="activeTab !== 'profile'"
-          [class.hover:text-gray-900]="activeTab !== 'profile'">
+          [class.hover:text-gray-900]="activeTab !== 'profile'"
+          [class.cursor-pointer]="activeTab !== 'profile'" [class.cursor-default]="activeTab === 'profile'"
+          >
           Photo de Profil
         </button>
         <button (click)="setActiveTab('dp')"
           class="px-6 py-3 rounded-lg font-semibold text-sm md:text-base transition-all duration-300"
           [class.bg-white]="activeTab === 'dp'" [class.text-primary]="activeTab === 'dp'"
           [class.shadow-md]="activeTab === 'dp'" [class.text-gray-600]="activeTab !== 'dp'"
-          [class.hover:text-gray-900]="activeTab !== 'dp'">
+          [class.hover:text-gray-900]="activeTab !== 'dp'"
+          [class.cursor-pointer]="activeTab !== 'dp'" [class.cursor-default]="activeTab === 'dp'"
+          >
           Générateur de DP
         </button>
       </div>
@@ -46,8 +50,7 @@
             <!-- Nom -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Nom et prénom</label>
-              <input type="text" [(ngModel)]="fullName" name="fullName" placeholder="Votre nom"
-                class="w-full px-4 py-3 text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary"/>
+              <input type="text" [(ngModel)]="fullName" name="fullName" placeholder="Votre nom" class="w-full px-4 py-3 text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary"/>
             </div>
 
             <!-- Citation -->
@@ -55,11 +58,10 @@
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Citation / Punchline</label>
                 <div class="relative">
-                  <input type="text" [(ngModel)]="quote" name="quote" placeholder="Votre punchline ici..."
-                    class="w-full px-4 py-3 text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary"/>
+                  <input type="text" [(ngModel)]="quote" name="quote" placeholder="Votre punchline ici..." class="w-full px-4 py-3 text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary"/>
                   <button type="button" (click)="suggestQuote()" class="absolute right-2 top-1/2 -translate-y-1/2 btn btn-ghost">Suggérer</button>
                 </div>
-              </div>
+                </div>
             }
 
             <!-- Thème & Style -->
@@ -102,6 +104,24 @@
               </div>
             }
 
+            <!-- Thème pour GÉNÉRATEUR DP -->
+            @if (activeTab === 'dp') {
+            <div class="space-y-2 pt-2">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Thème de fond</label>
+              <div class="flex gap-2">
+                <button type="button" (click)="setGeneratorTheme('default')"
+                  class="flex-1 btn" [class.btn-primary]="generatorTheme === 'default'" [class.btn-ghost]="generatorTheme !== 'default'">
+                  Défaut
+                </button>
+                <button type="button" (click)="setGeneratorTheme('white')"
+                  class="flex-1 btn" [class.btn-primary]="generatorTheme === 'white'" [class.btn-ghost]="generatorTheme !== 'white'">
+                  Blanc
+                </button>
+              </div>
+            </div>
+            }
+
+
             <!-- Upload -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Votre image</label>
@@ -143,8 +163,8 @@
             [profileTheme]="profileTheme" [profileStyle]="profileStyle"></app-profil>
         }
         @if (activeTab === 'dp') {
-          <app-generator [fullName]="fullName" [previewImage]="previewImage" [quote]="quote"
-            [uiState]="uiState"></app-generator>
+        <app-generator [fullName]="fullName" [previewImage]="previewImage" [quote]="quote"
+          [uiState]="uiState"></app-generator>
         }
       </div>
     </div>
@@ -204,26 +224,26 @@
 
 <!--  Popup Cropper -->
 @if (showCropper) {
-  <div class="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-    <div class="bg-white rounded-2xl p-6 shadow-2xl w-full max-w-2xl">
-      <h3 class="text-lg font-bold text-gray-900 mb-4">Recadrez votre image</h3>
-      <div class="w-full h-[400px]">
-        <image-cropper
-          [imageBase64]="imageBase64"
-          [maintainAspectRatio]="true"
-          [aspectRatio]="1"
-          [resizeToWidth]="600"
-          [format]="'png'"
-          [output]="'base64'"
-          class="w-full h-full"
-          (imageCropped)="onImageCropped($event)"
-          (loadImageFailed)="imageCropperCancelled()"
-        ></image-cropper>
-      </div>
-      <div class="flex justify-end mt-4 gap-3">
-        <button class="btn btn-secondary" (click)="imageCropperCancelled()">Annuler</button>
-        <button class="btn btn-primary" (click)="confirmCrop()">Confirmer</button>
-      </div>
+<div class="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+  <div class="bg-white rounded-2xl p-6 shadow-2xl w-full max-w-2xl">
+    <h3 class="text-lg font-bold text-gray-900 mb-4">Recadrez votre image</h3>
+    <div class="w-full h-[400px]">
+    <image-cropper
+      [imageBase64]="imageBase64"
+      [maintainAspectRatio]="true"
+      [aspectRatio]="1"
+      [resizeToWidth]="600"
+      [format]="'png'"
+      [output]="'base64'"
+      class="w-full h-full"
+      (imageCropped)="onImageCropped($event)"
+      (loadImageFailed)="imageCropperCancelled()"
+    ></image-cropper>
+    </div>
+    <div class="flex justify-end mt-4 gap-3">
+      <button class="btn btn-secondary" (click)="imageCropperCancelled()">Annuler</button>
+      <button class="btn btn-primary" (click)="confirmCrop()">Confirmer</button>
     </div>
   </div>
+</div>
 }

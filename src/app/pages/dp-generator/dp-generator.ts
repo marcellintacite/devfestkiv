@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Profil } from './profil/profil';
@@ -6,6 +6,7 @@ import { Generator } from './generator/generator';
 import html2canvas from 'html2canvas-pro';
 import { ImageCropperComponent, ImageCroppedEvent } from 'ngx-image-cropper';
 import { ChangeDetectorRef } from '@angular/core';
+import { EventConfigService } from '../../config/event-config.service';
 
 @Component({
   selector: 'app-dp-generator',
@@ -15,6 +16,8 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export default class DpGenerator implements OnInit {
   constructor(private cdr: ChangeDetectorRef) {}
+  eventConfig = inject(EventConfigService);
+
   activeTab: 'profile' | 'dp' = 'profile';
   uiState: 'initial' | 'imageVisible' | 'templateVisible' = 'initial';
 
@@ -28,12 +31,16 @@ export default class DpGenerator implements OnInit {
   imageBase64: string | undefined = undefined;
   tempCroppedImage: string | null = null;
 
+  // Thèmes pour Photo de Profil
   profileTheme: 'yellow' | 'blue' | 'green' | 'red' = 'yellow';
   profileStyle: 'classic' | 'minimalist' = 'classic';
 
+  // NOUVEAU : Thèmes pour le Générateur de DP
+  generatorTheme: 'default' | 'white' = 'default';
+
   suggestedQuotes = [
-    'Le code est ma poésie.',
-    "DevFest Kivu 2025, j'arrive !",
+    'Coder est ma passion.',
+    `${this.eventConfig.fullName}, j'arrive !`,
     'Prêt à networker et innover.',
     'Talk is cheap. Show me the code.',
     'Building the future, one line at a time.',
@@ -51,9 +58,18 @@ export default class DpGenerator implements OnInit {
     return !!this.fullName.trim() && !!this.quote.trim();
   }
 
+  // MODIFIÉ : Pour relancer les animations
   setActiveTab(tab: 'profile' | 'dp') {
     this.activeTab = tab;
-    this.uiState = this.previewImage ? 'templateVisible' : 'initial';
+    // Si une image est déjà chargée, on force le reset de l'animation
+    if (this.previewImage) {
+      this.uiState = 'imageVisible';
+      setTimeout(() => {
+        this.uiState = 'templateVisible';
+      }, 10); // Un court délai suffit pour que le changement soit détecté
+    } else {
+      this.uiState = 'initial';
+    }
   }
 
   setProfileTheme(theme: 'yellow' | 'blue' | 'green' | 'red') {
@@ -62,6 +78,11 @@ export default class DpGenerator implements OnInit {
 
   toggleProfileStyle() {
     this.profileStyle = this.profileStyle === 'classic' ? 'minimalist' : 'classic';
+  }
+
+  // NOUVEAU : Fonction pour changer le thème du générateur
+  setGeneratorTheme(theme: 'default' | 'white') {
+    this.generatorTheme = theme;
   }
 
   // === Drag & Drop ===
@@ -194,11 +215,21 @@ export default class DpGenerator implements OnInit {
 }
 
 
+  // NOUVEAU : Fonction pour scroller
+  private scrollToPreview() {
+    const elementId =
+      this.activeTab === 'profile' ? 'dp-capture-zone-profile' : 'dp-capture-zone-generator';
+    const element = document.getElementById(elementId);
+    element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
   async captureProfileDP() {
     await this.captureElement('dp-capture-zone-profile', `${this.fullName || 'ma-photo'}-profil`);
+    this.scrollToPreview(); // On ajoute le scroll ici
   }
 
   async captureGeneratorDP() {
     await this.captureElement('dp-capture-zone-generator', `${this.fullName || 'mon-dp'}-devfest`);
+    this.scrollToPreview(); // Et ici aussi
   }
 }

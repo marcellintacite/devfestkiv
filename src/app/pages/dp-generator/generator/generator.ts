@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { EventConfig } from '../../../config/event.config';
 
 @Component({
   selector: 'app-generator',
@@ -12,4 +13,6 @@ export class Generator {
   @Input() previewImage: string | ArrayBuffer | null = null;
   @Input() quote: string = '';
   @Input() uiState: 'initial' | 'imageVisible' | 'templateVisible' = 'initial';
+  @Input() generatorTheme: 'default' | 'white' = 'default';
+  @Input() eventConfig!: EventConfig;
 }

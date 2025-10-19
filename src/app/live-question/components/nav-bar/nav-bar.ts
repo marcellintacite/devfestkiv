@@ -2,6 +2,7 @@ import { Component, inject, PLATFORM_ID } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CodePin } from '../code-pin/code-pin';
 import { isPlatformBrowser } from '@angular/common';
+import { EventConfigService } from '../../../config/event-config.service';
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
@@ -42,7 +43,9 @@ import { isPlatformBrowser } from '@angular/common';
                   />
                 </svg>
 
-                <span>Décembre 2025</span>
+                <span
+                  >{{ eventConfig.date.display.month }} {{ eventConfig.date.display.year }}</span
+                >
               </div>
               <div class="flex items-center gap-1">
                 <!-- Map Pin Icon -->
@@ -69,6 +72,9 @@ import { isPlatformBrowser } from '@angular/common';
                 <span>Bukavu, RDC</span>
               </div>
             </div>
+
+            <!-- Bouton Présentateur -->
+            @if(isLoged ){
             <a routerLink="/live_q">
               <button
                 class="flex items-center gap-2 border border-[#4285F4]/30 
@@ -91,9 +97,6 @@ import { isPlatformBrowser } from '@angular/common';
                 <span class="hidden sm:inline">Accueil</span>
               </button>
             </a>
-
-            <!-- Bouton Présentateur -->
-            @if(isLoged ){
             <a routerLink="/presenter">
               <button
                 class="flex items-center gap-2 border border-[#4285F4]/30 
@@ -162,10 +165,10 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class NavBar {
   showCodePin = false;
-  isLoged:string | null ='';
+  isLoged: string | null = '';
   private platformId = inject(PLATFORM_ID);
-
   private router = inject(Router);
+  eventConfig = inject(EventConfigService);
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {

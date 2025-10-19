@@ -1,0 +1,235 @@
+<section class="relative overflow-hidden mb-lg">
+  <div class="max-w-7xl mx-auto px-md sm:px-lg lg:px-xl relative z-10">
+    <div class="relative text-center py-8 md:py-12">
+      <img
+        src="/assets/illustrations/inferior.png"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        class="hidden lg:block absolute top-1/2 -left-14 w-14 -translate-y-1/2 opacity-50 transform-gpu animate-float"
+      />
+      <img
+        src="/assets/illustrations/superior.png"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        class="hidden lg:block absolute top-1/2 -right-14 w-14 -translate-y-1/2 opacity-50 transform-gpu animate-float-delay"
+      />
+
+      <h1 class="text-3xl md:text-4xl font-bold text-text mb-2">Questions & Réponses</h1>
+      <p class="text-text/70 max-w-2xl mx-auto">
+        Retrouvez ici les réponses claires et précises aux questions les plus fréquentes.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="max-w-7xl mx-auto px-md pb-lg">
+  <div class="qa-list-wrapper max-w-4xl mx-auto">
+    <div class="bg-white rounded-lg shadow-card overflow-hidden" role="list">
+      @for (item of filtered; track item; let i = $index) {
+      <article
+        class="qa-item block border-b border-slate-200/50 last:border-b-0 cursor-pointer transition-all duration-200 ease-out group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+        role="group"
+        tabindex="0"
+        (click)="onArticleClick($event, item.id)"
+        (keydown)="onArticleKeydown($event, item.id)"
+        [attr.aria-labelledby]="'q-' + item.id"
+      >
+        <header
+          class="flex justify-between items-start gap-md p-md md:p-lg transition-colors group-hover:bg-slate-50/70"
+          role="button"
+          aria-expanded="{{ isOpen(item.id) }}"
+          [attr.aria-controls]="'qa-' + item.id"
+        >
+          <div class="qa-number-wrapper" aria-hidden="true">
+            <div class="qa-number">{{ i + 1 }}</div>
+          </div>
+
+          <h3 id="{{ 'q-' + item.id }}" class="flex-1 text-lg font-bold text-text">
+            {{ item.question }}
+          </h3>
+          <div class="flex-shrink-0 pt-1" aria-hidden="true">
+            <span
+              class="chev text-slate-500 transition-transform duration-300 ease-in-out"
+              [class.rotate-180]="isOpen(item.id)"
+              [class.text-primary]="isOpen(item.id)"
+              >▾</span
+            >
+          </div>
+        </header>
+
+        <div
+          id="{{ 'qa-' + item.id }}"
+          class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-400 ease-out"
+          [class.grid-rows-[1fr]]="isOpen(item.id)"
+          [attr.aria-hidden]="!isOpen(item.id)"
+        >
+          <div class="overflow-hidden">
+            <div class="pl-24 pr-md md:pr-lg pb-lg text-text/80">
+              <p [innerHTML]="item.answer"></p>
+            </div>
+          </div>
+        </div>
+      </article>
+      }
+    </div>
+  </div>
+
+  <section class="mt-lg max-w-3xl mx-auto" role="region" aria-labelledby="faq-cta-title">
+    <div
+      class="bg-white rounded-lg shadow-card p-lg flex flex-col md:flex-row items-center gap-lg text-center md:text-left"
+    >
+      <div
+        class="relative flex-shrink-0 flex flex-col items-center gap-sm group hoover:-translate-y-1"
+      >
+        <img src="/assets/logo.png" alt="GDG Kivu" class="h-16 w-16" loading="lazy" />
+
+        <svg
+          class="absolute -top-5 -right-5 w-12 h-12 text-slate-400 animate-pulse transition-transform duration-300 group-hover:-translate-y-1 group-hover:scale-105"
+          viewBox="0 0 48 48"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <g
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M6 30c0 3.314 3.582 6 8 6h2v6l6-6h6c4.418 0 8-2.686 8-6V18C36 14.686 32.418 12 28 12H14C9.582 12 6 14.686 6 18v12z"
+            />
+            <path
+              d="M19 20c0-1.657 1.567-3 3.5-3S26 18.343 26 20c0 1.657-1.567 3-3.5 3S19 21.657 19 20z"
+            />
+            <path d="M22 26.5v1" stroke-linecap="round" />
+          </g>
+        </svg>
+      </div>
+
+      <div class="flex-grow">
+        <h3 id="faq-cta-title" class="text-xl font-bold text-text mb-sm">
+          Vous n’avez pas trouvé la réponse ?
+        </h3>
+        <p class="text-text/70 mb-md text-sm">
+          Contactez-nous par e-mail — nous vous répondrons rapidement. Pour les demandes presse ou
+          partenariats, précisez l'objet dans votre message.
+        </p>
+        <div class="flex gap-md justify-center md:justify-start">
+          <a
+            class="btn btn-primary btn-md"
+            href="mailto:aksantibahiga3@gmail.com"
+            aria-label="Contacter GDG Kivu"
+            >Contacter GDG Kivu</a
+          >
+          <a class="btn btn-ghost btn-md" href="/speakers" aria-label="Voir la page Speakers"
+            >Voir speakers</a
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<style>
+  /* --- NOUVEAU: Bordure animée Google Style --- */
+  .qa-list-wrapper {
+    position: relative;
+    border-radius: 12px; /* Doit matcher le radius du contenu */
+  }
+
+  .qa-list-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: -2px; /* Épaisseur de la bordure */
+    z-index: -1;
+    border-radius: 14px; /* Un peu plus grand pour éviter les coins bizarres */
+    background: conic-gradient(from var(--angle), #4285f4, #db4437, #f4b400, #0f9d58, #4285f4);
+    animation: rotating-border 8s linear infinite;
+  }
+
+  @property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  @keyframes rotating-border {
+    to {
+      --angle: 360deg;
+    }
+  }
+
+  /* --- NOUVEAU: Numérotation des questions --- */
+  .qa-number-wrapper {
+    padding-top: 2px;
+  }
+
+  .qa-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    background-color: #4285f4; /* Couleur par défaut */
+    transition: transform 200ms ease-out;
+  }
+
+  .qa-item:hover .qa-number {
+    transform: scale(1.1);
+  }
+
+  /* Couleurs cycliques sauce Google */
+  .qa-item:nth-child(4n + 1) .qa-number {
+    background-color: #4285f4;
+  } /* Blue */
+  .qa-item:nth-child(4n + 2) .qa-number {
+    background-color: #db4437;
+  } /* Red */
+  .qa-item:nth-child(4n + 3) .qa-number {
+    background-color: #f4b400;
+  } /* Yellow */
+  .qa-item:nth-child(4n + 4) .qa-number {
+    background-color: #0f9d58;
+  } /* Green */
+
+  /* --- Styles existants --- */
+  .chev {
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    transform-origin: 50% 50%;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  .animate-float {
+    animation: float 5s ease-in-out infinite;
+  }
+  .animate-float-delay {
+    animation: float 5s ease-in-out infinite 2s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float,
+    .animate-float-delay,
+    .qa-list-wrapper::before,
+    .transition-all {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+</style>

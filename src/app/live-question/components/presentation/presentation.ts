@@ -8,6 +8,7 @@ import { Timestamp } from '@angular/fire/firestore';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Session } from '../../../models/session-model';
 import { QuestionsSlides } from './quetsions-slides/quetsions-slides';
+import { EventConfigService } from '../../../config/event-config.service';
 @Component({
   selector: 'app-presentation',
   imports: [CommonModule, FormsModule, RouterLink, QuestionsSlides],
@@ -80,7 +81,7 @@ import { QuestionsSlides } from './quetsions-slides/quetsions-slides';
               </svg>
               <div>
                 <h2 class="font-semibold text-sm">Questions en Direct</h2>
-                <p class="text-xs text-gray-500">DevFest Kivu 2025</p>
+                <p class="text-xs text-gray-500">{{ eventConfig.fullName }}</p>
               </div>
             </div>
             <div class="flex gap-2">
@@ -447,6 +448,7 @@ import { QuestionsSlides } from './quetsions-slides/quetsions-slides';
 export default class Presentation {
   sessions: any[] = [];
   private fs = inject(FirestoreService);
+  eventConfig = inject(EventConfigService);
   speakersSub!: Subscription;
   selectedSlide: string = '';
 

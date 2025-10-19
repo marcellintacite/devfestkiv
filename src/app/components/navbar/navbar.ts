@@ -1,12 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, CommonModule],
   template: `
-    <nav class=" backdrop-blur-sm sticky top-0 z-50 transition-all duration-300 border-b border-gray-100">
+    <nav class="backdrop-blur-sm sticky top-0 z-50 shadow-xs transition-all duration-300">
       <div class="max-w-7xl mx-auto px-md sm:px-lg lg:px-xl">
         <div class="flex justify-between items-center h-16">
           <!-- Logo Section -->
@@ -126,7 +126,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
       </div>
     </nav>
   `,
-  styles: `
+  styles: [`
     /* Navigation Links */
     .nav-link {
       position: relative;
@@ -176,21 +176,20 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
       color: var(--color-primary) !important;
       border-left-color: var(--color-primary) !important;
     }
-    
+
     /* Backdrop blur support */
     .backdrop-blur-sm {
       backdrop-filter: blur(4px);
     }
-    
+
     /* Smooth height transitions */
     .transition-max-height {
       transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
-  `,
+  `],
 })
 export class Navbar {
   isMobileMenuOpen = signal(false);
-
 
   navItems = signal([
     { path: '/', label: 'Home' },
