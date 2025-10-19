@@ -27,51 +27,56 @@ export default class QaComponent implements OnInit {
   qaItems: QaItem[] = [
     {
       id: 1,
-      question: "Qu'est-ce que DevFest Kivu ?",
+      question: 'Le DevFest Kivu est-il gratuit ?',
       answer:
-        'DevFest Kivu rassemble la communauté tech locale autour de conférences, ateliers et networking. Objectif : partager savoirs et opportunités.',
+        'Oui. L’événement est entièrement gratuit et ouvert à tous les amoureux du numérique.',
     },
     {
       id: 2,
-      question: "Comment m'inscrire ?",
+      question: 'Dois-je réserver ma place ?',
       answer:
-        "Clique sur « S'inscrire maintenant » depuis la page d'accueil et suis la procédure. Tu recevras une confirmation par e-mail.",
+        'Oui. L’accès est gratuit, mais les places sont limitées. Réservez votre place à l’avance pour garantir votre participation.',
     },
     {
       id: 3,
-      question: 'Puis-je proposer un talk ?',
+      question: 'Comment m’inscrire ?',
       answer:
-        'Oui. Soumets ta proposition via le formulaire « Call for Proposals » sur la page Speakers. Respecte les deadlines indiquées.',
+        'Il suffit de cliquer sur le bouton RSVP sur la page officielle du DevFest Kivu et de remplir le formulaire d’inscription.',
     },
     {
       id: 4,
-      question: 'Ressources pour animer un workshop ?',
+      question: 'Je n’ai pas d’ordinateur portable. Puis-je venir ?',
       answer:
-        "L'équipe fournit des templates et guides. Contacte l'organisation via le formulaire Speakers/Sponsors pour obtenir les ressources.",
+        'Oui. Venez comme vous êtes. Ce qui compte, c’est votre envie d’apprendre, de partager et de découvrir.',
     },
     {
       id: 5,
-      question: "Qu'est-ce que DevFest Kivu ?",
+      question: 'Puis-je proposer une session ou un atelier ?',
       answer:
-        'DevFest Kivu rassemble la communauté tech locale autour de conférences, ateliers et networking. Objectif : partager savoirs et opportunités.',
+        'Oui. Vous pouvez soumettre votre sujet via le Call for Speakers. Si votre proposition est sélectionnée, vous serez notifié par l’équipe.',
     },
     {
       id: 6,
-      question: "Comment m'inscrire ?",
+      question: 'Que vais-je apprendre pendant le DevFest ?',
       answer:
-        "Clique sur « S'inscrire maintenant » depuis la page d'accueil et suis la procédure. Tu recevras une confirmation par e-mail.",
+        'Vous explorerez les dernières innovations en web, mobile, IA et cloud. Vous participerez à des conférences, démos et ateliers animés par des experts locaux et internationaux.',
     },
     {
       id: 7,
-      question: 'Puis-je proposer un talk ?',
+      question: 'Qui peut participer ?',
       answer:
-        'Oui. Soumets ta proposition via le formulaire « Call for Proposals » sur la page Speakers. Respecte les deadlines indiquées.',
+        'Tout le monde est le bienvenu : étudiants, développeurs, designers, entrepreneurs et passionnés de technologie.',
     },
     {
       id: 8,
-      question: 'Ressources pour animer un workshop ?',
+      question: 'Où et quand aura lieu l’événement ?',
+      answer: 'Le DevFest Kivu se tiendra à l’Hôtel Panorama, de 11h à 17h30.',
+    },
+    {
+      id: 9,
+      question: 'J’aimerais devenir sponsor. Comment faire ?',
       answer:
-        "L'équipe fournit des templates et guides. Contacte l'organisation via le formulaire Speakers/Sponsors pour obtenir les ressources.",
+        'Oui, c’est possible. Veuillez remplir le formulaire de sponsoring disponible sur notre site. L’équipe vous contactera rapidement.',
     },
   ];
 
