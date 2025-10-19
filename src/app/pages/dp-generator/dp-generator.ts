@@ -139,34 +139,60 @@ export default class DpGenerator implements OnInit {
   }
 
   private async captureElement(elementId: string, fileName: string) {
-    const el = document.getElementById(elementId);
-    if (!el) return console.error(`Élément ${elementId} introuvable`);
+  const el = document.getElementById(elementId);
+  if (!el) return console.error(`Élément ${elementId} introuvable`);
 
-    const clone = el.cloneNode(true) as HTMLElement;
-    clone.style.position = 'absolute';
-    clone.style.top = '0';
-    clone.style.left = '-9999px';
-    clone.style.zIndex = '-10';
-    document.body.appendChild(clone);
+  const clone = el.cloneNode(true) as HTMLElement;
+  clone.style.position = 'absolute';
+  clone.style.top = '0';
+  clone.style.left = '-9999px';
+  clone.style.zIndex = '-10';
+  document.body.appendChild(clone);
 
-    try {
-      const canvas = await html2canvas(clone, {
-        backgroundColor: null,
-        useCORS: true,
-        width: clone.offsetWidth,
-        height: clone.offsetHeight,
-        scale: 2,
-      });
+  try {
+    const canvas = await html2canvas(clone, {
+      backgroundColor: null,
+      useCORS: true,
+      width: clone.offsetWidth,
+      height: clone.offsetHeight,
+      scale: 2,
+    });
+
+    // ✅ Convertir le canvas en blob pour compatibilité mobile
+    canvas.toBlob((blob) => {
+      if (!blob) return console.error('Échec de la conversion du canvas en blob');
+
+      const fileNameSafe = `${fileName.replace(/\s+/g, '_')}.png`;
       const link = document.createElement('a');
-      link.href = canvas.toDataURL('image/png');
-      link.download = `${fileName.replace(/\s+/g, '_')}.png`;
-      link.click();
-    } catch (e) {
-      console.error('Erreur de capture', e);
-    } finally {
-      document.body.removeChild(clone);
-    }
+      const url = URL.createObjectURL(blob);
+
+      // ✅ iOS ne gère pas link.click() → on ouvre une nouvelle fenêtre
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      if (isIOS) {
+        const newTab = window.open();
+        if (newTab) {
+          newTab.document.write('<title>Téléchargement...</title>');
+          newTab.document.body.innerHTML = `<img src="${url}" style="width:100%;height:auto" />`;
+        } else {
+          alert("Impossible d'ouvrir le visuel. Désactivez le bloqueur de pop-ups et réessayez.");
+        }
+      } else {
+        link.href = url;
+        link.download = fileNameSafe;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    }, 'image/png');
+  } catch (e) {
+    console.error('Erreur de capture', e);
+  } finally {
+    document.body.removeChild(clone);
   }
+}
+
 
   async captureProfileDP() {
     await this.captureElement('dp-capture-zone-profile', `${this.fullName || 'ma-photo'}-profil`);
