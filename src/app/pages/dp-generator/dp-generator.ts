@@ -1,11 +1,18 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef,
+  inject,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Profil } from './profil/profil';
 import { Generator } from './generator/generator';
 import html2canvas from 'html2canvas-pro';
 import { ImageCropperComponent, ImageCroppedEvent } from 'ngx-image-cropper';
-import { ChangeDetectorRef } from '@angular/core';
 import { EventConfigService } from '../../config/event-config.service';
 
 @Component({
@@ -14,9 +21,14 @@ import { EventConfigService } from '../../config/event-config.service';
   imports: [CommonModule, FormsModule, Profil, Generator, ImageCropperComponent],
   templateUrl: './dp-generator.html',
 })
-export default class DpGenerator implements OnInit {
-  constructor(private cdr: ChangeDetectorRef) {}
+export default class DpGenerator implements OnInit, OnDestroy {
   eventConfig = inject(EventConfigService);
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  @ViewChild('desktopPreviewWrapper') desktopPreviewWrapper!: ElementRef<HTMLDivElement>;
+
+  desktopScale = 1;
+  private resizeObserver?: ResizeObserver;
 
   activeTab: 'profile' | 'dp' = 'profile';
   uiState: 'initial' | 'imageVisible' | 'templateVisible' = 'initial';
@@ -35,9 +47,10 @@ export default class DpGenerator implements OnInit {
   profileTheme: 'yellow' | 'blue' | 'green' | 'red' = 'yellow';
   profileStyle: 'classic' | 'minimalist' = 'classic';
 
-  // NOUVEAU : Thèmes pour le Générateur de DP
+  // Thèmes pour le Générateur de DP
   generatorTheme: 'default' | 'white' = 'default';
 
+  // suggestions
   suggestedQuotes = [
     'Coder est ma passion.',
     `${this.eventConfig.fullName}, j'arrive !`,
@@ -47,26 +60,116 @@ export default class DpGenerator implements OnInit {
   ];
   private quoteIndex = 0;
 
+  // === MOBILE UX ===
+  isMobile = false;
+  showOverlay = false;
+  showPreviewOverlay = false;
+  private checkIsMobileBound = this.checkIsMobile.bind(this);
+
+  // exporting flag (optional spinner)
+  isExporting = false;
+  mobileScale = 1;
+
   ngOnInit() {
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      this.checkIsMobile();
+      window.addEventListener('resize', this.checkIsMobileBound);
+      // preload critical assets for weak connections
+      this.preloadAssets([
+        'assets/dp-layout.png',
+        'assets/logo.png',
+        'assets/logo-1.png',
+        'assets/border.png',
+        'assets/arrow.png',
+      ]);
     }
   }
 
+  ngAfterViewInit() {
+    if (typeof window !== 'undefined' && this.desktopPreviewWrapper) {
+      this.setupDesktopObserver();
+    }
+  }
+
+  ngOnDestroy() {
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('resize', this.checkIsMobileBound);
+      this.restoreBodyScroll();
+    }
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+  }
+
+  private setupDesktopObserver() {
+    this.resizeObserver = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (entry) {
+        const availableWidth = entry.contentRect.width;
+        this.desktopScale = Math.min(1, availableWidth / 1080);
+        this.cdr.detectChanges();
+      }
+    });
+    this.resizeObserver.observe(this.desktopPreviewWrapper.nativeElement);
+  }
+
+  private checkIsMobile() {
+    this.isMobile = typeof window !== 'undefined' ? window.innerWidth <= 768 : false;
+
+    if (this.isMobile && typeof window !== 'undefined') {
+      const PADDING = 48;
+      const availableWidth = window.innerWidth - PADDING;
+
+      this.mobileScale = availableWidth / 900;
+    } else {
+      this.mobileScale = 1;
+    }
+  }
+
+  // Body scroll helpers
+  private preventBodyScroll() {
+    try {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.touchAction = 'none';
+    } catch (e) {
+      // silent
+    }
+  }
+
+  private restoreBodyScroll() {
+    try {
+      document.body.style.overflow = '';
+      document.documentElement.style.touchAction = '';
+    } catch (e) {
+      // silent
+    }
+  }
+
+  openMobileOverlay() {
+    this.showOverlay = true;
+    this.showPreviewOverlay = true;
+    this.preventBodyScroll();
+  }
+
+  closeMobileOverlay() {
+    this.showOverlay = false;
+    this.showPreviewOverlay = false;
+    this.uiState = 'initial';
+    this.restoreBodyScroll();
+  }
+
+  // Form helpers
   get isFormReadyForUpload(): boolean {
     if (this.activeTab === 'profile') return !!this.fullName.trim();
     return !!this.fullName.trim() && !!this.quote.trim();
   }
 
-  // MODIFIÉ : Pour relancer les animations
   setActiveTab(tab: 'profile' | 'dp') {
     this.activeTab = tab;
-    // Si une image est déjà chargée, on force le reset de l'animation
     if (this.previewImage) {
       this.uiState = 'imageVisible';
-      setTimeout(() => {
-        this.uiState = 'templateVisible';
-      }, 10); // Un court délai suffit pour que le changement soit détecté
+      setTimeout(() => (this.uiState = 'templateVisible'), 10);
     } else {
       this.uiState = 'initial';
     }
@@ -80,12 +183,11 @@ export default class DpGenerator implements OnInit {
     this.profileStyle = this.profileStyle === 'classic' ? 'minimalist' : 'classic';
   }
 
-  // NOUVEAU : Fonction pour changer le thème du générateur
   setGeneratorTheme(theme: 'default' | 'white') {
     this.generatorTheme = theme;
   }
 
-  // === Drag & Drop ===
+  // Drag & Drop & File
   onDragOver(event: DragEvent) {
     if (!this.isFormReadyForUpload) return;
     event.preventDefault();
@@ -107,7 +209,6 @@ export default class DpGenerator implements OnInit {
     }
   }
 
-  // === Fichier manuel ===
   openFileInput() {
     if (!this.isFormReadyForUpload) return;
     const input = document.createElement('input');
@@ -120,13 +221,27 @@ export default class DpGenerator implements OnInit {
     input.click();
   }
 
-  // === Cropper ===
+  // Cropper
   openCropper(file: File) {
+    // quick validation (5MB)
+    const MAX_MB = 5;
+    if (file.size > MAX_MB * 1024 * 1024) {
+      alert(
+        `Image trop grosse (${(file.size / (1024 * 1024)).toFixed(1)}MB). Limite: ${MAX_MB}MB.`
+      );
+      return;
+    }
+    if (!file.type.startsWith('image/')) {
+      alert('Fichier non supporté. Choisissez une image.');
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = () => {
       this.imageBase64 = reader.result as string;
       this.showCropper = true;
       this.tempCroppedImage = null;
+      this.cdr.detectChanges();
     };
     reader.readAsDataURL(file);
   }
@@ -136,15 +251,18 @@ export default class DpGenerator implements OnInit {
     this.cdr.detectChanges();
   }
 
+  // DpGenerator.ts
   confirmCrop() {
     if (this.tempCroppedImage) {
       this.previewImage = this.tempCroppedImage;
-      this.uiState = 'imageVisible';
-      setTimeout(() => {
-        this.uiState = 'templateVisible';
-      }, 100);
-    }
 
+      this.uiState = 'imageVisible';
+      setTimeout(() => (this.uiState = 'templateVisible'), 100);
+
+      if (this.isMobile) {
+        this.openMobileOverlay();
+      }
+    }
     this.showCropper = false;
     this.tempCroppedImage = null;
   }
@@ -159,37 +277,97 @@ export default class DpGenerator implements OnInit {
     this.quoteIndex = (this.quoteIndex + 1) % this.suggestedQuotes.length;
   }
 
+  // Capture & Download
   private async captureElement(elementId: string, fileName: string) {
-    const el = document.getElementById(elementId);
-    if (!el) return console.error(`Élément ${elementId} introuvable`);
+    const elById = document.getElementById(elementId);
+    const elByData = document.querySelector(
+      `[data-capture-zone="${elementId}"]`
+    ) as HTMLElement | null;
+    const el =
+      elById || elByData || (document.querySelector(`#${elementId}`) as HTMLElement | null);
 
+    if (!el) {
+      console.error(`Élément ${elementId} introuvable`);
+      alert('Impossible de trouver la zone à capturer.');
+      return;
+    }
+
+    // Clone only the capture zone
     const clone = el.cloneNode(true) as HTMLElement;
     clone.style.position = 'absolute';
     clone.style.top = '0';
     clone.style.left = '-9999px';
     clone.style.zIndex = '-10';
-    document.body.appendChild(clone);
+    clone.classList.add('dp-capture-clone');
 
+    // Try to mark inner images as anonymous for CORS (best-effort)
+    const imgs = clone.querySelectorAll('img') as NodeListOf<HTMLImageElement>;
+    imgs.forEach((img) => {
+      try {
+        img.crossOrigin = 'anonymous';
+      } catch (e) {
+        // ignore
+      }
+    });
+
+    document.body.appendChild(clone);
+    this.isExporting = true;
     try {
       const canvas = await html2canvas(clone, {
         backgroundColor: null,
         useCORS: true,
-        width: clone.offsetWidth,
-        height: clone.offsetHeight,
+        width: clone.offsetWidth || undefined,
+        height: clone.offsetHeight || undefined,
         scale: 2,
       });
-      const link = document.createElement('a');
-      link.href = canvas.toDataURL('image/png');
-      link.download = `${fileName.replace(/\s+/g, '_')}.png`;
-      link.click();
+
+      await new Promise<void>((resolve) => {
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            console.error('Échec de la conversion du canvas en blob');
+            resolve();
+            return;
+          }
+
+          const safeName = `${fileName.replace(/\s+/g, '_')}.png`;
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = safeName;
+          a.rel = 'noopener noreferrer';
+          document.body.appendChild(a);
+
+          try {
+            a.click();
+          } catch (err) {
+            const opened = window.open(url, '_blank', 'noopener,noreferrer');
+            if (!opened) {
+              alert(
+                'Impossible de lancer le téléchargement automatiquement. Désactivez le bloqueur de pop-ups et essayez à nouveau.'
+              );
+            }
+          } finally {
+            setTimeout(() => {
+              try {
+                document.body.removeChild(a);
+              } catch (e) {}
+              URL.revokeObjectURL(url);
+            }, 1500);
+            resolve();
+          }
+        }, 'image/png');
+      });
     } catch (e) {
-      console.error('Erreur de capture', e);
+      console.error('Erreur lors de html2canvas/capture:', e);
+      alert(
+        'Une erreur est survenue lors de l’exportation. Vérifiez la console pour plus d’infos.'
+      );
     } finally {
-      document.body.removeChild(clone);
+      this.isExporting = false;
+      if (clone.parentNode) document.body.removeChild(clone);
     }
   }
 
-  // NOUVEAU : Fonction pour scroller
   private scrollToPreview() {
     const elementId =
       this.activeTab === 'profile' ? 'dp-capture-zone-profile' : 'dp-capture-zone-generator';
@@ -199,11 +377,26 @@ export default class DpGenerator implements OnInit {
 
   async captureProfileDP() {
     await this.captureElement('dp-capture-zone-profile', `${this.fullName || 'ma-photo'}-profil`);
-    this.scrollToPreview(); // On ajoute le scroll ici
+    this.scrollToPreview();
+    if (this.isMobile) {
+    }
   }
 
   async captureGeneratorDP() {
     await this.captureElement('dp-capture-zone-generator', `${this.fullName || 'mon-dp'}-devfest`);
-    this.scrollToPreview(); // Et ici aussi
+    this.scrollToPreview();
+  }
+
+  // Preload assets (best-effort)
+  private preloadAssets(paths: string[]) {
+    paths.forEach((p) => {
+      try {
+        const img = new Image();
+        img.src = p;
+        img.decoding = 'async' as any;
+      } catch (e) {
+        // ignore
+      }
+    });
   }
 }
