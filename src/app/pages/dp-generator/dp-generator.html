@@ -199,7 +199,7 @@
             <button (click)="closeMobileOverlay()" class="text-gray-600 p-2" aria-label="Fermer">
               ✕
             </button>
-            <h4 class="font-semibold">Aperçu immersif</h4>
+            <h4 class="font-semibold">Aperçu</h4>
           </div>
           <div class="text-sm text-gray-500">Preview</div>
         </div>
@@ -239,15 +239,20 @@
           }
           <!-- Controls placed inside overlay for mobile UX -->
           <div class="space-y-3">
-            <div class="flex gap-2">
+            <div class="flex-col md:flex-row flex gap-2">
               <input type="text" [(ngModel)]="fullName" placeholder="Nom" maxlength="10" class="flex-1 px-3 py-2 border rounded" aria-label="Nom (overlay)" />
               @if (activeTab === 'dp') {
                 <input type="text" [(ngModel)]="quote" placeholder="Citation" maxlength="40" class="flex-1 px-3 py-2 border rounded" aria-label="Citation (overlay)" />
               }
+              @else if (activeTab === 'profile') {
+                <button type="button" (click)="toggleProfileStyle()" class="flex-1 py-2 rounded border">
+                      Style : {{ profileStyle === 'classic' ? 'Classique' : 'Minimaliste' }}
+              </button>
+              }
             </div>
 
             @if (activeTab === 'profile') {
-            <div class="flex gap-2">
+            <div class="flex gap-2 items-center">
               <button type="button" (click)="setProfileTheme('yellow')" class="px-3 py-2 rounded border" [class.bg-amber-500]="profileTheme==='yellow'">Jaune</button>
               <button type="button" (click)="setProfileTheme('blue')" class="px-3 py-2 rounded border" [class.bg-blue-500]="profileTheme==='blue'">Bleu</button>
               <button type="button" (click)="setProfileTheme('green')" class="px-3 py-2 rounded border" [class.bg-green-500]="profileTheme==='green'">Vert</button>
@@ -258,7 +263,7 @@
             @if (activeTab === 'dp') {
             <div class="flex gap-2">
               <button type="button" (click)="setGeneratorTheme('default')" class="flex-1 rounded border" [class.bg-primary]="generatorTheme==='default'">Défaut</button>
-              <button type="button" (click)="setGeneratorTheme('white')" class="flex-1 rounded border" [class.bg-white]="generatorTheme==='white'">Blanc</button>
+              <button type="button" (click)="setGeneratorTheme('white')" class="flex-1 rounded border" [class.bg-primary]="generatorTheme==='white'">Blanc</button>
             </div>
             }
 

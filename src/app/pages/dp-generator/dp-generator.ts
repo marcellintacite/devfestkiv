@@ -121,7 +121,7 @@ export default class DpGenerator implements OnInit, OnDestroy {
       const PADDING = 48;
       const availableWidth = window.innerWidth - PADDING;
 
-      this.mobileScale = availableWidth / 837;
+      this.mobileScale = availableWidth / 900;
     } else {
       this.mobileScale = 1;
     }
