@@ -190,22 +190,37 @@
 
         <div class="p-4 overflow-auto">
           <!-- Capture preview area: render child (capture-zone only inside child) -->
-          <div class="flex justify-center mb-4">
-            @if (activeTab === 'profile') {
-              <app-profil [fullName]="fullName" [previewImage]="previewImage" [uiState]="'templateVisible'" [profileTheme]="profileTheme" [profileStyle]="profileStyle"></app-profil>
-            }
-            @if (activeTab === 'dp') {
-              <app-generator 
+          @if (activeTab === 'profile') {
+            <div class="flex justify-center mb-4">
+              <app-profil 
                 [fullName]="fullName" 
                 [previewImage]="previewImage" 
-                [quote]="quote" 
-                [uiState]="'templateVisible'" 
-                [generatorTheme]="generatorTheme" 
-                [eventConfig]="eventConfig">
-              </app-generator>
-            }
-          </div>
+                [uiState]="uiState" 
+                [profileTheme]="profileTheme" 
+                [profileStyle]="profileStyle"
+              ></app-profil>
+            </div>
+          }
 
+          @if (activeTab === 'dp') {
+            <div 
+              class="relative mx-auto mb-4" 
+              [style.height.px]="837 * mobileScale"
+              [style.width.px]="837 * mobileScale"
+            >
+              <app-generator 
+                [fullName]="fullName"
+                [previewImage]="previewImage"
+                [quote]="quote"
+                [uiState]="uiState"
+                [generatorTheme]="generatorTheme"
+                [eventConfig]="eventConfig"
+                class="absolute top-0 left-0"
+                [style.transform]="'scale(' + mobileScale + ')'"
+                style="transform-origin: top left;"
+              ></app-generator>
+            </div>
+          }
           <!-- Controls placed inside overlay for mobile UX -->
           <div class="space-y-3">
             <div class="flex gap-2">

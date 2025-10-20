@@ -55,6 +55,7 @@ export default class DpGenerator implements OnInit, OnDestroy {
 
   // exporting flag (optional spinner)
   isExporting = false;
+  mobileScale = 1;
 
   ngOnInit() {
     if (typeof window !== 'undefined') {
@@ -81,6 +82,15 @@ export default class DpGenerator implements OnInit, OnDestroy {
 
   private checkIsMobile() {
     this.isMobile = typeof window !== 'undefined' ? window.innerWidth <= 768 : false;
+
+    if (this.isMobile && typeof window !== 'undefined') {
+      const PADDING = 48;
+      const availableWidth = window.innerWidth - PADDING;
+
+      this.mobileScale = availableWidth / 837;
+    } else {
+      this.mobileScale = 1;
+    }
   }
 
   // Body scroll helpers
@@ -207,14 +217,16 @@ export default class DpGenerator implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
+  // DpGenerator.ts
   confirmCrop() {
     if (this.tempCroppedImage) {
       this.previewImage = this.tempCroppedImage;
+
+      this.uiState = 'imageVisible';
+      setTimeout(() => (this.uiState = 'templateVisible'), 100);
+
       if (this.isMobile) {
         this.openMobileOverlay();
-      } else {
-        this.uiState = 'imageVisible';
-        setTimeout(() => (this.uiState = 'templateVisible'), 100);
       }
     }
     this.showCropper = false;
