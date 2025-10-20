@@ -1,4 +1,12 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef,
+  inject,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Profil } from './profil/profil';
@@ -16,6 +24,11 @@ import { EventConfigService } from '../../config/event-config.service';
 export default class DpGenerator implements OnInit, OnDestroy {
   eventConfig = inject(EventConfigService);
   constructor(private cdr: ChangeDetectorRef) {}
+
+  @ViewChild('desktopPreviewWrapper') desktopPreviewWrapper!: ElementRef<HTMLDivElement>;
+
+  desktopScale = 1;
+  private resizeObserver?: ResizeObserver;
 
   activeTab: 'profile' | 'dp' = 'profile';
   uiState: 'initial' | 'imageVisible' | 'templateVisible' = 'initial';
@@ -73,11 +86,32 @@ export default class DpGenerator implements OnInit, OnDestroy {
     }
   }
 
+  ngAfterViewInit() {
+    if (typeof window !== 'undefined' && this.desktopPreviewWrapper) {
+      this.setupDesktopObserver();
+    }
+  }
+
   ngOnDestroy() {
     if (typeof window !== 'undefined') {
       window.removeEventListener('resize', this.checkIsMobileBound);
       this.restoreBodyScroll();
     }
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+  }
+
+  private setupDesktopObserver() {
+    this.resizeObserver = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (entry) {
+        const availableWidth = entry.contentRect.width;
+        this.desktopScale = Math.min(1, availableWidth / 1080);
+        this.cdr.detectChanges();
+      }
+    });
+    this.resizeObserver.observe(this.desktopPreviewWrapper.nativeElement);
   }
 
   private checkIsMobile() {
