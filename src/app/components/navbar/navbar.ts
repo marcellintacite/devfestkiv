@@ -27,7 +27,7 @@ import { CommonModule } from '@angular/common';
               <a
                 [routerLink]="item.path"
                 routerLinkActive="nav-active"
-                class="nav-link lg:text-base"
+                class="nav-link lg:text-base text-gray-500"
                 [attr.aria-current]="item.path === '/' ? 'page' : null"
               >
                 {{ item.label }}
@@ -126,67 +126,68 @@ import { CommonModule } from '@angular/common';
       </div>
     </nav>
   `,
-  styles: [`
-    /* Navigation Links */
-    .nav-link {
-      position: relative;
-      padding: var(--spacing-sm);
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--color-text);
-      text-decoration: none;
-      transition: all 0.3s ease-in-out;
-    }
+  styles: [
+    `
+      /* Navigation Links */
+      .nav-link {
+        position: relative;
+        padding: var(--spacing-sm);
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+      }
 
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 50%;
-      width: 0;
-      height: 2px;
-      background-color: var(--color-primary);
-      transition: all 0.3s ease-in-out;
-      transform: translateX(-50%);
-    }
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background-color: var(--color-primary);
+        transition: all 0.3s ease-in-out;
+        transform: translateX(-50%);
+      }
 
-    .nav-link:hover {
-      color: var(--color-primary);
-    }
+      .nav-link:hover {
+        color: var(--color-primary);
+      }
 
-    .nav-link:hover::after {
-      width: 100%;
-    }
+      .nav-link:hover::after {
+        width: 100%;
+      }
 
-    .nav-link.nav-active {
-      color: var(--color-primary);
-    }
+      .nav-link.nav-active {
+        color: var(--color-primary);
+      }
 
-    .nav-link.nav-active::after {
-      width: 100%;
-    }
+      .nav-link.nav-active::after {
+        width: 100%;
+      }
 
-    /* Hide active line when hovering other links */
-    .group:hover .nav-link.nav-active:not(:hover)::after {
-      width: 0;
-    }
+      /* Hide active line when hovering other links */
+      .group:hover .nav-link.nav-active:not(:hover)::after {
+        width: 0;
+      }
 
-    /* Mobile active state */
-    .nav-active-mobile {
-      color: var(--color-primary) !important;
-      border-left-color: var(--color-primary) !important;
-    }
+      /* Mobile active state */
+      .nav-active-mobile {
+        color: var(--color-primary) !important;
+        border-left-color: var(--color-primary) !important;
+      }
 
-    /* Backdrop blur support */
-    .backdrop-blur-sm {
-      backdrop-filter: blur(4px);
-    }
+      /* Backdrop blur support */
+      .backdrop-blur-sm {
+        backdrop-filter: blur(4px);
+      }
 
-    /* Smooth height transitions */
-    .transition-max-height {
-      transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-  `],
+      /* Smooth height transitions */
+      .transition-max-height {
+        transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+    `,
+  ],
 })
 export class Navbar {
   isMobileMenuOpen = signal(false);
