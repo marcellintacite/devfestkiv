@@ -159,25 +159,33 @@
               }
             </div>
 
+            <!-- Bouton action (desktop) -->
+            <div class="hidden md:block">
+              <button type="button" (click)="activeTab === 'profile' ? captureProfileDP() : captureGeneratorDP()"
+                class="btn btn-primary w-full text-center block" aria-label="Télécharger">
+                Télécharger
+              </button>
+            </div>
           </form>
         </div>
       </div>
 
       <!-- Preview (desktop only) -->
       <div #desktopPreviewWrapper class="lg:col-span-3 hidden md:block">
-        <div class="bg-white rounded-2xl border-2 border-gray-200 p-4 sm:p-6 md:p-8">
-          @if (activeTab === 'profile') {
 
+        @if (activeTab === 'profile') {
+        <div class="bg-white rounded-2xl border-2 border-gray-200 p-4 sm:p-6 md:p-8">
           <h3 class="text-xl md:text-2xl font-bold text-center text-gray-900 mb-6 md:mb-8">Aperçu de votre Photo de
             Profil</h3>
           <div class="flex justify-center">
             <app-profil [fullName]="fullName" [previewImage]="previewImage" [uiState]="uiState"
               [profileTheme]="profileTheme" [profileStyle]="profileStyle"></app-profil>
           </div>
-          }
+        </div>
+        }
 
-          @if (activeTab === 'dp') {
-
+        @if (activeTab === 'dp') {
+        <div class="bg-white rounded-2xl border-2 border-gray-200 p-4 sm:p-6 md:p-8">
           <h3 class="text-xl md:text-2xl font-bold text-center text-gray-900 mb-6 md:mb-8">Aperçu de votre DP de
             Publication</h3>
 
@@ -186,16 +194,8 @@
               [generatorTheme]="generatorTheme" [eventConfig]="eventConfig" class="absolute top-0 left-0"
               [style.transform]="'scale(' + desktopScale + ')'" style="transform-origin: top left;"></app-generator>
           </div>
-          }
-          <br />
-          <!-- Bouton action (desktop) -->
-          <div class="hidden md:block">
-            <button type="button" (click)="activeTab === 'profile' ? captureProfileDP() : captureGeneratorDP()"
-              class="btn btn-primary w-full text-center block" aria-label="Télécharger">
-              Télécharger
-            </button>
-          </div>
         </div>
+        }
       </div>
 
       <!-- Immersive Overlay (mobile-first) -->
