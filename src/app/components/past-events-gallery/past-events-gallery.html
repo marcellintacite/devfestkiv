@@ -26,8 +26,8 @@
             @for (item of firstRowEvents; track $index) {
             <div class="gallery-item group">
                 <!-- Dynamic image based on event type -->
-                <img [src]="'/assets/past_events/first-' + ($index + 1) + '.jpg'" [alt]="item.title"
-                    class="gallery-image" />
+                <img [ngSrc]="'/assets/past_events/first-' + ($index + 1) + '.jpg'" [alt]="item.title"
+                    class="gallery-image" width="320" height="420" decoding="async" loading="lazy" />
 
                 <!-- Category Badge -->
                 <div class="absolute top-4 left-4 z-10">
@@ -88,8 +88,7 @@
                         </div>
 
                         <!-- Action button -->
-                        <button
-                            class="btn btn-sm w-full bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm">
+                        <button class="btn btn-sm w-full bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm">
                             Voir les photos
                         </button>
                     </div>
@@ -100,8 +99,8 @@
             <!-- Duplicate set for seamless loop -->
             @for (item of firstRowEvents; track $index) {
             <div class="gallery-item group">
-                <img [src]="'/assets/past_events/first-' + ($index + 1) + '.jpg'" [alt]="item.title"
-                    class="gallery-image" />
+                <img [ngSrc]="'/assets/past_events/first-' + ($index + 1) + '.jpg'" [alt]="item.title"
+                    class="gallery-image" width="320" height="420" decoding="async" loading="lazy" />
                 <div class="absolute top-4 left-4 z-10">
                     <span
                         class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-white/90 backdrop-blur-sm"
@@ -142,8 +141,7 @@
                                 }}</span>
                             }
                         </div>
-                        <button
-                            class="btn btn-sm w-full bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm">
+                        <button class="btn btn-sm w-full bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm">
                             Voir les photos
                         </button>
                     </div>
@@ -158,7 +156,8 @@
         <div class="scroll-right-to-left">
             @for (item of secondRowEvents; track $index) {
             <div class="gallery-item group">
-                <img [src]="'/assets/past_events/second-' + ($index + 1) + '.jpg'" class="gallery-image" />
+                <img [ngSrc]="'/assets/past_events/second-' + ($index + 1) + '.jpg'" [alt]="item.title"
+                    class="gallery-image" width="320" height="420" decoding="async" loading="lazy" />
                 <div class="absolute top-4 left-4 z-10">
                     <span
                         class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-white/90 backdrop-blur-sm"
@@ -199,8 +198,7 @@
                                 }}</span>
                             }
                         </div>
-                        <button
-                            class="btn btn-sm w-full bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm">
+                        <button class="btn btn-sm w-full bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm">
                             Voir les photos
                         </button>
                     </div>
@@ -211,8 +209,8 @@
             <!-- Duplicate set -->
             @for (item of secondRowEvents; track $index) {
             <div class="gallery-item group">
-                <img [src]="'/assets/past_events/second-' + ($index + 1) + '.jpg'" [alt]="item.title"
-                    class="gallery-image" />
+                <img [ngSrc]="'/assets/past_events/second-' + ($index + 1) + '.jpg'" [alt]="item.title"
+                    class="gallery-image" width="320" height="420" decoding="async" loading="lazy" />
                 <div class="absolute top-4 left-4 z-10">
                     <span
                         class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-white/90 backdrop-blur-sm"
@@ -253,8 +251,7 @@
                                 }}</span>
                             }
                         </div>
-                        <button
-                            class="btn btn-sm w-full bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm">
+                        <button class="btn btn-sm w-full bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm">
                             Voir les photos
                         </button>
                     </div>
