@@ -13,4 +13,6 @@ export class Profil {
   @Input() uiState: 'initial' | 'imageVisible' | 'templateVisible' = 'initial';
   @Input() profileTheme: 'yellow' | 'blue' | 'green' | 'red' = 'yellow';
   @Input() profileStyle: 'classic' | 'minimalist' = 'classic';
+
+  
 }
