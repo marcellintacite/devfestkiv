@@ -49,22 +49,30 @@
         >sera au :</span
       >
     </p>
-    <img src="assets/arrow.png" alt="fleche" class="w-30 h-48 object-contain -rotate-23 ml-10" />
+    <img
+      src="assets/arrow.png"
+      alt="fleche"
+      class="w-32 h-48 object-contain -rotate-23 ml-10 block"
+    />
   </div>
 
   <!-- Bloc d'infos DevFest : slide depuis le bas -->
   <div
-    class="absolute bottom-28 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-10 transition-all duration-500 ease-out delay-150"
+    class="absolute bottom-28 left-0 w-full flex flex-col items-center gap-4 z-10 transition-all duration-500 ease-out delay-150"
     [class.opacity-100]="uiState === 'templateVisible'"
     [class.translate-y-0]="uiState === 'templateVisible'"
     [class.opacity-0]="uiState !== 'templateVisible'"
     [class.translate-y-full]="uiState !== 'templateVisible'"
   >
-    <div class="flex flex-col items-center">
-      <img src="assets/logo-1.png" alt="Devfest Big Logo" class="w-64" />
+    <div class="flex flex-col items-center justify-center h-24">
+      <img
+        src="assets/logo-1.png"
+        alt="Devfest Big Logo"
+        class="w-64 h-auto max-h-full object-contain block"
+      />
     </div>
     <div
-      class="flex py-4 rounded-2xl px-4 shadow-md border-2 border-accent h-20 w-[460px] items-center"
+      class="flex py-4 rounded-2xl px-4 shadow-md border-2 border-accent h-20 w-[460px] items-center overflow-hidden"
       [ngClass]="{
         'bg-background': generatorTheme === 'default',
         'bg-primary': generatorTheme === 'white'
@@ -96,7 +104,7 @@
       </div>
 
       <!-- Ligne de séparation -->
-      <div class="border-l border-text h-10 mx-2"></div>
+      <div class="border-l border-text h-10 mx-2 flex-shrink-0"></div>
 
       <!-- Section Lieu -->
       <div class="flex-1 flex items-center gap-2 min-w-0">
@@ -133,7 +141,7 @@
     [class.scale-100]="uiState === 'templateVisible'"
     [class.scale-0]="uiState !== 'templateVisible'"
   >
-    <img src="assets/logo.png" alt="Logo DevFest" class="w-24 object-contain m-0" />
+    <img src="assets/logo.png" alt="Logo DevFest" class="w-24 object-contain m-0 block" />
   </div>
 
   <!-- La photo de l'utilisateur : zoom-in agressif -->
@@ -142,6 +150,10 @@
     [class.scale-100]="uiState === 'imageVisible' || uiState === 'templateVisible'"
     [class.scale-0]="!(uiState === 'imageVisible' || uiState === 'templateVisible')"
   >
-    <img [src]="previewImage" alt="Aperçu de l'utilisateur" class="w-full h-full object-cover" />
+    <img
+      [src]="previewImage"
+      alt="Aperçu de l'utilisateur"
+      class="w-full h-full object-cover block"
+    />
   </div>
 </div>

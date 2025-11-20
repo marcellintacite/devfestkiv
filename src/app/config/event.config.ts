@@ -82,8 +82,8 @@ export const EVENT_CONFIG: EventConfig = {
     start: new Date('2025-11-29T09:00:00'),
     end: new Date('2025-11-29T18:00:00'),
     display: {
-      start: 22,
-      end: 22,
+      start: 29,
+      end: 29,
       month: 'Novembre',
       year: 2025,
     },
