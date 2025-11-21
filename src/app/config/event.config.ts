@@ -156,7 +156,7 @@ export const EVENT_CONFIG: EventConfig = {
     {
       name: 'Denota',
       role: 'Partenaire Media',
-      quote: ' ',
+      quote: 'Denota assure la couverture des videos promotionnels du DevFest Kivu.',
       logo: 'assets/supports/support-4.jpeg',
     },
     {
