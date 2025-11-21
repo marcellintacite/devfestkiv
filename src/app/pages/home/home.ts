@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit, signal, inject } from '@angular/core';
 import PastEventsGallery from '../../components/past-events-gallery/past-events-gallery';
 import { RouterLink } from '@angular/router';
+import { NgOptimizedImage } from '@angular/common';
 import { EventConfigService } from '../../config/event-config.service';
 
 @Component({
   selector: 'app-home',
-  imports: [PastEventsGallery, RouterLink],
+  imports: [PastEventsGallery, RouterLink, NgOptimizedImage],
   templateUrl: 'home.html',
   styles: `
     .video-wrapper {
@@ -124,7 +125,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Scroll to top when component initializes
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    
+
     this.initializeCountdown();
     this.startCountdown();
   }
