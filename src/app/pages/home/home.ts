@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit, signal, inject,PLATFORM_ID  } from '@angular/core';
 import PastEventsGallery from '../../components/past-events-gallery/past-events-gallery';
 import { RouterLink } from '@angular/router';
+import { NgOptimizedImage } from '@angular/common';
 import { EventConfigService } from '../../config/event-config.service';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-home',
-  imports: [PastEventsGallery, RouterLink],
+  imports: [PastEventsGallery, RouterLink, NgOptimizedImage],
   templateUrl: 'home.html',
   styles: `
     .video-wrapper {
