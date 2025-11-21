@@ -360,9 +360,9 @@
                         <!-- Partner Logo/Image -->
                         <div class="flex items-start gap-4 mb-4">
                             <div class="flex-shrink-0">
-                                <img [ngSrc]="'/assets/supports/support-' + ($index + 1) + '.jpg'" [alt]="partner.name"
-                                    class="w-14 h-14 sm:w-16 sm:h-16 rounded-lg object-cover border-2 border-gray-100 group-hover:border-primary/30 transition-colors"
-                                    width="64" height="64" decoding="async" loading="lazy" />
+                                <img [src]="partner.logo" 
+                                    [alt]="partner.name"
+                                    class="w-14 h-14 sm:w-16 sm:h-16 rounded-lg object-cover border-2 border-gray-100 group-hover:border-primary/30 transition-colors" />
                             </div>
                             <div class="flex-1 min-w-0">
                                 <h4 class="text-base sm:text-lg font-semibold text-text mb-1 truncate">
