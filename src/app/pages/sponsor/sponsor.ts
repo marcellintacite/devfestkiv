@@ -225,7 +225,7 @@ export default class Sponsor implements OnInit {
     name: support.name,
     role: support.role,
     quote: support.quote,
-    image: `/assets/supports/support-${this.eventConfig.supports.indexOf(support) + 1}.jpg`
+    image: support.logo 
   }));
 
   get mainSponsors(): SponsorData[] {

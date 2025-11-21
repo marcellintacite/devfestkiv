@@ -198,7 +198,7 @@ export class Navbar {
     { path: '/speakers', label: 'Speakers' },
     { path: '/sponsor', label: 'Sponsors' },
     { path: '/qa', label: 'Q&A' },
-    { path: '/live_q', label: 'Live Q' },
+    //{ path: '/question-space', label: 'Live Q' },
   ]);
 
   toggleMobileMenu() {

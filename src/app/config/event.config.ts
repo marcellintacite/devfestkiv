@@ -37,6 +37,7 @@ export interface EventConfig {
     name: string;
     role: string;
     quote: string;
+    logo:string;
   }>;
   pastEvents: Array<{
     title: string;
@@ -95,8 +96,10 @@ export const EVENT_CONFIG: EventConfig = {
     conferenceCenter: 'Hotel Panorama Bukavu',
   },
   theme: 'Innovation & Tech',
-  description: 'Le plus grand rassemblement tech de la région des Grands Lacs, réunissant développeurs, étudiants, élèves, entrepreneurs, etc.',
-  registrationUrl: 'https://gdg.community.dev/events/details/google-gdg-kivu-presents-devfest-kivu-2025/cohost-gdg-kivu',
+  description:
+    'Le plus grand rassemblement tech de la région des Grands Lacs, réunissant développeurs, étudiants, élèves, entrepreneurs, etc.',
+  registrationUrl:
+    'https://gdg.community.dev/events/details/google-gdg-kivu-presents-devfest-kivu-2025/cohost-gdg-kivu',
   contact: {
     email: 'gdgkivu@gmail.com',
     phone: '+243999537410',
@@ -133,20 +136,47 @@ export const EVENT_CONFIG: EventConfig = {
       name: 'DrcMind',
       role: 'Partenaire Principal',
       quote:
-        "DrcMind accompagne le DevFest Kivu dans la promotion de l'innovation technologique et le développement des compétences numériques.",
+        'Basée à Bukavu, elle forme, équipe et accompagne les talents africains à bâtir des solutions numériques utiles et durables',
+      logo: 'assets/supports/support-1.jpg',
     },
     {
-      name: 'Jambo World',
-      role: 'Partenaire Média',
+      name: 'Wikisuite',
+      role: 'Partenaire Principal',
       quote:
-        'Jambo World contribue à la visibilité du DevFest Kivu à travers la couverture médiatique et la diffusion d\'actualités tech.',
+        ' Ils offrent une suite complète de solutions pour la collaboration et la gestion, que les organisations peuvent utiliser pour améliorer leur productivité et créer des outils fiables ',
+      logo: 'assets/supports/support-3.jpg',
     },
     {
-      name: 'Congo Cloud Computer',
-      role: 'Partenaire Technique',
+      name: 'NeoTex',
+      role: 'Partenaire Principal',
       quote:
-        'Congo Cloud Computer fournit l\'infrastructure cloud et le support technique pour assurer une expérience fluide durant l\'événement.',
+        'Ils développent Halisi, une plateforme IA qui utilise biométrie, données et modèles avancés pour créer des solutions utiles, comme la reconnaissance faciale animale pour l’élevage et des systèmes de recommandation pour le retail. ',
+      logo: 'assets/supports/support-2.jpeg',
     },
+    {
+      name: 'Denota',
+      role: 'Partenaire Media',
+      quote: ' ',
+      logo: 'assets/supports/support-4.jpeg',
+    },
+    {
+      name: 'Kivu Graphic',
+      role: 'Partenaire Media',
+      quote: 'Kivu Graphic assure la couverture des affiches  officiels du DevFest Kivu.',
+      logo: 'assets/supports/support-5.png',
+    },
+    // {
+    //   name: 'Jambo World',
+    //   role: 'Partenaire Média',
+    //   quote:
+    //     'Jambo World contribue à la visibilité du DevFest Kivu à travers la couverture médiatique et la diffusion d\'actualités tech.',
+    // },
+    // {
+    //   name: 'Congo Cloud Computer',
+    //   role: 'Partenaire Technique',
+    //   quote:
+    //     'Congo Cloud Computer fournit l\'infrastructure cloud et le support technique pour assurer une expérience fluide durant l\'événement.',
+    // },
   ],
   pastEvents: [
     {
@@ -236,7 +266,7 @@ export const EVENT_CONFIG: EventConfig = {
     {
       title: 'DevFest Kivu 2019',
       description:
-        'Première édition du DevFest Kivu, marquant le début d\'une tradition technologique dans la région.',
+        "Première édition du DevFest Kivu, marquant le début d'une tradition technologique dans la région.",
       date: 'Décembre 2019',
       location: 'Bukavu',
       category: 'Festival',
@@ -260,7 +290,7 @@ export const EVENT_CONFIG: EventConfig = {
     {
       title: 'Mobile App Challenge',
       description:
-        'Concours de développement d\'applications mobiles avec des prix et des mentors experts.',
+        "Concours de développement d'applications mobiles avec des prix et des mentors experts.",
       date: 'Juillet 2025',
       location: 'Bukavu',
       category: 'Challenge',

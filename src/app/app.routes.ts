@@ -57,6 +57,10 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'question-space',
+    loadComponent: () => import('./live-question/components/question-space/question-space'),
+  },
+  {
     path: 'presenter',
     loadComponent: () => import('./live-question/components/presentation/presentation'),
   },
