@@ -160,7 +160,7 @@ interface SponsorData {
           </div>
 
           @for (sponsor of mainSponsors; track sponsor.name) {
-          <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+          <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden mb-5">
             <!-- Header -->
             <div class="bg-gray-50 border-b border-gray-200 p-8">
               <div class="flex flex-col md:flex-row items-center gap-6">
@@ -169,11 +169,18 @@ interface SponsorData {
                   <div
                     class="w-20 h-20 rounded-xl bg-white border-2 border-gray-200 flex items-center justify-center overflow-hidden"
                   >
-                    <img
-                      [src]="sponsor.image"
-                      [alt]="sponsor.name"
-                      class="max-w-full max-h-full object-contain"
-                    />
+                    <a
+                      [href]="sponsor.link"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="w-full h-full flex items-center justify-center"
+                    >
+                      <img
+                        [src]="sponsor.image"
+                        [alt]="sponsor.name"
+                        class="max-w-full max-h-full object-contain"
+                      />
+                    </a>
                   </div>
                 </div>
 
@@ -245,11 +252,18 @@ interface SponsorData {
                 <div
                   class="w-24 h-24 rounded-2xl bg-gray-50 flex items-center justify-center border border-gray-200 overflow-hidden"
                 >
-                  <img
-                    [src]="sponsor.image"
-                    [alt]="sponsor.name"
-                    class="max-w-full max-h-full object-contain"
-                  />
+                  <a
+                    [href]="sponsor.link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-full h-full flex items-center justify-center"
+                  >
+                    <img
+                      [src]="sponsor.image"
+                      [alt]="sponsor.name"
+                      class="max-w-full max-h-full object-contain"
+                    />
+                  </a>
                 </div>
               </div>
 
