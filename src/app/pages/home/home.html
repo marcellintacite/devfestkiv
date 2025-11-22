@@ -357,12 +357,15 @@
                     @for (partner of supports; track $index) {
                     <div
                         class="flex-shrink-0 w-[280px] sm:w-[320px] md:w-[350px] group bg-white rounded-xl md:rounded-2xl p-6 md:p-8 border border-gray-100 hover:border-primary/20 transition-all duration-300 hover:shadow-lg">
+                        
                         <!-- Partner Logo/Image -->
                         <div class="flex items-start gap-4 mb-4">
-                            <div class="flex-shrink-0">
-                                <img [src]="partner.logo" 
-                                    [alt]="partner.name"
-                                    class="w-14 h-14 sm:w-16 sm:h-16 rounded-lg object-cover border-2 border-gray-100 group-hover:border-primary/30 transition-colors" />
+                            <div class="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 border-2 border-gray-100 group-hover:border-primary/30 rounded-lg flex items-center justify-center bg-white">
+                                <a [href]="partner.link" target="_blank" rel="noopener noreferrer">
+                                    <img [src]="partner.logo" 
+                                        [alt]="partner.name"
+                                        class="max-w-full max-h-full object-contain" />
+                                </a>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <h4 class="text-base sm:text-lg font-semibold text-text mb-1 truncate">
@@ -379,6 +382,7 @@
                             {{ partner.quote }}
                         </p>
                     </div>
+
                     }
 
                     <!-- Duplicate set for seamless loop -->
