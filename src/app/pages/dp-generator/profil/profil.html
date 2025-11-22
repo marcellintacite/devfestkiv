@@ -3,11 +3,31 @@
   class="relative w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden flex items-center justify-center border-2 border-gray-200"
 >
   <!-- COUCHE 1 (z-0) : La photo (pop-in) -->
+  @if (previewImage) {
   <img
     [src]="previewImage"
-    alt="Preview"
+    alt=""
     class="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-300 ease-out scale-100"
   />
+  } @else {
+  <div class="absolute inset-0 flex items-center justify-center text-gray-300 bg-gray-50">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="w-10 h-10"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      aria-hidden="true"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7M7 13l3-3 2 2 4-4 3 3"
+      />
+    </svg>
+  </div>
+  }
 
   <!-- COUCHE 2 (z-10) : Le masque (fondu) -->
   <div
