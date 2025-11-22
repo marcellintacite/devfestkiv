@@ -10,8 +10,51 @@
       </p>
     </div>
 
-    <!-- Coming Soon Content -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 md:p-12">
+    <div class="p-1 animate-fade-in">
+      <!-- Vérification si des événements existent -->
+      <div *ngIf="eventsData.agendaEvents?.length">
+        <!-- Boucle d'affichage -->
+        <div
+          *ngFor="let event of eventsData.agendaEvents"
+          class="bg-white m-4 p-4 border rounded-lg border-gray-200 max-w-2xl mx-auto w-full transition"
+        >
+          <!-- Ligne heure + badge -->
+          <div class="flex items-center justify-between">
+            <div class="text-sm text-gray-600 font-medium">
+              {{ event.time }}
+            </div>
+
+            <span class="px-2 py-1 text-xs rounded-md" [class]="getBadgeColor('Closing')">
+              {{ event.minutes }} min
+            </span>
+          </div>
+
+          <!-- Titre -->
+          <div class="text-lg font-semibold mt-2">
+            {{ event.title }}
+          </div>
+
+          <!-- Speaker -->
+          <div *ngIf="event.speaker" class="text-gray-700 mt-1">
+            {{ event.speaker }}
+          </div>
+          <span
+            class="px-2 py-1 rounded-md text-xs font-medium"
+            [ngClass]="getBadgeColor(event.category)"
+          >
+            {{ event.category }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Message si aucun événement -->
+
+      <ng-template #noEvents>
+        <div class="text-gray-500 text-center mt-6">Aucun événement disponible.</div>
+      </ng-template>
+    </div>
+
+    <!--
       <div class="text-center mb-8">
         <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-100 rounded-full mb-6">
           <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -27,9 +70,9 @@
         </p>
       </div>
 
-      <!-- Event Details -->
+      <!-- Event Details 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
-        <!-- Date -->
+        <!-- Date 
         <div class="text-center">
           <div class="flex items-center justify-center mb-3">
             <svg class="w-6 h-6 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,7 +86,7 @@
           <p class="text-sm text-gray-500 mt-1">9h00 - 18h00</p>
         </div>
 
-        <!-- Location -->
+        <!-- Location 
         <div class="text-center">
           <div class="flex items-center justify-center mb-3">
             <svg class="w-6 h-6 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,7 +100,6 @@
           </p>
           <p class="text-sm text-gray-500 mt-1">{{ eventConfig.venue.fullLocation }}</p>
         </div>
-      </div>
-    </div>
+      </div>-->
   </div>
 </div>

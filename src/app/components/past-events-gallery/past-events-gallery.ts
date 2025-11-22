@@ -1,9 +1,10 @@
 import { Component, inject } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { EventConfigService } from '../../config/event-config.service';
 
 @Component({
   selector: 'app-past-events-gallery',
-  imports: [],
+  imports: [NgOptimizedImage],
   templateUrl: 'past-events-gallery.html',
   styleUrl: 'past-events-gallery.css',
 })

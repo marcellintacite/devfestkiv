@@ -1,11 +1,13 @@
-import { Component, OnDestroy, OnInit, signal, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal, inject,PLATFORM_ID  } from '@angular/core';
 import PastEventsGallery from '../../components/past-events-gallery/past-events-gallery';
 import { RouterLink } from '@angular/router';
+import { NgOptimizedImage } from '@angular/common';
 import { EventConfigService } from '../../config/event-config.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-home',
-  imports: [PastEventsGallery, RouterLink],
+  imports: [PastEventsGallery, RouterLink, NgOptimizedImage],
   templateUrl: 'home.html',
   styles: `
     .video-wrapper {
@@ -108,6 +110,7 @@ import { EventConfigService } from '../../config/event-config.service';
 })
 export default class HomeComponent implements OnInit, OnDestroy {
   private eventConfig = inject(EventConfigService);
+  private platformId = inject(PLATFORM_ID);
 
   seconde = signal(0);
   minutes = signal(0);
@@ -123,10 +126,11 @@ export default class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Scroll to top when component initializes
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    this.initializeCountdown();
-    this.startCountdown();
+  
+    if (isPlatformBrowser(this.platformId)) {
+      this.initializeCountdown();
+      this.startCountdown();
+    }
   }
 
   private initializeCountdown(): void {

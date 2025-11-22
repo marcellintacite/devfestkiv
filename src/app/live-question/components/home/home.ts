@@ -67,11 +67,10 @@ import {FirestoreService} from '../../../services/firestore';
           </p>
         </div>
 
-    
         <!-- CTA -->
         <div class="animate-slide-up" style="animation-delay:0.8s;">
           <a
-            href="#sessions"
+            href="question-space"
             class="inline-flex items-center gap-3 px-8 py-3 rounded-full bg-[#EA4335] text-white text-lg font-semibold hover:bg-[#d83b2e] hover:shadow-lg transform hover:scale-105 transition-all duration-300"
           >
             <span>Voir les sessions disponibles</span>

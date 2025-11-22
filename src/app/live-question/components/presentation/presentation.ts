@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener, inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, inject, PLATFORM_ID, signal } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -6,7 +6,7 @@ import { FirestoreService } from '../../../services/firestore';
 import { Subscription } from 'rxjs';
 import { Timestamp } from '@angular/fire/firestore';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Session } from '../../../models/session-model';
+import { FloatingReaction, Session } from '../../../models/session-model';
 import { QuestionsSlides } from './quetsions-slides/quetsions-slides';
 import { EventConfigService } from '../../../config/event-config.service';
 @Component({
@@ -14,6 +14,19 @@ import { EventConfigService } from '../../../config/event-config.service';
   imports: [CommonModule, FormsModule, RouterLink, QuestionsSlides],
   template: `
     <div class="relative min-h-screen " id="slidesContainer">
+      <!-- Overlay pour les réactions animées -->
+      <div class="absolute inset-0 pointer-events-none overflow-hidden z-30">
+        @for (reaction of activeReactions(); track reaction.id) {
+        <div
+          class="absolute text-4xl pointer-events-none animate-float"
+          [style.left]="reaction.startX + 'px'"
+          [style.bottom]="reaction.startY + 'px'"
+          [class]="reaction.animationClass"
+        >
+          {{ reaction.emoji }}
+        </div>
+        }
+      </div>
       <!-- Slides -->
       @if(isActive){
       <div class="absolute inset-0 z-0">
@@ -464,27 +477,68 @@ export default class Presentation {
   private sanitizer = inject(DomSanitizer);
   safeSlideUrl: SafeResourceUrl | null = null;
   private platformId = inject(PLATFORM_ID);
+  showReactionPicker = false;
+  activeReactions = signal<FloatingReaction[]>([]);
+  private animationClasses = [
+    'animate-float-slow',
+    'animate-float-medium',
+    'animate-float-fast',
+    'animate-float-left',
+    'animate-float-right',
+  ];
+  emojisSub!: Subscription;
 
   ngOnInit(): void {
     const active = this.sessions.find((s) => s.isActive);
-
+    this.emojisSub = this.fs.getEmojis().subscribe((emojis: any) => {
+      if (emojis) {
+         this.triggerFloatingReaction(emojis[emojis.length-1].emoji);
+      }
+    })
     if (active) this.selectedSession = active;
 
     this.speakersSub = this.fs.getSessions().subscribe((sessions: any) => {
-     this.sessions = sessions.filter((session:any) => session.isActive === true);
-
+      this.sessions = sessions.filter((session: any) => session.isActive === true);
 
       if (isPlatformBrowser(this.platformId)) {
         const selectedId = sessionStorage.getItem('selectedSession');
         if (selectedId) {
           this.selectedSession = this.sessions.find((s) => s.id.toString() === selectedId);
-            this.selectedSlide = this.getUrl(this.selectedSession?.slides!)!;
-            this.safeSlideUrl = this.selectedSlide
-              ? this.sanitizer.bypassSecurityTrustResourceUrl(this.selectedSlide)
-              : null;
+          this.selectedSlide = this.getUrl(this.selectedSession?.slides!)!;
+       
+
+          this.safeSlideUrl = this.selectedSlide
+            ? this.sanitizer.bypassSecurityTrustResourceUrl(this.selectedSlide)
+            : null;
         }
       }
     });
+  }
+
+  triggerFloatingReaction(emoji: string): void {
+    // Position de départ aléatoire en bas de l'écran
+    const startX = Math.random() * (window.innerWidth - 100) + 50;
+    const startY = 100; // Commence en bas
+
+    // Animation aléatoire
+    const randomAnimation =
+      this.animationClasses[Math.floor(Math.random() * this.animationClasses.length)];
+
+    const reaction: FloatingReaction = {
+      id: Date.now().toString() + Math.random(),
+      emoji,
+      startX,
+      startY,
+      animationClass: randomAnimation,
+    };
+
+    // Ajouter la réaction
+    this.activeReactions.update((reactions) => [...reactions, reaction]);
+
+    // Supprimer après l'animation (3-5 secondes)
+    setTimeout(() => {
+      this.activeReactions.update((reactions) => reactions.filter((r) => r.id !== reaction.id));
+    }, 3000 + Math.random() * 2000);
   }
 
   getSafeUrl(url: string): SafeResourceUrl {
@@ -506,10 +560,9 @@ export default class Presentation {
   }
   onSessionChange(session: Session<Timestamp> | null) {
     this.selectedSlide = this.getUrl(session?.slides!)!;
-     this.isVisible = true;
+    this.isVisible = true;
     if (isPlatformBrowser(this.platformId)) {
       sessionStorage.setItem('selectedSession', this.selectedSession?.id ?? '');
-     
     }
     this.safeSlideUrl = this.selectedSlide
       ? this.sanitizer.bypassSecurityTrustResourceUrl(this.selectedSlide)
