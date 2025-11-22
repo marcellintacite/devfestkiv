@@ -10,6 +10,7 @@ import { Footer } from '../components/footer/footer';
     <router-outlet></router-outlet>
     <app-footer/>
 
+    
   `,
   styles: ``,
 })
