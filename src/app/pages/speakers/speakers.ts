@@ -7,126 +7,112 @@ import { EventConfigService } from '../../config/event-config.service';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="min-h-screen bg-gray-50">
-      <div class="max-w-4xl mx-auto px-4 py-16">
+    <div class="min-h-screen bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <!-- Header -->
-        <div class="text-center mb-12">
-          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        <div class="text-center mb-20 animate-fade-in-up">
+          <h1 class="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
             Speakers {{ eventConfig.year }}
           </h1>
-          <p class="text-xl text-gray-600">
-            Découvrez les intervenants de DevFest Kivu {{ eventConfig.year }}
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            Découvrez les esprits brillants qui façonneront le DevFest Kivu {{ eventConfig.year }}.
           </p>
         </div>
 
-        <!-- Speakers Content -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 md:p-12">
-          <div class="text-center mb-8">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Intervenants</h2>
-            <p class="text-gray-600 max-w-2xl mx-auto">
-              Liste des intervenants confirmés pour DevFest Kivu {{ eventConfig.year }}.
-            </p>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-            @for (s of speakers; track $index) {
-            <div
-              class="bg-white rounded-lg p-6 flex flex-col items-center text-center shadow-sm border border-gray-100"
-            >
+        <!-- Speakers Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          @for (s of speakers; track $index) {
+          <div
+            class="group bg-white rounded-2xl border border-gray-200 p-6 flex flex-col items-center text-center transition-all duration-300 hover:border-blue-500 hover:-translate-y-1 animate-fade-in-up"
+            [style.animation-delay]="$index * 100 + 'ms'"
+          >
+            <div class="relative mb-6">
+              <div class="absolute inset-0 rounded-full bg-blue-100 scale-0 group-hover:scale-110 transition-transform duration-300 ease-out"></div>
               <img
                 src="{{ s.profilePicture }}"
                 alt="{{ s.owner }}"
-                class="w-24 h-24 rounded-full object-cover mb-4 shadow-sm"
+                class="relative w-32 h-32 rounded-full object-cover border-4 border-white shadow-sm group-hover:shadow-md transition-all duration-300"
               />
-              <h3 class="text-lg font-semibold text-gray-900">{{ s.owner }}</h3>
-              <p class="text-sm text-gray-700 mb-3 font-medium">{{ s.title }}</p>
-              <div class="flex items-center space-x-3 mt-auto">
-                @if (s.LinkedIn) {
-                <a
-                  href="{{ s.LinkedIn }}"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-blue-600 hover:underline text-sm flex items-center"
-                >
-                  <svg
-                    class="w-4 h-4 mr-2"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M4.98 3.5C4.98 4.88 3.87 6 2.49 6S0 4.88 0 3.5 1.11 1 2.49 1 4.98 2.12 4.98 3.5zM.22 8h4.54V24H.22V8zM8.98 8h4.36v2.2h.06c.61-1.16 2.1-2.38 4.32-2.38 4.62 0 5.47 3.04 5.47 6.99V24h-4.54v-7.6c0-1.81-.03-4.14-2.52-4.14-2.52 0-2.91 1.97-2.91 4.01V24H8.98V8z"
-                    />
-                  </svg>
-                  LinkedIn
-                </a>
-                }
-              </div>
             </div>
-            }
-          </div>
-        </div>
-        <!-- Event Details -->
-        <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
-          <!-- Date -->
-          <div class="text-center">
-            <div class="flex items-center justify-center mb-3">
-              <svg
-                class="w-6 h-6 text-gray-400 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-              <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">Date</span>
-            </div>
-            <p class="text-lg font-semibold text-gray-900">
-              {{ eventConfig.date.display.start }} {{ eventConfig.date.display.month }}
-              {{ eventConfig.date.display.year }}
+            
+            <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+              {{ s.owner }}
+            </h3>
+            
+            <!-- TagLine/Bio snippet could go here if desired, but user asked to remove title. 
+                 Keeping it minimal as requested. -->
+            <p class="text-sm text-gray-500 mb-4 line-clamp-2 px-2">
+               {{ s.TagLine }}
             </p>
-            <p class="text-sm text-gray-500 mt-1">10h30 - 18h00</p>
-          </div>
 
-          <!-- Location -->
-          <div class="text-center">
-            <div class="flex items-center justify-center mb-3">
-              <svg
-                class="w-6 h-6 text-gray-400 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            <div class="mt-auto">
+              @if (s.LinkedIn) {
+              <a
+                href="{{ s.LinkedIn }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-50 text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300"
+                aria-label="LinkedIn Profile"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                />
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-              <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">Lieu</span>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                </svg>
+              </a>
+              }
             </div>
-            <p class="text-lg font-semibold text-gray-900">
-              {{ eventConfig.venue.conferenceCenter }}
-            </p>
-            <p class="text-sm text-gray-500 mt-1">{{ eventConfig.venue.fullLocation }}</p>
+          </div>
+          }
+        </div>
+
+        <!-- Event Details (Minimalist) -->
+        <div class="mt-24 border-t border-gray-100 pt-16">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+            <div class="flex flex-col items-center text-center animate-fade-in-up" style="animation-delay: 600ms">
+              <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 mb-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-1">Date & Heure</h3>
+              <p class="text-gray-600">
+                {{ eventConfig.date.display.start }} {{ eventConfig.date.display.month }} {{ eventConfig.date.display.year }}
+              </p>
+              <p class="text-sm text-gray-500">10h30 - 18h00</p>
+            </div>
+
+            <div class="flex flex-col items-center text-center animate-fade-in-up" style="animation-delay: 800ms">
+              <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 mb-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-1">Lieu</h3>
+              <p class="text-gray-600">{{ eventConfig.venue.conferenceCenter }}</p>
+              <p class="text-sm text-gray-500">{{ eventConfig.venue.fullLocation }}</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   `,
-  styles: ``,
+  styles: `
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fade-in-up {
+      animation: fadeInUp 0.6s ease-out forwards;
+      opacity: 0; /* Start hidden */
+    }
+  `,
 })
 export default class Speakers implements OnInit {
   eventConfig = inject(EventConfigService);
@@ -149,7 +135,7 @@ export default class Speakers implements OnInit {
       description:
         "Nous visons à faire comprendre le rôle critique des données humaines ( venant de Local Guides) pour corriger les biais et entraîner l'IA de Google Maps.  (Prouver que l'IA ne peut pas se passer du terrain et il n'y a pas plus meilleur pour comprendre celà qu'un Développeur.",
       TagLine:
-        'GDG Bukavu, Content Creator, Google Local Guide Level8, Google Trusted, Photographers Street View, Google Crowdsource Influencer (Level 25)',
+        'GDG Bukavu, Content Creator',
       bio: 'YANNICK S., Membre du GDG Bukavu / Tech Advocate / Content Creator / Designer, Graphiste, Evenementiel ',
       LinkedIn:
         'https://www.linkedin.com/in/yannick-s-nick-king-262b1815b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
@@ -170,7 +156,7 @@ export default class Speakers implements OnInit {
       title: 'Construire des vraies compétences en dev : l’IA n’est pas un raccourci',
       description:
         'Avec l’arrivée des assistants IA, coder n’a jamais été aussi simple : une phrase, un clic… et le code apparaît. Mais pour beaucoup de nouveaux développeurs et intermediaires, cela crée une illusion de compétence : on produit du code sans réellement apprendre à le comprendre, à le corriger ou à l’améliorer. Dans cette session, nous allons explorer comment utiliser l’IA pour apprendre, et non à la place d’apprendre.',
-      TagLine: '#GDGKivu, #WebDeveloper',
+      TagLine: 'Web Developer',
       bio: 'GDG Kivu organizer et web developer',
       LinkedIn:
         'https://www.linkedin.com/in/j%C3%A9r%C3%A9mie-ndeke-70a840287?lipi=urn%3Ali%3Apage%3Amw_learning_feed%3BhMV3SqxTTrWLsc0qoVEw6w%3D%3D&licu=urn%3Ali%3Acontrol%3Amw_learning_feed-view_profile',
@@ -191,7 +177,7 @@ export default class Speakers implements OnInit {
       owner: 'Heshima Magalabaha Ezra',
       title: 'Éducation et carrière',
       description: 'Mon success Grace à la formation certifiante en remote ',
-      TagLine: 'Black Born Community , CEO  et ingénieur logiciel chez matrix group ltd',
+      TagLine: 'CEO et ingénieur logiciel chez matrix group ltd',
       bio: 'Heshima Magalabaha Ezra est un ingénieur logiciel et expert en intelligence artificielle originaire de la République Démocratique du Congo. Né le 23 juin 1997, il est actuellement Software Engineer chez Matrix Group Ltd au Royaume-Uni et CEO de Black Born Community, une organisation engagée dans la formation des jeunes et leur insertion professionnelle à travers le numérique. Diplômé en informatique de l’Université Catholique de Bukavu (UCB), Heshima a complété son parcours académique par plusieurs formations spécialisées en ligne dans les domaines de l’ingénierie logicielle, de la cybersécurité et de l’intelligence artificielle. Avec plus de six années d’expérience professionnelle, il a travaillé sur des projets technologiques d’envergure internationale, notamment en tant qu’ingénieur logiciel chez Always Good (États-Unis). Son expertise s’étend du développement d’applications mobiles et backend à la conception de systèmes intelligents basés sur l’IA et l’automatisation. À travers sa plateforme bbcommunity.academy￼, il œuvre pour réduire le fossé numérique en Afrique, en offrant aux jeunes des opportunités concrètes d’apprentissage, de création d’emploi et d’émancipation professionnelle. Reconnu pour sa vision innovante et son leadership engagé, Heshima Magalabaha Ezra incarne une nouvelle génération d’ingénieurs africains déterminés à utiliser la technologie comme moteur de transformation sociale et économique.',
       LinkedIn: 'https://linkedin.com/in/heshimakob/',
       profilePicture: 'https://sessionize.com/image/a1ae-400o400o1-VzBrSBb484Kt1J5LJHkWbZ.jpg',
