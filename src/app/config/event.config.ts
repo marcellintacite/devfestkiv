@@ -37,7 +37,8 @@ export interface EventConfig {
     name: string;
     role: string;
     quote: string;
-    logo:string;
+    logo: string;
+    link:string
   }>;
   pastEvents: Array<{
     title: string;
@@ -133,37 +134,43 @@ export const EVENT_CONFIG: EventConfig = {
   engagementYear: 5,
   supports: [
     {
-      name: 'DrcMind',
-      role: 'Partenaire Principal',
-      quote:
-        'Basée à Bukavu, elle forme, équipe et accompagne les talents africains à bâtir des solutions numériques utiles et durables',
-      logo: 'assets/supports/support-1.jpg',
-    },
-    {
       name: 'Wikisuite',
       role: 'Partenaire Principal',
       quote:
         ' Ils offrent une suite complète de solutions pour la collaboration et la gestion, que les organisations peuvent utiliser pour améliorer leur productivité et créer des outils fiables ',
       logo: 'assets/supports/support-3.jpg',
+      link: 'https://wikisuite.org/Software',
     },
+    {
+      name: 'DrcMind',
+      role: 'Partenaire Principal',
+      quote:
+        'Basée à Bukavu, elle forme, équipe et accompagne les talents africains à bâtir des solutions numériques utiles et durables',
+      logo: 'assets/supports/support-1.jpg',
+      link: 'https://drcmind.com/',
+    },
+
     {
       name: 'NeoTex',
       role: 'Partenaire Principal',
       quote:
         'Ils développent Halisi, une plateforme IA qui utilise biométrie, données et modèles avancés pour créer des solutions utiles, comme la reconnaissance faciale animale pour l’élevage et des systèmes de recommandation pour le retail. ',
       logo: 'assets/supports/support-2.jpeg',
+      link: 'https://neotex.ai/',
     },
     {
       name: 'Denota',
       role: 'Partenaire Media',
       quote: 'Denota assure la couverture des videos promotionnels du DevFest Kivu.',
       logo: 'assets/supports/support-4.jpeg',
+      link: '',
     },
     {
       name: 'Kivu Graphic',
       role: 'Partenaire Media',
       quote: 'Kivu Graphic assure la couverture des affiches  officiels du DevFest Kivu.',
       logo: 'assets/supports/support-5.png',
+      link: '',
     },
     // {
     //   name: 'Jambo World',
