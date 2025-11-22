@@ -27,6 +27,7 @@ import { CommonModule } from '@angular/common';
               <a
                 [routerLink]="item.path"
                 routerLinkActive="nav-active"
+                [routerLinkActiveOptions]="item.path === '/' ? { exact: true } : { exact: false }"
                 class="nav-link lg:text-base text-gray-500"
                 [attr.aria-current]="item.path === '/' ? 'page' : null"
               >
@@ -104,6 +105,7 @@ import { CommonModule } from '@angular/common';
           <a
             [routerLink]="item.path"
             routerLinkActive="nav-active-mobile"
+            [routerLinkActiveOptions]="item.path === '/' ? { exact: true } : { exact: false }"
             (click)="closeMobileMenu()"
             class="block px-sm py-md text-base font-medium text-text hover:text-primary transition-all duration-300 border-l-4 border-transparent hover:translate-x-1 hover:border-primary"
             [style.transition-delay]="i * 50 + 'ms'"
