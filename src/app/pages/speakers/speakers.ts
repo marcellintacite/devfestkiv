@@ -39,9 +39,7 @@ import { EventConfigService } from '../../config/event-config.service';
                 class="w-24 h-24 rounded-full object-cover mb-4 shadow-sm"
               />
               <h3 class="text-lg font-semibold text-gray-900">{{ s.owner }}</h3>
-              <p class="text-sm text-indigo-600 mb-2">{{ s.TagLine }}</p>
-              <p class="text-sm text-gray-700 mb-3">{{ s.title }}</p>
-              <p class="text-sm text-gray-500 mb-3 line-clamp-3">{{ s.description }}</p>
+              <p class="text-sm text-gray-700 mb-3 font-medium">{{ s.title }}</p>
               <div class="flex items-center space-x-3 mt-auto">
                 @if (s.LinkedIn) {
                 <a
@@ -67,63 +65,62 @@ import { EventConfigService } from '../../config/event-config.service';
             </div>
             }
           </div>
-
-          <!-- Event Details -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
-            <!-- Date -->
-            <div class="text-center">
-              <div class="flex items-center justify-center mb-3">
-                <svg
-                  class="w-6 h-6 text-gray-400 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                  />
-                </svg>
-                <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">Date</span>
-              </div>
-              <p class="text-lg font-semibold text-gray-900">
-                {{ eventConfig.date.display.start }} {{ eventConfig.date.display.month }}
-                {{ eventConfig.date.display.year }}
-              </p>
-              <p class="text-sm text-gray-500 mt-1">10h30 - 18h00</p>
+        </div>
+        <!-- Event Details -->
+        <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+          <!-- Date -->
+          <div class="text-center">
+            <div class="flex items-center justify-center mb-3">
+              <svg
+                class="w-6 h-6 text-gray-400 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+              <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">Date</span>
             </div>
+            <p class="text-lg font-semibold text-gray-900">
+              {{ eventConfig.date.display.start }} {{ eventConfig.date.display.month }}
+              {{ eventConfig.date.display.year }}
+            </p>
+            <p class="text-sm text-gray-500 mt-1">10h30 - 18h00</p>
+          </div>
 
-            <!-- Location -->
-            <div class="text-center">
-              <div class="flex items-center justify-center mb-3">
-                <svg
-                  class="w-6 h-6 text-gray-400 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                  />
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
-                <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">Lieu</span>
-              </div>
-              <p class="text-lg font-semibold text-gray-900">
-                {{ eventConfig.venue.conferenceCenter }}
-              </p>
-              <p class="text-sm text-gray-500 mt-1">{{ eventConfig.venue.fullLocation }}</p>
+          <!-- Location -->
+          <div class="text-center">
+            <div class="flex items-center justify-center mb-3">
+              <svg
+                class="w-6 h-6 text-gray-400 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+              <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">Lieu</span>
             </div>
+            <p class="text-lg font-semibold text-gray-900">
+              {{ eventConfig.venue.conferenceCenter }}
+            </p>
+            <p class="text-sm text-gray-500 mt-1">{{ eventConfig.venue.fullLocation }}</p>
           </div>
         </div>
       </div>
@@ -218,7 +215,8 @@ export default class Speakers implements OnInit {
       bio: '',
       LinkedIn:
         'https://www.linkedin.com/in/raphael-amisi-cabwine-107b4693?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
-      profilePicture: '',
+      profilePicture:
+        'https://media.licdn.com/dms/image/v2/D4D03AQE5ZZnSl4g9DA/profile-displayphoto-scale_400_400/B4DZl2LMicIgAk-/0/1758624272756?e=1765411200&v=beta&t=AC6NnjgYaJq2IngI_6USR5-BUpmZnasZtux6gaCFtpE',
     },
   ];
 
