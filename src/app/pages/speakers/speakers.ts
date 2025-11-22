@@ -167,7 +167,7 @@ export default class Speakers implements OnInit {
     },
     {
       owner: 'Jérémie Ndeke',
-      title: 'Construire de vraies compétences en dev : l’IA n’est pas un raccourci',
+      title: 'Construire des vraies compétences en dev : l’IA n’est pas un raccourci',
       description:
         'Avec l’arrivée des assistants IA, coder n’a jamais été aussi simple : une phrase, un clic… et le code apparaît. Mais pour beaucoup de nouveaux développeurs et intermediaires, cela crée une illusion de compétence : on produit du code sans réellement apprendre à le comprendre, à le corriger ou à l’améliorer. Dans cette session, nous allons explorer comment utiliser l’IA pour apprendre, et non à la place d’apprendre.',
       TagLine: '#GDGKivu, #WebDeveloper',
