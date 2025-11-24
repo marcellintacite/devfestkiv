@@ -158,6 +158,15 @@ export const EVENT_CONFIG: EventConfig = {
       logo: 'assets/supports/support-2.jpeg',
       link: 'https://neotex.ai/',
     },
+
+    {
+      name: 'SIA RDC',
+      role: 'Partenaire Principal',
+      quote:
+        'SIA RDC est une entreprise technologique innovante spécialisée dans dans les technologies de l\'information et de la communication en RDC. ',
+      logo: 'assets/supports/support-6.jpg',
+      link: 'https://sia-rdc.com/',
+    },
     {
       name: 'Denota',
       role: 'Partenaire Media',
