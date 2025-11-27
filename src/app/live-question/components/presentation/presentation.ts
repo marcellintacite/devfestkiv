@@ -487,25 +487,39 @@ export default class Presentation {
     'animate-float-right',
   ];
   emojisSub!: Subscription;
+  remoteStateSub!: Subscription;
+  firstConnexion = false;
 
   ngOnInit(): void {
     const active = this.sessions.find((s) => s.isActive);
     this.emojisSub = this.fs.getEmojis().subscribe((emojis: any) => {
-      if (emojis) {
-         this.triggerFloatingReaction(emojis[emojis.length-1].emoji);
+      if (this.firstConnexion === true) {
+        if (emojis) {
+          this.triggerFloatingReaction(emojis[emojis.length - 1].emoji);
+        }
       }
-    })
+      this.firstConnexion = true;
+    });
+    this.remoteStateSub = this.fs.getStateRemote().subscribe((states: any) => {
+      if (states && states.length > 0) {
+        const state = states[states.length - 1];
+        if (state.command === 'next') {
+             this.selectedSlide = this.getUrl(this.selectedSession?.slides!)!;
+        } else if (state.command === 'previous') {
+          this.selectedSlide = this.getUrl(this.selectedSession?.slides!)!;
+        }
+      }
+    });
     if (active) this.selectedSession = active;
 
     this.speakersSub = this.fs.getSessions().subscribe((sessions: any) => {
-      this.sessions = sessions.filter((session: any) => session.isActive === true);
+      this.sessions = sessions
 
       if (isPlatformBrowser(this.platformId)) {
         const selectedId = sessionStorage.getItem('selectedSession');
         if (selectedId) {
           this.selectedSession = this.sessions.find((s) => s.id.toString() === selectedId);
           this.selectedSlide = this.getUrl(this.selectedSession?.slides!)!;
-       
 
           this.safeSlideUrl = this.selectedSlide
             ? this.sanitizer.bypassSecurityTrustResourceUrl(this.selectedSlide)
@@ -628,5 +642,7 @@ export default class Presentation {
       this.popupWindow.close();
     }
     if (this.speakersSub) this.speakersSub.unsubscribe();
+    if (this.emojisSub) this.emojisSub.unsubscribe();
+    if (this.remoteStateSub) this.remoteStateSub.unsubscribe();
   }
 }

@@ -12,6 +12,7 @@ export class FirestoreService {
   createDocId = (colName: string) => doc(collection(this.fs, colName)).id;
 
   private readonly emojisCol = collection(this.fs, `emojis`);
+  private readonly remoteCol = collection(this.fs, `remote`);
 
   getSessions() {
     return runInInjectionContext(this._injector, () => {
@@ -29,6 +30,18 @@ export class FirestoreService {
     return runInInjectionContext(this._injector, () => {
       const docRef = doc(this.fs, `emojis/${emojis.id}`);
       return setDoc(docRef, emojis, { merge: true });
+    });
+  }
+
+  setRemote(action: string, id = '129383746') {
+    return runInInjectionContext(this._injector, () => {
+      const docRef = doc(this.fs, `remote/${id}`);
+      return setDoc(docRef, { command: action }, { merge: true });
+    });
+  }
+  getStateRemote() {
+    return runInInjectionContext(this._injector, () => {
+      return collectionData(this.remoteCol) as any;
     });
   }
   getEmojis() {
