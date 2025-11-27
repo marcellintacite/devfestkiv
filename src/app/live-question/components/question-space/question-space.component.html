@@ -31,8 +31,8 @@
         >
           <div class="flex items-center justify-between">
             <div class="flex-1 min-w-0">
-              <p class="font-semibold text-gray-800 truncate">{{ s.speaker }}</p>
-              <p class="text-gray-500 text-sm mt-1 line-clamp-2">{{ s.title }}</p>
+              <p class="font-semibold text-gray-800 truncate">{{ s.theme }}</p>
+              <p class="text-gray-500 text-sm mt-1 line-clamp-2">{{ s.speaker }}</p>
             </div>
 
             @if (s.isActive) {
@@ -64,12 +64,12 @@
       </a>
       <select 
         (change)="onMobileSessionSelect($event)"
-        class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#4285F4] focus:border-[#4285F4]"
+        class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#4285F4] focus:border-[#4285F4] w-10"
       >
         <option value="">Sélectionnez une session</option>
         @for (s of sessions(); track s.id) {
           @if (s.isActive) {
-            <option [value]="s.id">{{ s.speaker }} - {{ s.title }}</option>
+            <option [value]="s.id">{{ s.theme }} - {{ s.speaker }}</option>
           }
         }
       </select>
@@ -114,7 +114,7 @@
         <div class="flex items-center justify-between">
           <div>
             <h2 class="text-2xl font-bold text-gray-800 leading-tight">
-              {{ selectedSession()?.title }}
+              {{ selectedSession()?.theme }}
             </h2>
             <p class="text-gray-600 mt-1">{{ selectedSession()?.speaker }}</p>
           </div>
